@@ -1,0 +1,119 @@
+* {
+    font-family: serif;
+    line-height: 1.5;
+}
+
+a {
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    color: teal;
+}
+
+body {
+    background-color: azure;
+    padding: 1% 10% 5% 10%;
+}
+
+code {
+    font-family: monospace;
+}
+
+div {
+    break-inside: avoid;
+}
+
+footer {
+    display: flex;
+    border-top: 1px dashed teal;
+    margin-top: 2rem;
+    justify-content: space-between;
+}
+
+.headerlink {
+    position: absolute;
+    left: -1.5rem;
+}
+
+h1 .headerlink {
+    font-size: 0;
+}
+
+h1 .headerlink::before {
+    content: "\00A7";
+    font-size: 2rem;
+    visibility: visible;
+}
+
+h1 {
+    position: relative;
+}
+
+header {
+    border-bottom: 1px dashed teal;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+}
+
+header h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+li+li {
+    margin-top: 7px;
+}
+
+nav {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: 0 0;
+}
+
+nav a {
+    text-decoration: none;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 5rem;
+    flex-wrap: wrap;
+}
+
+nav li {
+    margin: 0;
+}
+
+p,
+li,
+pre,
+span {
+    font-size: larger;
+}
+
+sc {
+    font-variant-caps: small-caps;
+}
+
+.blog-title {
+    margin-right: auto;
+}
+
+.blog-title a {
+    font-variant-caps: small-caps;
+    border: none;
+    color: black;
+    font-size: xx-large;
+}
+
+.twocols {
+    column-count: 2;
+    column-gap: 20px;
+    column-rule: 1px dotted teal;
+}

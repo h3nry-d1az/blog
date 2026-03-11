@@ -1,0 +1,63 @@
+.theorem,
+.lemma,
+.corollary,
+.definition,
+.problem {
+    font-size: larger;
+    padding: 10px;
+    border: 2px solid teal;
+}
+
+.theorem::before {
+    content: "Theorem: ";
+    font-weight: bold;
+}
+
+.lemma::before {
+    content: "Lemma: ";
+    font-weight: bold;
+}
+
+.corollary::before {
+    content: "Corollary: ";
+    font-weight: bold;
+}
+
+.definition::before {
+    content: "Definition: ";
+    font-weight: bold;
+}
+
+.problem::before {
+    content: "Problem: ";
+    font-weight: bold;
+}
+
+.proof,
+.solution {
+    font-size: larger;
+    padding: 10px;
+}
+
+.proof::after,
+.solution::after {
+    color: black;
+    font-weight: bolder;
+    float: right;
+    content: "QED.";
+}
+
+.proof::before {
+    content: "Proof: ";
+    font-style: italic;
+}
+
+.solution::before {
+    content: "Solution: ";
+    font-style: italic;
+}
+
+.hangingindent {
+    padding-left: 22px;
+    text-indent: -22px;
+}

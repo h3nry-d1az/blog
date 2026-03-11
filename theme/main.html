@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {%- block site_meta %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if config.site_description %}
+    <meta name="description" content="{{ config.site_description }}">{% endif %}
+    {% if config.site_author %}
+    <meta name="author" content="{{ config.site_author }}">{% endif %}
+    {%- endblock %}
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page and page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}</title>
+
+    <link rel="stylesheet" href="{{ 'css/style.css' | url }}">
+    <link rel="stylesheet" href="{{ 'css/math.css' | url }}">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="{{ nav.homepage.url | url }}">{{ config.site_name }}</a>
+            </div>
+
+            <ul>
+                {% for nav_item in nav %}
+                <li>
+                    <a href="{{ nav_item.url | url }}" class="{% if nav_item.active %}active{% endif %}">
+                        {{ nav_item.title }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {{ page.content }}
+    </main>
+
+    <footer>
+        <span>{{ config.license }}</span>
+        <span>{{ config.copyright }}</span>
+    </footer>
+</body>
+
+</html>

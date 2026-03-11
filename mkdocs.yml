@@ -1,0 +1,18 @@
+site_name: Henry Díaz Bordón
+site_author: Henry Díaz Bordón
+site_description: A hotchpot of a blog. Built solely with plain HTML and CSS, just like Tim Berners-Lee meant it to be
+license: Licensed under CC BY-ND 4.0,
+copyright: © 2026 All Rights Reserved.
+
+theme:
+  name: null
+  custom_dir: 'theme'
+
+nav:
+  - Home: index.md
+  - Code: code.md
+  - Problems: problems.md
+
+markdown_extensions:
+  - toc:
+      permalink: true
