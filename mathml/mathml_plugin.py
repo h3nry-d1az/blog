@@ -2,10 +2,11 @@ import re
 from mkdocs.plugins import BasePlugin
 import latex2mathml.converter
 
+
 class MathMLPlugin(BasePlugin):
     def on_page_markdown(self, markdown, page, config, files):
-        block_pattern = re.compile(r'(?<!\\)\$\$(.*?)\$\$', re.DOTALL)
-        inline_pattern = re.compile(r'(?<!\\)\$(?!\s)(.+?)(?<!\s)\$')
+        block_pattern = re.compile(r"(?<!\\)\$\$(.*?)\$\$", re.DOTALL)
+        inline_pattern = re.compile(r"(?<!\\)\$(?!\s)(.+?)(?<!\s)\$")
 
         def replace_block(match):
             latex_code = match.group(1).strip()

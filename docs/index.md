@@ -65,3 +65,27 @@ Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapi
 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
 
 Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+[{
+ctx.scale = 20
+
+triangle = Polygon.triangle_from_lengths(13, 14, 15)
+circle = Circle.triangle_incenter(
+    triangle.points[0], triangle.points[1], triangle.points[2], zord=-1
+)
+
+I = (circle.x, circle.y)
+
+ctx.add(triangle)
+ctx.add(circle, fill="gray")
+ctx.add(Path(triangle.points[0], I, zord=2))
+ctx.add(Path(triangle.points[1], I, zord=2))
+ctx.add(Path(triangle.points[2], I, zord=2))
+ctx.add(Label(I[0] + 1, I[1] + 1, r"\partial \text A"), font_scale=2.5)
+
+ctx.add(Polygon(triangle.points[0], I, triangle.points[1], zord=-2), fill="green")
+
+print(ctx.svg())
+}]
+
+aaa
