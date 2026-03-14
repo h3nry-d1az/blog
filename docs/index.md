@@ -1,91 +1,19 @@
-# Welcome to MkDocs
+Hello there, I'm <sc>Henry</sc>. When I have some free time on my hands, you'll generally find me tinkering around with C++, crunching numbers (with a computer, of course), or _trying_ to find a proof for some result.
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Just a quick note: if you need to reach out or contact me for any reason, please head over to my [main website](https://h3nry-d1az.github.io/) to do so. This space is strictly for my content.
 
-## Commands
+## What to expect
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+I've divided this blog into three main areas to keep things organized:
 
-## Project layout
+* **Posts:** I write about a variety of topics here, and they won't necessarily be confined to math or computer science. 
+* **Problems:** Some interesting math problems here along with their solutions &ndash; which are mostly proofs.
+* **Miscellanea:** Smaller fragments, snippets, and quick thoughts. They are too short to justify a post, but I still consider them worth sharing.
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## Open source and licensing
 
-<div class="theorem">
-    example theorem
-</div>
+I believe in keeping things accessible. This blog's [repository](https://github.com/h3nry-d1az/blog) is completely open source, so you are welcome to look under the hood.
 
-<div class="proof">
+The content here is provided and can be used under the [Creative Commons Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)](https://creativecommons.org/licenses/by-nd/4.0/) license. 
 
-Some $\LaTeX$ **here** 'n' there.
-
-</div>
-
-More $\LaTeX$ also **here**
-
-$$
-    \sum_a^b f' = f(b) - f(a)
-$$
-
-```c++
-#include <iostream>
-#include <algorithm>
-#include <cstdint>
-#include <execution>
-
-#define M 1000000007
-
-constexpr uint8_t ns = {
-#embed "numbers.bin"
-};
-
-int main()
-{
-    uint64_t prod = std::reduce(std::execution::par_unseq,
-        ns, ns + sizeof(ns), [](const uint64_t& a, const uint64_t& b) {
-            return (a * b) % M;
-        });
-
-    std::cout << prod << std::endl;
-    return 0;
-}
-```
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
-
-[{
-ctx.scale = 20
-
-triangle = Polygon.triangle_from_lengths(13, 14, 15)
-circle = Circle.triangle_incenter(
-    triangle.points[0], triangle.points[1], triangle.points[2], zord=-1
-)
-
-I = (circle.x, circle.y)
-
-ctx.add(triangle)
-ctx.add(circle, fill="gray")
-ctx.add(Path(triangle.points[0], I, zord=2))
-ctx.add(Path(triangle.points[1], I, zord=2))
-ctx.add(Path(triangle.points[2], I, zord=2))
-ctx.add(Label(I[0] + 1, I[1] + 1, r"\partial \text A"), font_scale=2.5)
-
-ctx.add(Polygon(triangle.points[0], I, triangle.points[1], zord=-2), fill="green")
-
-print(ctx.svg())
-}]
-
-aaa
+Have a look around, and I hope you find something useful.

@@ -16,11 +16,7 @@ class GeometryPlugin(BasePlugin):
             ctx = pythagoras.Canvas(500, 500)
             namespace = {"ctx": ctx}
             namespace.update(
-                {
-                    k: v
-                    for k, v in vars(pythagoras).items()
-                    if not k.startswith("_") and not isinstance(v, types.ModuleType)
-                }
+                {k: v for k, v in vars(pythagoras).items() if not k.startswith("_")}
             )
             try:
                 exec(code, namespace, namespace)

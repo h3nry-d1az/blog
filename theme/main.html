@@ -14,7 +14,9 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if page and page.title %}{{ page.title }} - {% endif %}{{ config.site_name }}</title>
+    {% block htmltitle %}
+    <title>{% if page and page.meta.title %}{{ page.meta.title }} - {% endif %}{{ config.site_name }}</title>
+    {% endblock %}
 
     <link rel="stylesheet" href="{{ 'css/style.css' | url }}">
     <link rel="stylesheet" href="{{ 'css/math.css' | url }}">
@@ -25,7 +27,7 @@
     <header>
         <nav>
             <div class="blog-title">
-                <a href="{{ nav.homepage.url | url }}">{{ config.site_name }}</a>
+                <a href="https://h3nry-d1az.github.io/">{{ config.site_name }}</a>
             </div>
 
             <ul>
@@ -40,9 +42,25 @@
         </nav>
     </header>
 
+    <div style="line-height: 0.5;">
+        {% if page and page.meta.author %}
+        <p class="author">{{ page.meta.author }}</p>
+        {% endif %}
+
+        {% if page and page.meta.date %}
+        <p class="date">{{ page.meta.date }}</p>
+        {% endif %}
+
+        {% if page and page.meta.updated %}
+        <p class="updated">{{ page.meta.updated }}</p>
+        {% endif %}
+    </div>
+
+    {% block content %}
     <main>
         {{ page.content }}
     </main>
+    {% endblock %}
 
     <footer>
         <span>{{ config.license }}</span>

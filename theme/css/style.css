@@ -105,6 +105,18 @@ sc {
     font-variant-caps: small-caps;
 }
 
+.author {
+    text-align: right;
+    font-variant-caps: small-caps;
+}
+
+.author::before {
+    content: "Author: ";
+    font-style: normal;
+    font-variant-caps: normal;
+    font-weight: bolder;
+}
+
 .blog-title {
     margin-right: auto;
 }
@@ -114,6 +126,24 @@ sc {
     border: none;
     color: black;
     font-size: xx-large;
+}
+
+.date,
+.updated {
+    text-align: right;
+    font-style: italic;
+}
+
+.date::before {
+    content: "Published: ";
+    font-style: normal;
+    font-weight: bolder;
+}
+
+.updated::before {
+    content: "Updated: ";
+    font-style: normal;
+    font-weight: bolder;
 }
 
 .highlight {
