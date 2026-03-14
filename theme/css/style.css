@@ -68,6 +68,11 @@ math {
     font-size: 1.2rem;
 }
 
+math[display="block"] {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
 nav {
     display: flex;
     justify-content: right;
@@ -128,6 +133,12 @@ sc {
     font-size: xx-large;
 }
 
+/* Note to self: A short way to get the
+ * current date in Python is through
+ * ```py
+ * from datetime import datetime
+ * datetime.today().strftime("%d %b %Y")
+ * ```*/
 .date,
 .updated {
     text-align: right;

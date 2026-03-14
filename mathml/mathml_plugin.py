@@ -12,14 +12,14 @@ class MathMLPlugin(BasePlugin):
             latex_code = match.group(1).strip()
             try:
                 return latex2mathml.converter.convert(latex_code, display="block")
-            except Exception as e:
+            except Exception:
                 return f"\n{match.group(0)}"
 
         def replace_inline(match):
             latex_code = match.group(1).strip()
             try:
                 return latex2mathml.converter.convert(latex_code, display="inline")
-            except Exception as e:
+            except Exception:
                 return f"{match.group(0)}"
 
         markdown = block_pattern.sub(replace_block, markdown)
