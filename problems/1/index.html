@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Pizza Pi Box - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">14 Mar 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem">
+A box in the shape of a triangle with side lengths <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>13</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>14</mn></mrow></math>, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>15</mn></mrow></math> is being used to
+pack a pizza pi. The pizza is in the shape of a circle and just touches each of the
+three sides of the triangular box. What is the area of the circle?
+
+<div align="center"><svg width="303.8584" height="239.6522" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 211.0054 L 301.3584 237.1522 L 189.3836 2.5000 L 2.5000 211.0054" fill="white" stroke="black" />
+<circle cx="168.8636" cy="145.2548" r="80.0" fill="LightGray" stroke="black" />
+<foreignObject x="33.8688" y="50.8574" width="269.9896" height="188.7948">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C0;</mi></mrow></math></div></foreignObject>
+</svg></div>
+</div>
+
+<p><em>Proposed as the <a href="https://cemc.uwaterloo.ca/sites/default/files/documents/2026/POTWE-25-A-G-23-P.html">problem of the week #22 of year 2025/26</a>, by the Centre for Education in Mathematics and Computing of the University of Waterloo.</em></p>
+<div class="solution">
+
+In the geometry lingo, this <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C0;</mi></mrow></math>e is what is called the circle <em>inscribed</em> to the triangle, and
+the way to measure its radius &ndash; which is the essential parameter from which we will derive
+its area &ndash; is by leveraging precisely this condition.
+<br>
+For the inexperienced reader, pause and try to convince yourself that such a circle intersects with
+its bounding shape forming <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mn>90</mn><mo>&#x02218;</mo></msup></mrow></math>-angles on such points; using this result we will now divide
+the original box into three smaller ones, which share the property that their height is the radius
+we are looking for:
+
+<div align="center"><svg width="453.2876" height="356.9783" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 315.2582 L 252.0454 216.6322 L 450.7876 354.4783 L 2.5000 315.2582" fill="Lavender" stroke="black" />
+<path d="M 450.7876 354.4783 L 252.0454 216.6322 L 282.8254 2.5000 L 450.7876 354.4783" fill="Ivory" stroke="black" />
+<path d="M 282.8254 2.5000 L 252.0454 216.6322 L 2.5000 315.2582 L 282.8254 2.5000" fill="LightGreen" stroke="black" />
+<circle cx="252.0454" cy="216.6322" r="120.0" fill="none" stroke="black" />
+<path d="M 241.5867 336.1755 L 252.0454 216.6322" fill="none" stroke="black" />
+<path d="M 360.3464 164.9515 L 252.0454 216.6322" fill="none" stroke="black" />
+<path d="M 162.6859 136.5392 L 252.0454 216.6322" fill="none" stroke="black" />
+<path d="M 241.5867 336.1755 L 220.4542 334.3267 L 222.3031 313.1942 L 243.4356 315.0431 L 241.5867 336.1755" fill="white" stroke="black" />
+<path d="M 360.3464 164.9515 L 369.4824 184.0966 L 350.3373 193.2325 L 341.2013 174.0874 L 360.3464 164.9515" fill="white" stroke="black" />
+<path d="M 162.6859 136.5392 L 176.8445 120.7425 L 192.6412 134.9011 L 178.4826 150.6978 L 162.6859 136.5392" fill="white" stroke="black" />
+<foreignObject x="0.0000" y="195.3728" width="453.1735" height="161.6054">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 360.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>r</mi></mrow></math></div></foreignObject>
+<foreignObject x="147.4052" y="62.9247" width="305.8824" height="294.0535">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 360.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>r</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="445.3719" height="333.0784">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 360.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>r</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+With this key insight in mind, we can now relate the area of the big triangle,
+to that of the smaller ones, and thus to <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>r</mi></mrow></math>; that is,
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mn>13</mn><mi>r</mi><mo>&#x0002B;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mn>14</mn><mi>r</mi><mo>&#x0002B;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mn>15</mn><mi>r</mi><mo>&#x0003D;</mo><mn>21</mn><mi>r</mi><mspace width="1em" /><mi>&#x027F9;</mi><mspace width="1em" /><mi>r</mi><mo>&#x0003D;</mo><mfrac><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo></mrow><mrow><mn>21</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+<br>
+
+However, we still have not figured out <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo></mrow></math>, and it is Heron's formula
+the one that tells us exactly this. Letting <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>s</mi></mrow></math> be half of the perimeter, then
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo><mo>&#x0003D;</mo><msqrt><mrow><mi>s</mi><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x02212;</mo><mn>13</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x02212;</mo><mn>14</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x02212;</mo><mn>15</mn><mo stretchy="false">&#x00029;</mo></mrow></msqrt><mo>&#x0003D;</mo><msqrt><mrow><mn>21</mn><mi>&#x000B7;</mi><mn>8</mn><mi>&#x000B7;</mi><mn>7</mn><mi>&#x000B7;</mi><mn>6</mn></mrow></msqrt><mo>&#x0003D;</mo><mn>84</mn><mo>&#x0002C;</mo></mrow></math>
+so finally,
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>r</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>84</mn></mrow><mrow><mn>21</mn></mrow></mfrac><mo>&#x0003D;</mo><mn>4</mn><mspace width="1em" /><mi>&#x027F9;</mi><mspace width="1em" /><mo stretchy="false">[</mo><mi>&#x003C0;</mi><mo stretchy="false">]</mo><mo>&#x0003D;</mo><mi>&#x003C0;</mi><mi>&#x000B7;</mi><msup><mn>4</mn><mn>2</mn></msup><mo>&#x0003D;</mo><mn>16</mn><mi>&#x003C0;</mi><mo>&#x0002E;</mo></mrow></math>
+
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
