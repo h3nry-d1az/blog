@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>No nontrivial automorphism implies abelianity and elements of order 2 - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">15 Mar 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem">
+If <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>Aut</mo><mi>G</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x0007B;</mo><mi>e</mi><mo stretchy="false">&#x0007D;</mo></mrow></math>, show that <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>G</mi></mrow></math> is abelian and that every non-identity element of <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>G</mi></mrow></math> has
+order <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>2</mn></mrow></math>.
+</div>
+
+<p><em>Proposed in "A Friendly Introduction to Group Theory", by Jake Wellens. Exercise 2.6.</em></p>
+<div class="solution">
+We will prove the contrapositive, that is, if either <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>G</mi></mrow></math> is not abelian or has an element
+of order greater than two, it has a nontrivial automorphism.
+<br>
+
+Consider now the first of the two cases, and let <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi><mo>&#x0002C;</mo><mi>h</mi><mo>&#x02208;</mo><mi>G</mi></mrow></math> such that <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi><mi>h</mi><mo>&#x02260;</mo><mi>h</mi><mi>g</mi></mrow></math>;
+in this case conjugation by <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi></mrow></math>, given by
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>&#x003C0;</mi><mi>g</mi></msub><mo stretchy="false">&#x00028;</mo><mi>a</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mi>g</mi><mi>a</mi><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup></mrow></math>
+constitutes the desired map, since
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mi>&#x003C0;</mi><mi>g</mi></msub><mo stretchy="false">&#x00028;</mo><mi>h</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mi>g</mi><mi>h</mi><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x02260;</mo><mi>h</mi><mi>g</mi><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mi>h</mi><mo>&#x0003D;</mo><mi>e</mi><mo stretchy="false">&#x00028;</mo><mi>h</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002E;</mo></mrow></math>
+Otherwise, multiplying the left- and right-hand sides by <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi></mrow></math> would yield <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi><mi>h</mi><mo>&#x02260;</mo><mi>h</mi><mi>g</mi></mrow></math>.
+It is indeed an automorphism, and its inverse is precisely given by <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>&#x003C0;</mi><mrow><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup></mrow></msub></mrow></math>.
+<br>
+
+Now, for the second case we may assume <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>G</mi></mrow></math> is abelian, as if this was not the case, the
+previous example would work again. Take now <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi></mrow></math> such that <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>p</mi><mn>2</mn></msup><mo>&#x02260;</mo><mi>e</mi></mrow></math>, i.e., <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi><mo>&#x02260;</mo><msup><mi>p</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup></mrow></math>.
+Notice that due to commutativity, the map <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C6;</mi><mo stretchy="false">&#x00028;</mo><mi>g</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup></mrow></math> is an isomorphism, since
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>&#x003C6;</mi><mo stretchy="false">&#x00028;</mo><mi>g</mi><mi>h</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mi>g</mi><mi>h</mi><msup><mo stretchy="false">&#x00029;</mo><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><msup><mi>h</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><msup><mi>g</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><msup><mi>h</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x0003D;</mo><mi>&#x003C6;</mi><mo stretchy="false">&#x00028;</mo><mi>g</mi><mo stretchy="false">&#x00029;</mo><mi>&#x003C6;</mi><mo stretchy="false">&#x00028;</mo><mi>h</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002C;</mo></mrow></math>
+and has an inverse which is itself. Plugging <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi></mrow></math> into <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C6;</mi></mrow></math> finally shows that it
+differs from the identity automorphism:
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>&#x003C6;</mi><mo stretchy="false">&#x00028;</mo><mi>p</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><msup><mi>p</mi><mrow><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x02260;</mo><mi>p</mi><mo>&#x0003D;</mo><mi>e</mi><mo stretchy="false">&#x00028;</mo><mi>p</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0002C;</mo></mrow></math>
+just as we wanted to prove.
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>

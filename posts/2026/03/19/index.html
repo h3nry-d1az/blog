@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Highlights of using std::cpp 2026 - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">19 Mar 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <p>This year, thanks to Universidad Carlos III de Madrid, I had the pleasure to attend the
+<a href="https://eventos.uc3m.es/141471/programme/using-std-cpp-2026.html"><code>using std::cpp</code></a> 2026 conference, where renowned 
+professors and engineers &ndash; including Bjarne Stroustrup himself &ndash; gave talks on various topics and projects, 
+all with the common denominator of C++.</p>
+<p>The event lasted for three days in total, with a fourth one devoted entirely to workshops which I was not able to 
+attend due to my schedule. Nonetheless, it was a very thought-provoking experience in which I have learned a lot on
+the state-of-the-art C++ features and applications.</p>
+<p>This is meant to be a summary of the program; I will briefly discuss the lectures I found most interesting, as
+well as some other aspects worth pointing out. Before proceeding, however, I would like to show my gratitude
+to Professor José Daniel García Sánchez for allowing selected students to attend the event, and to everyone behind it.</p>
+<figure style="float: right; margin: 0.5rem 0 1rem 2rem; text-align: center; max-width: 20%;">
+<img width="100%" alt="My tag" src="../../../../assets/2026/03/19/tag.jpeg">
+<figcaption>My conference pass.</figcaption>
+</figure>
+
+<h1 id="first-day">First day<a class="headerlink" href="#first-day" title="Permanent link">&para;</a></h1>
+<p>People started gathering at around 9 AM; we all received our tags and then went to the auditorium, where at 9:30 the
+conference opening took place. The vice-rector for Research and Transfer of the university Luis Enrique García Muñoz, 
+together with the head of the Polytechnic School César Huete Ruiz de Lira, and the aforementioned José Daniel García 
+Sánchez all gave a warm welcome to the guests, and mentioned some of the key parts of the event in the span of half an 
+hour, and then it truly began.</p>
+<p>The first talk was delivered by Jeff Garland, member of the ISO C++ committee, contributor to the Boost libraries, and
+well known for being the co-founder of the Beman project. It was titled "C++29 Library Preview: A Practitioner's Guide",
+and as strange as it may seem to talk about C++29 when C++26 is not finished (at the time this is published), it was
+actually a very sensible lecture, since it focused mainly on features that did not make it to C++26 mostly due to the
+lack of time, and that will probably be available in the next C++ standard. Personally, I did not understand every single
+one that was listed therein, since there is a wide range of them that I do not use on a daily basis, but it was very
+interesting to see improvements in memory safety, string processing, numerics, views, and even <a href="https://www.scnlib.dev/">scnlib</a>,
+the <code>scanf</code> counterpart to <code>libfmt</code>. There was not enough to delve into every single change in detail, but what was
+explained looked promising.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="First talk" src="../../../../assets/2026/03/19/talk1.jpeg">
+<figcaption>Mr. Garland explaining the new `take_before_view`.</figcaption>
+</figure>
+
+<p>I had classes from 11:00 to 13:00, so I was not able to attend the next two lectures, which is especially 
+unfortunate for "High frequency trading optimizations at Pinely", by Mikhail Matrosov, as it was the one I was looking
+forward to the most. Regardless, I was still able to participate in three more.</p>
+<p>The next one, after lunch, was "Don't be negative!", by Frances Buontempo. It focused on the various ways to
+perform a simple task: removing negative numbers from a container. It started very simply, by just applying 
+<code>std::erase_if</code> to a vector of numbers, but it got progressively more abstract and powerful through the use of
+templates and concepts, in which case we can consider the <code>0</code> as the empty instantiation of the type; overall, the
+code was of this form at some point:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">concept</span><span class="w"> </span><span class="nc">Numeric</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">integral</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">floating_point</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Container</span><span class="o">&gt;</span>
+<span class="k">requires</span><span class="w"> </span><span class="n">Numeric</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">Container</span><span class="o">::</span><span class="n">value_type</span><span class="o">&gt;</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">remove_negatives</span><span class="p">(</span><span class="n">Container</span><span class="o">&amp;</span><span class="w"> </span><span class="n">c</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">erase_if</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p>However, as a side note, one of the viewers spotted the fact that, the <code>Numeric</code> concept defined above does not exclude 
+<code>bool</code>s, so it is still not perfect.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Second talk" src="../../../../assets/2026/03/19/talk2.jpeg">
+<figcaption>Books published by Frances Buontempo.</figcaption>
+</figure>
+
+<p>Before I proceed with the third of the talks I attended, I stopped at a <a href="https://conan.io/">Conan</a> booth that was located
+right next to the <em>Salón de Grados</em>. I was not aware of the existence of that tool, and it was very pleasing to see a
+good-looking C++ package manager. I must say, however, that I have not tried it personally, and thus I cannot give a
+consistent opinion on the quality of the product. The demo they presented was very appealing, cross-compiling a CUDA
+application to an Nvidia Jetson Orin and showcasing very good speed and many quality-of-life features. They also gave
+t-shirts and a (J)frog, since they were sponsors of the event, and the very next talk elaborated on the previous example.</p>
+<figure style="float: left; margin: 0.5rem 2rem 1rem 0; text-align: center; max-width: 20%;">
+<img width="100%" alt="T-shirt and frog" src="../../../../assets/2026/03/19/conan.jpeg">
+<figcaption>T-shirt and JFrog frog.</figcaption>
+</figure>
+
+<p>Titled "Cross-Platform C++ AI Development with Conan, CMake, and CUDA", Luis Caro's talk was a practical, demo-driven
+walkthrough showing how Conan and modern CMake can be used to tame the complexity of packaging and cross-building
+GPU-accelerated projects. The demo wrapped components (CUDA runtime, cuDNN and the <code>llama.cpp</code> build) into a small
+Conan recipe and used a target-specific Conan profile to express the cross toolchain (architecture, compiler, libc,
+compiler flags). With <code>conan install --profile &lt;target&gt;</code> the session generated a CMake toolchain and dependency files
+so CMake could transparently pick the cross-compiler and link against Conan-provided targets. Some takeaways from the 
+talk were:</p>
+<ul>
+<li>One can use Conan lockfiles and versioned recipes to ensure reproducible binaries across developer machines and CI.</li>
+<li>QEMU actually is not ideal in this case, since this code is not a "pure" ARM binary, hence cross-compiling is the
+  right choice.</li>
+</ul>
+<p>In the first demo they compiled <code>llama.cpp</code> with CUDA, and ran a small test. In the second part, they focused on 
+cross-compiling a demo app to the Jetson.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Third talk" src="../../../../assets/2026/03/19/talk3.jpeg">
+<figcaption>During the first half, they explained the tool by compiling
+<a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> with CUDA support.</figcaption>
+</figure>
+
+<p>Finally, the last one for me in this first day was given by José Gómez López, with a very self-descriptive title:
+"Building a C++23 tool-chain for embedded systems". Professor Gómez's talk was a very practical walkthrough of what it 
+takes to create a modern C++23 tool-chain tailored for a particular embedded target &ndash; the ESP8266 &ndash;. He 
+explained the process of bootstrapping, the importance of lightweight runtime libraries, and performed some measurements
+to showcase the performance of some C++23 features. There was a particular issue regarding modules, which in principle
+were considerably slower than the rest, but it turns out that inlining was the major issue provoking this behavior.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Fourth talk" src="../../../../assets/2026/03/19/talk4.jpeg">
+<figcaption>Employing deduced `this` in the test program, to test the capabilities and performance of the toolchain.
+</figcaption>
+</figure>
+
+<p>Overall, the impression this first day left on me was superb, it was really enjoyable, and thankfully there were two
+more evenings.</p>
+<h1 id="second-day">Second day<a class="headerlink" href="#second-day" title="Permanent link">&para;</a></h1>
+<p>After this point in time, I was not able to hear the morning talks, again due to having class lectures at that same
+period. I will then comment only on lectures that took place after 14:50.</p>
+<figure style="float: right; margin: 0.5rem 0 1rem 2rem; text-align: center; max-width: 30%;">
+<img width="100%" alt="Interlude" src="../../../../assets/2026/03/19/interlude.jpeg">
+<figcaption>Funny screensaver displayed during the questions.</figcaption>
+</figure>
+
+<p>Tuesday started for me with "Supercharge Your C++ Project: 10 Tips to Elevate from Repo to Professional Product", by Mateusz
+Pusz, member of the ISO C++ committee, and creator of the <a href="https://github.com/mpusz/mp-units">mp-units</a> library (on its way
+to be part of the C++ standard library). I originally did not hold any expectations for it, since it was of a more
+"social" rather than technical nature.</p>
+<p>I must say, however, that it surprised me. He explained how adding <code>CONTRIBUTORS.md</code> and <code>README.md</code> files makes a great
+improvement, and other details that are well known in general. The aspect in which he offered a new perspective which
+especially amazed me was in managing CI. Whilst explaining how having passing CI is a crucial aspect, and ensuring that
+code runs effectively in any platform to preserve the trust of customers, Pusz mentioned the obvious fact that running CI for
+every possible combination of C++ toolchain, OS, and so forth, is virtually impossible because of time and money constraints,
+in particular for an open source project such as his. The solution was to create a "build matrix", which is randomized on every
+PR and can be easily replicated by introducing the seed number into GitHub Actions. Success is 99% ensured by testing each
+checkbox at least twice a build; a very interesting take from my perspective. He then went on and explored the importance of
+maintaining good relationship with contributors, and advocating for your own product.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Fifth talk" src="../../../../assets/2026/03/19/talk5.jpeg">
+<figcaption>You do not want your library to feel like a fortress, but like a forum.</figcaption>
+</figure>
+
+<p>Next came "Compiler as a Service: C++ Goes Live", with Aaron Jomy and Vipul Cariappa as speakers, which I found to be one of
+the most brilliant talks I witnessed during the conference. It started by diving right into the code, showing how one can
+make use of the LLVM Clang library to compile code just in time (JIT) and make a REPL for C++ by splitting the inputs into
+Parallel Translation Units (PTU); they showed a live demo, and they mentioned a fact of which I was not aware, that Clang
+already ships with a REPL! If you have this compiler installed, try executing <code>clang-repl</code>, or possibly <code>clang-repl-vv</code>, where
+<code>vv</code> is your major version of your installation.</p>
+<p>This was nothing but the very start, they proceeded to talk about how they integrated these features into Python in the
+<a href="https://github.com/compiler-research/CppInterOp">CppInterOp</a> library; <a href="https://github.com/wlav/cppyy">cppyy</a> was also
+mentioned for similar purposes. The motivation for this project came, as they explicitly mentioned, from their position at CERN,
+where physicists are well known for being Python users.</p>
+<p>But Python is mostly popular because of the interactivity it provides, it is because of tools such as Jupyter Notebook that
+data scientists and the like can explore their data and do research without having to rebuild the entire executable (and deal
+with CMake and similar). The last part elaborated precisely on this; project
+<a href="https://github.com/compiler-research/xeus-cpp">xeus-cpp</a> achieves this functionality, and one can indeed compile the C++ code
+just in time into WebAssembly for interactive and rapid prototyping.
+<a href="https://github.com/root-project/cling">Cling</a> and <a href="https://jank-lang.org/">jank</a> were also mentioned at the end.</p>
+<div class="twocols" style="display: flex; align-items: center;">
+<figure style="text-align: center;">
+<img width="75%" alt="Sixth talk 1" src="../../../../assets/2026/03/19/talk6-1.jpeg">
+<figcaption>Demo of getting the AST of a C++ program to extract its documentation.</figcaption>
+</figure>
+
+<figure style="text-align: center;">
+<img width="75%" alt="Sixth talk 2" src="../../../../assets/2026/03/19/talk6-2.jpeg">
+<figcaption>Overview of `cppyy`.</figcaption>
+</figure>
+</div>
+
+<p>Finally, I attended the last event I could for the day, and coming from such a high standard did not disappoint.
+In "The CUDA C++ Developer's Toolbox", by Bernhard Manfred Gruber, the speaker gave an introduction to CUDA C++, and explained
+the features of Thrust, libcu++, and cub, this by example.</p>
+<p>The first program to implement was a simulation of the heat equation, in which three cups of water at different temperatures
+were considered, and the task was to model their temperature across time and write their state at each time step into a file.
+Gruber delved into <code>__host__</code> vs <code>__device__</code> (and both), the structure of GPU RAM, and how classes like <code>universal_vector&lt;T&gt;</code>
+work, since memory is not shared between CPU and GPU; in fact, at the end of the session, most of the questions asked focused
+on GPU memory internals, for instance it was discussed that CPU and GPU share the same address space, among other topics.</p>
+<p>An example of such a program provided in the talk was one that took two vectors of integers, and computed the maximum element-wise
+difference using <code>zip</code>-iterators and Thrust's reduce function with libcu++'s <code>cuda::maximum</code>. One of the snippets presented
+should be representative enough:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="n">thrust</span><span class="o">::</span><span class="n">universal_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">A</span><span class="p">(...);</span>
+<span class="n">thrust</span><span class="o">::</span><span class="n">universal_vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">B</span><span class="p">(...);</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">AB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">make_zip_iterator</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">B</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">diffs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">make_transform_iterator</span><span class="p">(</span>
+<span class="w">    </span><span class="n">AB</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span>
+<span class="w">    </span><span class="n">thrust</span><span class="o">::</span><span class="n">make_zip_function</span><span class="p">(</span>
+<span class="w">        </span><span class="p">[]</span><span class="w"> </span><span class="kr">__host__</span><span class="w"> </span><span class="kt">__device__</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">abs</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">));</span>
+
+<span class="k">auto</span><span class="w"> </span><span class="n">max_diff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">thrust</span><span class="o">::</span><span class="n">reduce</span><span class="p">(</span>
+<span class="w">    </span><span class="n">thrust</span><span class="o">::</span><span class="n">cuda</span><span class="o">::</span><span class="n">par</span><span class="p">,</span>
+<span class="w">    </span><span class="n">diffs</span><span class="p">,</span><span class="w"> </span><span class="n">diffs</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">A</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">    </span><span class="n">cuda</span><span class="o">::</span><span class="n">maximum</span><span class="p">{});</span>
+</code></pre></div></td></tr></table></div></p>
+<p>Finally, topics such as the new <code>mdspan</code>, <code>transform</code>- and <code>zip</code>-iterators were discussed in what was a very insightful talk.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Seventh talk" src="../../../../assets/2026/03/19/talk7.jpeg">
+<figcaption>Difference between <code>__host__</code> and <code>__device__</code> functions.</figcaption>
+</figure>
+
+<p>This second day was the one I enjoyed the most, and it had some of the best presentations to my taste.</p>
+<h1 id="third-day">Third day<a class="headerlink" href="#third-day" title="Permanent link">&para;</a></h1>
+<p>For the final stretch of the conference, my experience began with "You <code>throw</code>; I'll <code>try</code> to <code>catch</code> it", by Javier López Gómez,
+compiler engineer and former PhD student at my university. This was a very interesting lecture, in which he delved into the
+very, extremely low-level specifics of exception handling in C++.</p>
+<p>A short, witty game of trivia then led to the exploration of the unwinding process; he explained various aspects of the Itanium ABI
+(and mentioned MSVC's too), how Itanium generic and language-specific exceptions are modeled and handled, with their landing pads,
+how the DWARF format is used for exceptions too, and not just for debugging purposes, and so forth. At the very end, he gave a
+live demo in which he ran a C++ program that <code>throw</code>'d, with LLVM's libunwind compiled with debug symbols, and in which this stack
+unwinding process could be seen at its crux.</p>
+<p>The key takeaway, in terms of performance, is that exceptions are usually OK for exceptional behavior, no pun intended. I found
+very interesting how virtual tables are notably compressed for the sake of performance (and how this makes them a very
+sophisticated piece of engineering), and the Apple compact unwind format was a very clever idea as well. From my point of view
+it was a very pleasing lecture, although some of the concepts were hard to comprehend for me. I wish I knew more to learn from
+it to its full extent!</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Eighth talk" src="../../../../assets/2026/03/19/talk8.jpeg">
+<figcaption>Simple C++ program to study exception handling.</figcaption>
+</figure>
+
+<p>Next came "Squaring the Circle: value-oriented design in an object-oriented system", by Juan Pedro Bolívar Puente, and this time
+there was no assembly at all; as the speaker said himself, "we were in the catacombs of C++, now we are going to be in the skies
+of C++". It was indeed very high-level, mostly focused on design and with a lot of references to functional programming idioms
+and even some very, very minimal category theoretical particularities.</p>
+<p>In contrast to regular object-oriented programming, in the talk, the idea of values against objects was introduced at the
+beginning; a value is an ethereal, immutable, and even platonic entity, whereas an object is completely the opposite, a mutable
+instance which occupies a physical space in memory and lives as a tangible resource. </p>
+<p>The speaker made use of his own libraries for the sake of the demos, namely <a href="https://github.com/arximboldi/lager">lager</a>,
+<a href="https://github.com/arximboldi/immer">immer</a>, and <a href="https://github.com/arximboldi/zug">zug</a>. In the end, he concluded with the
+design of a to do app using Qt, which follows a notoriously legacy object-oriented paradigm, and reinvented the state structure
+by using the so-called "single-atom" system. Finally, another concept that played a noteworthy role throughout the talk was the
+Unidirectional Data-flow Architecture, which is heavily inspired by frameworks like Redux and languages like Elm.</p>
+<div class="twocols" style="display: flex; align-items: center;">
+<figure style="text-align: center;">
+<img width="75%" alt="Ninth talk 1" src="../../../../assets/2026/03/19/talk9-1.jpeg">
+<figcaption>A common pattern in functional programming is to think of relations between the values.</figcaption>
+</figure>
+
+<figure style="text-align: center;">
+<img width="75%" alt="Ninth talk 2" src="../../../../assets/2026/03/19/talk9-2.jpeg">
+<figcaption>Example of modeling a house with some rooms and doors.</figcaption>
+</figure>
+</div>
+
+<p>And it was precisely about concepts that the closing talk of the conference was about. It was delivered by Professor Stroustrup,
+especially known for being the creator of C++, i.e., the language the conference was devoted to. Generic programming is a
+characteristic feature of the language, with the concept of templates being implemented for decades now, but it had been lacking
+a crucial feature, which is imposing restrictions on the type parameters.</p>
+<p>As an example, consider the following templated function, which takes an element of a type <code>T</code>, and returns the instance multiplied
+by <code>1</code>:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="n">T</span><span class="w"> </span><span class="n">id</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p>Calling it as <code>id(1)</code> or <code>id(1.)</code> would indeed produce the desired behavior of returning the input argument unchanged, but passing
+in a string, as <code>id("Hello"s)</code>, will provoke an error because the operator <code>*</code> does not have an instance matching an <code>std::string</code>
+and an <code>int</code>; notice that such an error would report that this specific property failed, but nothing on the type itself. This is
+where concepts fit, because the code above may be fixed by creating an <code>Id</code> concept, which ensures at compile time that the <code>* 1</code>
+operation can be performed, and it would look as follows:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">concept</span><span class="w"> </span><span class="nc">Id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">requires</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="p">};</span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="n">Id</span><span class="w"> </span><span class="n">T</span><span class="o">&gt;</span>
+<span class="n">T</span><span class="w"> </span><span class="n">id</span><span class="p">(</span><span class="n">T</span><span class="w"> </span><span class="n">x</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></td></tr></table></div></p>
+<p>Now, if in <code>main</code> one called <code>id("Hello"s)</code>, this time the compiler would give the following message (GCC 15.2.0 on <code>x86_64-w64-mingw32</code>
+on my machine), much more explanatory about where the problem comes from, and explicitly stating that only objects that can be
+multiplied by <code>1</code> can be arguments of the function:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td><td class="code"><div><pre><span></span><code>.\example.cpp: In function &#39;int main()&#39;:
+.\example.cpp:10:13: error: no matching function for call to &#39;id(std::__cxx11::basic_string&lt;char&gt;)&#39;
+   10 |   cout &lt;&lt; id(&quot;Hello&quot;s) &lt;&lt; endl;
+      |           ~~^~~~~~~~~~
+.\example.cpp:10:13: note: there is 1 candidate
+.\example.cpp:7:19: note: candidate 1: &#39;template&lt;class T&gt;  requires  Id&lt;T&gt; T id(T)&#39;
+    7 | template &lt;Id T&gt; T id(T x) { return x * 1; }
+      |                   ^~
+.\example.cpp:7:19: note: template argument deduction/substitution failed:
+.\example.cpp:7:19: note: constraints not satisfied
+.\example.cpp: In substitution of &#39;template&lt;class T&gt;  requires  Id&lt;T&gt; T id(T) [with T = std::__cxx11::basic_string&lt;char&gt;]&#39;:
+.\example.cpp:10:13:   required from here
+   10 |   cout &lt;&lt; id(&quot;Hello&quot;s) &lt;&lt; endl;
+      |           ~~^~~~~~~~~~
+.\example.cpp:5:9:   required for the satisfaction of &#39;Id&lt;T&gt;&#39; [with T = std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;]
+.\example.cpp:5:14:   in requirements with &#39;T x&#39; [with T = std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;]
+.\example.cpp:5:32: note: the required expression &#39;(x * 1)&#39; is invalid
+    5 | concept Id = requires(T x) { x * 1; };
+</code></pre></div></td></tr></table></div></p>
+<p>Nevertheless, this is barely the tip of the iceberg. Concepts are much more powerful and the talk focused on much more complicated
+and elaborate examples; this is just a swift introduction to the topic.</p>
+<figure style="text-align: center;">
+<img width="50%" alt="Tenth talk" src="../../../../assets/2026/03/19/talk10.jpeg">
+<figcaption>A concept for arithmetic types.</figcaption>
+</figure>
+
+<p>How fast is this? According to Stroustrup, really fast. This is what C++ templates needed to become powerful, real metaprogramming,
+and so it is an addition I truly like. And this concluded <code>using std::cpp</code> 2026!</p>
+<h1 id="conclusions">Conclusions<a class="headerlink" href="#conclusions" title="Permanent link">&para;</a></h1>
+<p>I have learned a lot during these few days on modern C++, it was very motivating to see many renowned names in the C++ community
+share their knowledge. Take my words with a pinch of salt, however; I have tried to communicate what I have understood from each
+of the talks I attended, but that does not imply that I do not make mistakes and that what I have written is completely accurate.
+If you find any errata, please reach out to me.</p>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
