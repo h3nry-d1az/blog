@@ -2,6 +2,7 @@
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [Normal, square, upper-triangular matrices are diagonal.](./problems/5.md)
 * [Fibonacci numbers in $\mathscr O(\log n)$.](./problems/4.md)
 * [No nontrivial automorphism implies abelianity and elements of order 2.](./problems/3.md)
 * [100-door divisibility problem.](./problems/2.md)
