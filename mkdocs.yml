@@ -26,5 +26,5 @@ markdown_extensions:
       linenums_style: table
 
 plugins:
-  - mathml
   - geometry
+  # - mathml

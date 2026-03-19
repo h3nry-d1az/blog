@@ -101,8 +101,7 @@ nav li {
 
 p,
 li,
-pre,
-span {
+pre {
     font-size: 1.2em;
 }
 
@@ -163,6 +162,10 @@ sc {
 
 .highlight span {
     font-size: inherit !important;
+}
+
+.katex {
+    font-size: 1.2rem !important;
 }
 
 .twocols {
