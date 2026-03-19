@@ -2,17 +2,17 @@
 #include <iostream>
 
 template <typename T>
-concept Group = requires(T g, T h) { g * h; };
+concept Monoid = requires(T a, T b) { a *b; };
 
-template <Group G> G pow(G g, uint64_t n)
+template <Monoid A> A pow(A a, uint64_t n)
 {
-    G r{}; // starts being the group identity
+    A r{}; // starts being the monoid identity
 
     for (int i = 0; i < 64 - __builtin_clzll(n); i++)
     {
         if (n & (1ull << i))
-            r = r * g;
-        g = g * g;
+            r = r * a;
+        a = a * a;
     }
 
     return r;
@@ -47,6 +47,13 @@ int main()
     uint64_t n;
 
     std::cin >> n;
+
+    if (n == 0)
+    {
+        std::cout << 0 << std::endl;
+        return 0;
+    }
+
     std::cout << pow(M2x2{0, 1, 1, 1}, n - 1).e22 << std::endl;
 
     return 0;
