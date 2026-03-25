@@ -26,6 +26,7 @@ footer {
     border-top: 1px dashed teal;
     margin-top: 2rem;
     justify-content: space-between;
+    font-size: 1.2em;
 }
 
 .headerlink {

@@ -2,8 +2,9 @@
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [RSME Problem of the Month Jn-013, Jun. 2021.](./problems/6.md)
 * [Normal, square, upper-triangular matrices are diagonal.](./problems/5.md)
 * [Fibonacci numbers in $\mathscr O(\log n)$.](./problems/4.md)
 * [No nontrivial automorphism implies abelianity and elements of order 2.](./problems/3.md)
 * [100-door divisibility problem.](./problems/2.md)
-* [Pizza Pi Box.](./problems/1.md)
+* [CEMC Problem of the Week 22E, 2025/26.](./problems/1.md)
