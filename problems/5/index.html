@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>No nontrivial automorphism implies abelianity and elements of order 2 - Henry Díaz Bordón</title>
+    <title>Normal, square, upper-triangular matrices are diagonal - Henry Díaz Bordón</title>
     
 
     <link rel="stylesheet" href="../../css/style.css">
@@ -84,7 +84,7 @@
         
 
         
-        <p class="date">15 Mar 2026</p>
+        <p class="date">20 Mar 2026</p>
         
 
         
@@ -93,41 +93,69 @@
     
     <main>
         <div class="problem">
-If $\operatorname{Aut} G = \{e\}$, show that $G$ is abelian and that every non-identity element of $G$ has
-order $2$.
+Prove that a square upper-triangular matrix that is not diagonal is not normal.
 </div>
 
-<p><em>Proposed in "A Friendly Introduction to Group Theory", by Jake Wellens. Exercise 2.6.</em></p>
 <div class="solution">
-We will prove the contrapositive, that is, if either $G$ is not abelian or has an element
-of order greater than two, it has a nontrivial automorphism.
+This is a very standard exercise in linear algebra, which serves as a powerful lemma from which the
+spectral theorem is derived. We will prove the contrapositive of this statement, that is, that a normal,
+square, upper-triangular matrix must be diagonal; this by induction on the dimension.
 <br>
 
-Consider now the first of the two cases, and let $g, h \in G$ such that $gh \neq hg$;
-in this case conjugation by $g$, given by
+The base case is trivial &ndash; since a matrix with a single element already satisfies almost any predicate
+&ndash; so assume that the property holds for $n$, it shall be proven for $n+1$. Let then $A \in
+\mathscr M_{n+1}(\CC)$, and consider the following block partition of $A$:
 $$
-\pi_g (a) = g a g^{-1}
+A = \left(\begin{array}{c|ccc}
+    a_{11} & a_{12} & \cdots & a_{1,n+1}\\\\
+    \hline
+     & a_{22} & \cdots & a_{2,n+1}\\\\
+    & & \ddots & \vdots\\\\
+    & & & a_{n+1,n+1}
+\end{array}\right) = \begin{pmatrix}
+    a_{11} & T\\\\
+    & \tilde A
+\end{pmatrix}; \tag{$*$}
 $$
-constitutes the desired map, since
+imposing normality on $(*)$ then gives
 $$
-\pi_g (h) = ghg^{-1} \neq hgg^{-1} = h = e(h).
+\begin{align*}
+A \adj{A} = \begin{pmatrix}
+    a_{11} & T\\\\
+    & \tilde A
+\end{pmatrix} \begin{pmatrix}
+    \bar a_{11} & \\\\
+    \adj{T} & \adj{\tilde A}
+\end{pmatrix} &= \begin{pmatrix}
+    |a_{11}|^2 + T\adj{T} & T \adj{\tilde A}\\\\
+    \tilde A \adj{T} & \tilde A \adj{\tilde A}
+\end{pmatrix}\\\\
+&= \begin{pmatrix}
+    |a_{11}|^2 & \bar a_{11} T\\\\
+    a_{11} \adj{T} & \adj{T} T + \adj{\tilde A} \tilde A
+\end{pmatrix} = \begin{pmatrix}
+    \bar a_{11} & \\\\
+    \adj{T} & \adj{\tilde A}
+\end{pmatrix} \begin{pmatrix}
+    a_{11} & T\\\\
+    & \tilde A
+\end{pmatrix} = \adj{A} A,
+\end{align*}
 $$
-Otherwise, multiplying the left- and right-hand sides by $g$ would yield $gh \neq hg$.
-It is indeed an automorphism, and its inverse is precisely given by $\pi_{g^{-1}}$.
+and therefore we are dealing with the equations shown below
+$$
+T \adj T = 0, \qquad
+\tilde A \adj{\tilde A} = \adj{T} T + \adj{\tilde A} \tilde A.
+$$
 <br>
 
-Now, for the second case we may assume $G$ is abelian, as if this was not the case, the
-previous example would work again. Take now $p$ such that $p^2 \neq e$, i.e., $p \neq p^{-1}$.
-Notice that due to commutativity, the map $\varphi(g) = g^{-1}$ is an isomorphism, since
+Notice that $T$ is a row matrix, and as such $\adj T$ is a vector; by the definition of the standard inner product on
+$\CC^n$ and its positive-definiteness
 $$
-\varphi(gh) = (gh)^{-1} = h^{-1}g^{-1} = g^{-1} h^{-1} = \varphi(g)\varphi(h),
+    T \adj T = \langle \adj T, \adj T \rangle = \lVert \adj T \rVert^2 = 0 \implies \adj T = 0 \implies T = 0.
 $$
-and has an inverse which is itself. Plugging $p$ into $\varphi$ finally shows that it
-differs from the identity automorphism:
-$$
-\varphi(p) = p^{-1} \neq p = e(p),
-$$
-just as we wanted to prove.
+Thus, the second may be rewritten into $\tilde A \adj{\tilde A} = \adj{\tilde A} \tilde A$; $\tilde A$ is then normal, and
+invoking the induction hypothesis it is also diagonal, as it was to be proven.
 </div>
     </main>
     

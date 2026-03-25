@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>RSME Problem of the Month Jn-013, Jun. 2021 - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">25 Mar 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem">
+Given the triangle $\rm \triangle ABC$, it is known that $\rm \hat A = 60^\circ < \hat B$. The circumference centered at $\rm B$ with radius $\rm BC$ 
+intersects $\rm AC$ again at the point $\rm D \neq C$. Prove that $\rm AB + AD = AC$.
+</div>
+
+<p><em>Proposed by Andrés Sáez Schwedt on behalf of the RSME, as the <a href="https://rsme.es/el-problema-del-mes-junio-2021/">junior problem of the month (jun. 2021)</a>.</em></p>
+<div class="solution twocols">
+
+Most of the times, sketching the construction helps noticing useful insights that are not clear from the plain description of the picture, as it may be seen
+in the right-hand side.
+<br>
+
+In this case, because of $\rm C$ and $\rm D$ lie in the same circumference, we have that ${\rm BC = BD} = r$. Furthermore, because $\rm \angle DAB$ and
+$\rm \angle BAC = \hat A$ are supplementary angles, they add up to $180^\circ$, so $\rm \angle DAB = 120^\circ$.
+<br>
+
+Knowing the previous two facts motivates the use of the law of cosines, because it will probably help relate $\rm AB$, $\rm AC$ and $\rm AD$ in some sort;
+indeed
+$$
+\begin{align*}
+    \rm BC^2 &= \rm AB^2 + AC^2 - AB\ AC,\\
+    \rm BD^2 &= \rm AB^2 + AD^2 + AB\ AD.
+\end{align*}
+$$
+Since the two leftmost expressions are identical &ndash; as it has already been discussed &ndash; it follows that
+
+<div align="center"><svg width="289.0000" height="292.0000" xmlns="http://www.w3.org/2000/svg">
+<path d="M 44.5000 147.5000 L 144.5000 147.5000 L 126.5000 7.5000 L 44.5000 147.5000" fill="LightGreen" stroke="black" />
+<path d="M 44.5000 147.5000 L 144.5000 147.5000 L 14.5000 201.5000 L 44.5000 147.5000" fill="white" stroke="black" />
+<circle cx="144.5" cy="147.5" r="142.0" fill="none" stroke="black" />
+<circle cx="44.5" cy="147.5" r="5.0" fill="white" stroke="black" />
+<circle cx="144.5" cy="147.5" r="5.0" fill="white" stroke="black" />
+<circle cx="126.5" cy="7.5" r="5.0" fill="white" stroke="black" />
+<circle cx="14.5" cy="201.5" r="5.0" fill="white" stroke="black" />
+<path d="M 64.5000 147.5000 A 20.0000 20.0000 0 0 0 54.6081 130.2423" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="3.0000" width="59.0000" height="289.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2400.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
+<foreignObject x="30.0000" y="3.0000" width="259.0000" height="289.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2400.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="283.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2400.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="111.0000" width="59.0000" height="181.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2400.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+$$
+\begin{align*}
+    &\rm \cancel{AB^2} + AC^2 - AB\ AC = \cancel{AB^2} + AD^2 + AB\ AD\\
+    \implies &\rm \cancel{(AC + AD)}(AC - AD) = AB\cancel{(AC + AD)}\\
+    \implies &\rm AC = AB + AD;
+\end{align*}
+$$
+just as we wanted to prove.
+
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>

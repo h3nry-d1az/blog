@@ -19,6 +19,34 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/math.css">
     <link rel="stylesheet" href="../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
 </head>
 
 <body>
@@ -63,12 +91,14 @@
     
     <main>
         <h1 id="list-of-problems">List of problems<a class="headerlink" href="#list-of-problems" title="Permanent link">&para;</a></h1>
-<p>Math problems I'm too lazy to write down in <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mrow><mi>L</mi><mspace width="-.325em" /><mpadded height="+.21ex" depth="-.21ex" voffset="+.21ex"><mstyle displaystyle="false" scriptlevel="1"><mrow><mi>A</mi></mrow></mstyle></mpadded><mspace width="-.17em" /><mi>T</mi><mspace width="-.14em" /><mpadded height="-.5ex" depth="+.5ex" voffset="-.5ex"><mrow><mi>E</mi></mrow></mpadded><mspace width="-.115em" /><mi>X</mi></mrow></mrow></math>, along with their solutions.</p>
+<p>Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.</p>
 <ul>
-<li><a href="4/">Fibonacci numbers in <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">&#x00028;</mo><mi>log</mi><mi>n</mi><mo stretchy="false">&#x00029;</mo></mrow></math>.</a></li>
+<li><a href="6/">RSME Problem of the Month Jn-013, Jun. 2021.</a></li>
+<li><a href="5/">Normal, square, upper-triangular matrices are diagonal.</a></li>
+<li><a href="4/">Fibonacci numbers in $\mathscr O(\log n)$.</a></li>
 <li><a href="3/">No nontrivial automorphism implies abelianity and elements of order 2.</a></li>
 <li><a href="2/">100-door divisibility problem.</a></li>
-<li><a href="1/">Pizza Pi Box.</a></li>
+<li><a href="1/">CEMC Problem of the Week 22E, 2025/26.</a></li>
 </ul>
     </main>
     

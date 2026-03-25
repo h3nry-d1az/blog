@@ -26,6 +26,7 @@ footer {
     border-top: 1px dashed teal;
     margin-top: 2rem;
     justify-content: space-between;
+    font-size: 1.2em;
 }
 
 .headerlink {
@@ -101,8 +102,7 @@ nav li {
 
 p,
 li,
-pre,
-span {
+pre {
     font-size: 1.2em;
 }
 
@@ -163,6 +163,10 @@ sc {
 
 .highlight span {
     font-size: inherit !important;
+}
+
+.katex {
+    font-size: 1.2rem !important;
 }
 
 .twocols {

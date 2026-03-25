@@ -13,12 +13,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Pizza Pi Box - Henry Díaz Bordón</title>
+    <title>CEMC Problem of the Week 22E, 2025/26 - Henry Díaz Bordón</title>
     
 
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/math.css">
     <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
 </head>
 
 <body>
@@ -65,7 +93,7 @@
     
     <main>
         <div class="problem">
-A box in the shape of a triangle with side lengths <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>13</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>14</mn></mrow></math>, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>15</mn></mrow></math> is being used to
+A box in the shape of a triangle with side lengths $13$, $14$, and $15$ is being used to
 pack a pizza pi. The pizza is in the shape of a circle and just touches each of the
 three sides of the triangular box. What is the area of the circle?
 
@@ -81,12 +109,12 @@ three sides of the triangular box. What is the area of the circle?
 <p><em>Proposed as the <a href="https://cemc.uwaterloo.ca/sites/default/files/documents/2026/POTWE-25-A-G-23-P.html">problem of the week #22 of year 2025/26</a>, by the Centre for Education in Mathematics and Computing of the University of Waterloo.</em></p>
 <div class="solution">
 
-In the geometry lingo, this <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C0;</mi></mrow></math>e is what is called the circle <em>inscribed</em> to the triangle, and
+In the geometry lingo, this $\pi$e is what is called the circle <em>inscribed</em> to the triangle, and
 the way to measure its radius &ndash; which is the essential parameter from which we will derive
 its area &ndash; is by leveraging precisely this condition.
 <br>
 For the inexperienced reader, pause and try to convince yourself that such a circle intersects with
-its bounding shape forming <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mn>90</mn><mo>&#x02218;</mo></msup></mrow></math>-angles on such points; using this result we will now divide
+its bounding shape forming $90^\circ$-angles on such points; using this result we will now divide
 the original box into three smaller ones, which share the property that their height is the radius
 we are looking for:
 
@@ -113,15 +141,22 @@ we are looking for:
 </svg></div>
 
 With this key insight in mind, we can now relate the area of the big triangle,
-to that of the smaller ones, and thus to <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>r</mi></mrow></math>; that is,
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo><mo>&#x0003D;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mn>13</mn><mi>r</mi><mo>&#x0002B;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mn>14</mn><mi>r</mi><mo>&#x0002B;</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac><mn>15</mn><mi>r</mi><mo>&#x0003D;</mo><mn>21</mn><mi>r</mi><mspace width="1em" /><mi>&#x027F9;</mi><mspace width="1em" /><mi>r</mi><mo>&#x0003D;</mo><mfrac><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo></mrow><mrow><mn>21</mn></mrow></mfrac><mo>&#x0002E;</mo></mrow></math>
+to that of the smaller ones, and thus to $r$; that is,
+$$
+[\triangle ABC] = \frac{1}{2}13 r + \frac{1}{2}14 r + \frac{1}{2}15 r = 21r\quad
+\implies\quad r = \frac{[\triangle ABC]}{21}.
+$$
 <br>
 
-However, we still have not figured out <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo></mrow></math>, and it is Heron's formula
-the one that tells us exactly this. Letting <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>s</mi></mrow></math> be half of the perimeter, then
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mo stretchy="false">[</mo><mi>&#x025B3;</mi><mi>A</mi><mi>B</mi><mi>C</mi><mo stretchy="false">]</mo><mo>&#x0003D;</mo><msqrt><mrow><mi>s</mi><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x02212;</mo><mn>13</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x02212;</mo><mn>14</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00028;</mo><mi>s</mi><mo>&#x02212;</mo><mn>15</mn><mo stretchy="false">&#x00029;</mo></mrow></msqrt><mo>&#x0003D;</mo><msqrt><mrow><mn>21</mn><mo>&#x000B7;</mo><mn>8</mn><mo>&#x000B7;</mo><mn>7</mn><mo>&#x000B7;</mo><mn>6</mn></mrow></msqrt><mo>&#x0003D;</mo><mn>84</mn><mo>&#x0002C;</mo></mrow></math>
+However, we still have not figured out $[\triangle ABC]$, and it is Heron's formula
+the one that tells us exactly this. Letting $s$ be half of the perimeter, then
+$$
+[\triangle ABC] = \sqrt{s(s-13)(s-14)(s-15)} = \sqrt{21\cdot 8 \cdot 7 \cdot 6} = 84,
+$$
 so finally,
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>r</mi><mo>&#x0003D;</mo><mfrac><mrow><mn>84</mn></mrow><mrow><mn>21</mn></mrow></mfrac><mo>&#x0003D;</mo><mn>4</mn><mspace width="1em" /><mi>&#x027F9;</mi><mspace width="1em" /><mo stretchy="false">[</mo><mi>&#x003C0;</mi><mo stretchy="false">]</mo><mo>&#x0003D;</mo><mi>&#x003C0;</mi><mo>&#x000B7;</mo><msup><mn>4</mn><mn>2</mn></msup><mo>&#x0003D;</mo><mn>16</mn><mi>&#x003C0;</mi><mo>&#x0002E;</mo></mrow></math>
+$$
+r = \frac{84}{21} = 4 \quad\implies\quad [\pi] = \pi \cdot 4^2 = 16\pi.
+$$
 
 </div>
     </main>

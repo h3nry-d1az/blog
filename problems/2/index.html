@@ -19,6 +19,34 @@
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/math.css">
     <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
 </head>
 
 <body>
@@ -65,7 +93,7 @@
     
     <main>
         <div class="problem">
-Imagine a hallway with <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>100</mn></mrow></math> closed doors, all of which are initially closed. The first person to come
+Imagine a hallway with $100$ closed doors, all of which are initially closed. The first person to come
 opens them all, the second one changes the state of every other door, the third one does this to every
 third door, and so forth until the hundredth changes the hundredth door. At the end of this process,
 which doors remain open?
@@ -73,23 +101,27 @@ which doors remain open?
 
 <p><em>Proposed by Julio Mulero on behalf of the RSME, on the occasion of the International Day of Mathematics.</em></p>
 <div class="solution">
-Phrasing the statement into mathematical terms, one can see that the <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>i</mi></mrow></math>th person opens the <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>j</mi></mrow></math>th door if
-and only if <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>i</mi></mrow></math> divides <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>j</mi></mrow></math>; thus the problem becomes studying which numbers have an odd number of divisors.
+Phrasing the statement into mathematical terms, one can see that the $i$th person opens the $j$th door if
+and only if $i$ divides $j$; thus the problem becomes studying which numbers have an odd number of divisors.
 <br>
 
-Recall now the fundamental theorem of arithmetic, which states that each natural number <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> can be factored
+Recall now the fundamental theorem of arithmetic, which states that each natural number $n$ can be factored
 as a unique product of powers of primes, that is,
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>n</mi><mo>&#x0003D;</mo><munderover><mo>&#x0220F;</mo><mrow><mi>i</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mi>k</mi></munderover><msubsup><mi>p</mi><mi>i</mi><mrow><msub><mi>&#x003B1;</mi><mi>i</mi></msub></mrow></msubsup><mo>&#x0003D;</mo><msup><mn>2</mn><mrow><msub><mi>&#x003B1;</mi><mn>1</mn></msub></mrow></msup><msup><mn>3</mn><mrow><msub><mi>&#x003B1;</mi><mn>2</mn></msub></mrow></msup><mo>&#x022EF;</mo><mo>&#x0002E;</mo></mrow></math>
-Prime numbers are the building blocks of the natural numbers, so for a number to be a divisor of <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>, it must
-have smaller or equal <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>&#x003B1;</mi><mi>i</mi></msub></mrow></math>'s than <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> when factorized, which therefore leaves a total of
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>d</mi><mo stretchy="false">&#x00028;</mo><mi>n</mi><mo stretchy="false">&#x00029;</mo><mo>&#x0003D;</mo><munderover><mo>&#x0220F;</mo><mrow><mi>i</mi><mo>&#x0003D;</mo><mn>1</mn></mrow><mi>k</mi></munderover><mo stretchy="false">&#x00028;</mo><msub><mi>&#x003B1;</mi><mi>i</mi></msub><mo>&#x0002B;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002E;</mo></mrow></math>
+$$
+n = \prod_{i = 1}^k p_i^{\alpha_i} = 2^{\alpha_1} 3^{\alpha_2} \cdots.
+$$
+Prime numbers are the building blocks of the natural numbers, so for a number to be a divisor of $n$, it must
+have smaller or equal $\alpha_i$'s than $n$ when factorized, which therefore leaves a total of
+$$
+d(n) = \prod_{i=1}^k (\alpha_i + 1).
+$$
 
 We want this product to be odd, so each individual factor must be odd itself &ndash; otherwise the entire
-expression becomes even &ndash;, hence each <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>&#x003B1;</mi><mi>i</mi></msub></mrow></math> is even, so <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> is a perfect square! The converse is
+expression becomes even &ndash;, hence each $\alpha_i$ is even, so $n$ is a perfect square! The converse is
 also true, since each perfect square has squared primes as factors.
 
-Therefore, since there are <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>10</mn></mrow></math> perfect squares between <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>100</mn></mrow></math>, namely <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>4</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>9</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>16</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>25</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>36</mn></mrow></math>,
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>49</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>64</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>81</mn></mrow></math>, and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>100</mn></mrow></math>; these positions will stay open at the end.
+Therefore, since there are $10$ perfect squares between $1$ and $100$, namely $1$, $4$, $9$, $16$, $25$, $36$,
+$49$, $64$, $81$, and $100$; these positions will stay open at the end.
 </div>
     </main>
     

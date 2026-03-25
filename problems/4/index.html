@@ -19,6 +19,34 @@
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/math.css">
     <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
 </head>
 
 <body>
@@ -65,40 +93,64 @@
     
     <main>
         <div class="problem">
-Given <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi><mo>&#x02208;</mo><mtext>N</mtext></mrow></math>, compute <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mo>fib</mo><mi>n</mi></msub><mspace width="1em" /><mo>&#x00028;</mo><mi>mod</mi><mspace width="0.333em" /><mn>46337</mn><mo>&#x00029;</mo></mrow></math> in logarithmic time, where
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mo>fib</mo><mn>1</mn></msub><mo>&#x0003D;</mo><msub><mo>fib</mo><mn>2</mn></msub><mo>&#x0003D;</mo><mn>1</mn></mrow></math> and
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mo>fib</mo><mi>n</mi></msub><mo>&#x0003D;</mo><msub><mo>fib</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msub><mo>&#x0002B;</mo><msub><mo>fib</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>2</mn></mrow></msub></mrow></math>.
+Given $n \in \NN$, compute $\operatorname{fib}_n \pmod {46337}$ in logarithmic time, where
+$\operatorname{fib}_1 = \operatorname{fib}_2 = 1$ and
+$\operatorname{fib}_n = \operatorname{fib}_{n-1}+ \operatorname{fib}_{n-2}$.
 </div>
 
 <p><em>Adapted from <a href="https://aceptaelreto.com/problem/statement.php?id=306">problem 306</a> of "¡Acepta el reto!".</em></p>
 <p><a href="../4.cpp"><em>Solution:</em></a>
 A useful method when solving for the general term of linear, homogeneous recurrence relationships is to
-consider the matrix that maps the vector containing <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> consecutive terms <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>a</mi><mi>i</mi></msub><mo>&#x0002C;</mo><mo>&#x022EF;</mo><mo>&#x0002C;</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>&#x0002B;</mo><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msub></mrow></math>,
-to <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msub><mo>&#x0002C;</mo><mo>&#x022EF;</mo><mo>&#x0002C;</mo><msub><mi>a</mi><mrow><mi>i</mi><mo>&#x0002B;</mo><mi>n</mi></mrow></msub></mrow></math>, where <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math> is the number of initial conditions. The structure of such a
+consider the matrix that maps the vector containing $n$ consecutive terms $a_i, \cdots, a_{i+n-1}$,
+to $a_{i+1}, \cdots, a_{i+n}$, where $n$ is the number of initial conditions. The structure of such a
 matrix has a particular shape, namely ones above the diagonal and the coefficients of the recurrence
 formula on the last row; typically you would try to diagonalize this, or at least find its Jordan Canonical
 Form to make computations trivial, but as it will be seen later, this approach is useless here.</p>
 <p>Consider the particular case that concerns us right now: here the aforementioned matrix will be</p>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mi>F</mi><mi>:</mi><mo>&#x0003D;</mo><mo>&#x00028;</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>&#x00029;</mo><mo>&#x0002C;</mo><mspace width="2em" /><mtext>because</mtext><mspace width="2em" /><mi>F</mi><mo>&#x00028;</mo><mtable><mtr><mtd><msub><mo>fib</mo><mrow><mi>k</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd><msub><mo>fib</mo><mi>k</mi></msub></mtd></mtr></mtable><mo>&#x00029;</mo><mo>&#x0003D;</mo><mo>&#x00028;</mo><mtable><mtr><mtd><msub><mo>fib</mo><mi>k</mi></msub></mtd></mtr><mtr><mtd><msub><mo>fib</mo><mrow><mi>k</mi><mo>&#x0002B;</mo><mn>1</mn></mrow></msub></mtd></mtr></mtable><mo>&#x00029;</mo><mi>;</mi></mrow></math>
+<p>$$
+F := \begin{pmatrix}
+    0 &amp; 1\\
+    1 &amp; 1
+\end{pmatrix},
+\qquad \text{because} \qquad
+F \begin{pmatrix}
+    \operatorname{fib}_{k-1}\\
+    \operatorname{fib}_k
+\end{pmatrix} = \begin{pmatrix}
+    \operatorname{fib}_k\\
+    \operatorname{fib}_{k+1}
+\end{pmatrix};
+$$</p>
 <p>hence, imposing the initial conditions and extracting the last term we can obtain a matrix formula
-for <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mo>fib</mo><mi>n</mi></msub></mrow></math>, which is</p>
-<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><msub><mo>fib</mo><mi>n</mi></msub><mo>&#x0003D;</mo><mo>&#x00028;</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>&#x00029;</mo><msup><mo>&#x00028;</mo><mtable><mtr><mtd><mn>0</mn></mtd><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd><mtd><mn>1</mn></mtd></mtr></mtable><mo>&#x00029;</mo><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup><mo>&#x00028;</mo><mtable><mtr><mtd><mn>0</mn></mtd></mtr><mtr><mtd><mn>1</mn></mtd></mtr></mtable><mo>&#x00029;</mo><mo>&#x0002E;</mo></mrow></math>
-
-<p>If you insist on diagonalizing <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi></mrow></math>, you will get <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x003C6;</mi><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x0002B;</mo><msqrt><mrow><mn>5</mn></mrow></msqrt><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn></mrow></math> and <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mover><mi>&#x003C6;</mi><mo stretchy="false">&#x0007E;</mo></mover><mo>&#x0003D;</mo><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo>&#x02212;</mo><msqrt><mrow><mn>5</mn></mrow></msqrt><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn></mrow></math>
-as eigenvalues, which in turn requires for the general term to compute the <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>th power of a floating-point number;
+for $\operatorname{fib}_n$, which is</p>
+<p>$$
+\operatorname{fib}_n = \begin{pmatrix}
+    0 &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+    0 &amp; 1\\
+    1 &amp; 1
+\end{pmatrix}^{n-1}
+\begin{pmatrix}
+    0\\
+    1
+\end{pmatrix}.
+$$</p>
+<p>If you insist on diagonalizing $F$, you will get $\varphi = (1 + \sqrt{5})/2$ and $\tilde\varphi = (1 - \sqrt{5})/2$
+as eigenvalues, which in turn requires for the general term to compute the $n$th power of a floating-point number;
 this will probably be inaccurate due to rounding errors when performing floating-point arithmetic. Instead, provided
 that multiplying two-by-two matrices is computationally very cheap, we can work with integers and perform all the
 computations there.</p>
-<p>The tricky part at this point is to achieve logarithmic time complexity, since proceeding by <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>F</mi></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>F</mi><mn>2</mn></msup></mrow></math>, and so forth
-until <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msup><mi>F</mi><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></msup></mrow></math> is linear and as poor as the naive, dynamic-programming-based approach. Consider an easy test case,
-when <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi><mo>&#x02212;</mo><mn>1</mn></mrow></math> is a power of 2: here one could simply keep squaring the matrix until done. But notice that the benefit
+<p>The tricky part at this point is to achieve logarithmic time complexity, since proceeding by $F$, $F^2$, and so forth
+until $F^{n-1}$ is linear and as poor as the naive, dynamic-programming-based approach. Consider an easy test case,
+when $n-1$ is a power of 2: here one could simply keep squaring the matrix until done. But notice that the benefit
 of working in binary is precisely that we can decompose any number into a sum of powers of two, and hence apply this
 same procedure for each separate part and multiply them together.</p>
 <p>This fundamental algorithm is called square-and-multiply, repeated squaring, or even binary exponentiation, and the
 implementation for the idea is to iterate over the bits of the exponent; at each step you square a residual term,
-which you multiply to the total if the corresponding bit is <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>1</mn></mrow></math>. Furthermore, we can leverage GCC's <code>__builtin_clzll</code> 
+which you multiply to the total if the corresponding bit is $1$. Furthermore, we can leverage GCC's <code>__builtin_clzll</code> 
 extension to count the leading zeros of the exponent, which tells us the most significant bit, and saves a few more
-cycles. Using concepts, we can generalize this algorithm for any element of a monoid <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>A</mi></mrow></math>, as shown below:
+cycles. Using concepts, we can generalize this algorithm for any element of a monoid $A$, as shown below:
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
@@ -179,8 +231,8 @@ matrix class and setting the constructors correctly, we will get something along
 <span class="w">    </span><span class="p">};</span>
 <span class="p">};</span>
 </code></pre></div></td></tr></table></div></p>
-<p>Finally, we can instantiate the base matrix at <code>main</code>, fetch the given <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>, and invoke <code>pow</code> to then extract
-the <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>e</mi><mrow><mn>22</mn></mrow></msub></mrow></math> component; we are done.
+<p>Finally, we can instantiate the base matrix at <code>main</code>, fetch the given $n$, and invoke <code>pow</code> to then extract
+the $e_{22}$ component; we are done.
 <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
 <span class="normal"> 2</span>
 <span class="normal"> 3</span>
