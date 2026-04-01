@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>The Golden Ratio and the Metallic Numbers - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">10 Oct 2024</p>
+        
+
+        
+        <p class="updated">26 Mar 2026</p>
+        
+    </div>
+
+    
+    <main>
+        <h1 id="the-golden-ratio">The golden ratio<a class="headerlink" href="#the-golden-ratio" title="Permanent link">&para;</a></h1>
+<p>The golden number, also called the golden ratio or simply phi ($\varphi$) &ndash; and sometimes even God's number &ndash; is probably one of the most famous 
+math constants of all time. It owes its popularity to its early discovery by the sculptor Phidias back in Ancient Greece, or to the fact that it emerges from 
+the study of something as natural as proportions are, and it could even be a cause of its manifold, beautiful representations and its unexpected apparitions 
+in nature.</p>
+<p>Nonetheless, and despite its major transcendence, it is a concept even a child could fathom, and with a relatively straightforward definition:</p>
+<h2 id="mathematically-correct-definition">Mathematically correct definition<a class="headerlink" href="#mathematically-correct-definition" title="Permanent link">&para;</a></h2>
+<p>In order to determine <em>the</em> golden ratio, we must first understand what <em>a</em> golden proportion is per se:</p>
+<div class="definition">
+    It is said that two lengths are in golden proportion if the ratio between the two combined and the longest equals the ratio between the longest and the 
+    shortest. That is, if \(a > b\), then \((a+b)/a = a/b\).
+</div>
+
+<p>If you've just gotten dizzy, let me tell you not to worry, because at first glance this statement may seem sort of abstract &ndash; since we have not defined 
+an actual constant, but rather a relationship that can be satisfied by infinite numbers &ndash;. Furthermore, it's phrased in more rigorous mathematical 
+terminology, which hides its beautiful geometric intuition; so, to solve these two problems, let's start again and define this concept one more time.</p>
+<h2 id="geometric-definition">Geometric definition<a class="headerlink" href="#geometric-definition" title="Permanent link">&para;</a></h2>
+<p>Suppose we have two differently-sized rods, which we'll call $a$ to the longest and $b$ to the shortest. Let's now put them together, yielding a new one with 
+length $a+b$, just like it is shown below:</p>
+<div align="center"><svg width="410.0000" height="272.0000" xmlns="http://www.w3.org/2000/svg">
+<path d="M 5.0000 5.0000 L 5.0000 167.0000" fill="none" stroke="LightGreen" stroke-width="2" />
+<path d="M 5.0000 167.0000 L 5.0000 267.0000" fill="none" stroke="LightBlue" stroke-width="2" />
+<foreignObject x="0.0000" y="0.0000" width="60.0000" height="190.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1200.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="84.0000" width="60.0000" height="188.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1200.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="60.0000" height="272.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1200.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&#x0002B;</mo></mrow></math></div></foreignObject>
+<path d="M 205.0000 55.0000 L 205.0000 217.0000" fill="none" stroke="LightGreen" stroke-width="2" />
+<foreignObject x="50.0000" y="0.0000" width="360.0000" height="272.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1200.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+<path d="M 405.0000 86.0000 L 405.0000 186.0000" fill="none" stroke="LightBlue" stroke-width="2" />
+<foreignObject x="350.0000" y="0.0000" width="60.0000" height="272.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1200.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math></div></foreignObject>
+<circle cx="5.0" cy="5.0" r="2.5" fill="green" stroke="green" />
+<circle cx="5.0" cy="167.0" r="2.5" fill="green" stroke="green" />
+<circle cx="5.0" cy="267.0" r="2.5" fill="blue" stroke="blue" />
+<circle cx="205.0" cy="55.0" r="2.5" fill="green" stroke="green" />
+<circle cx="205.0" cy="217.0" r="2.5" fill="green" stroke="green" />
+<circle cx="405.0" cy="86.0" r="2.5" fill="blue" stroke="blue" />
+<circle cx="405.0" cy="186.0" r="2.5" fill="blue" stroke="blue" />
+</svg></div>
+
+<p>Notice an interesting property of the previous image, namely that comparing the newly-constructed stick $a+b$ with $a$ is like measuring $a$ against $b$, but 
+in a reduced scale. They are in the same proportion!</p>
+<p>Now, it is true that I have selected this detail deliberately, and not all bars satisfy this property, so we'll say that the $a,b$ that do verify it are in 
+<em>golden proportion</em>. This is the true motivation behind the earlier definition. It now makes way more sense, doesn't it?</p>
+<p>But, as we mentioned in the beginning, the golden ratio is a <em>constant</em>, not an infinite group of numbers that meet a property, and its magnitude is precisely 
+the earlier quotient of both lengths. We've now got all the tools we need to find its exact value:</p>
+<div class="theorem">
+    All the numbers in golden proportion have as ratio \((1+\sqrt 5)/2\).
+</div>
+<div class="proof">
+    As we stated above, this value is commonly represented as \(\varphi\) in honor of the aforementioned Phidias, and I won't be making an exception here. 
+    Replacing then \(\varphi\) for \(a/b\) in the first definition and simplifying we reach the following equality:
+    $$
+    \begin{align*}
+        \frac{a}{b}=\frac{a+b}{a}&\implies\frac{a}{b}=1+\frac{b}{a}\\
+        &\implies \varphi = 1 + \varphi^{-1}\\
+        &\implies \varphi^2 = \varphi + 1\\
+        &\implies \varphi^2 - \varphi - 1 = 0
+    \end{align*}
+    $$
+
+    Which is a classic quadratic equation that any high school student could solve, so it will suffice to employ Bhaskara's formula:
+    $$
+    \begin{align*}
+        \varphi &= \frac{-(-1)\pm\sqrt{(-1)^2-4\cdot(1)\cdot(-1)}}{2\cdot(1)} = \frac{1 \pm \sqrt{5}}{2}
+    \end{align*}
+    $$
+
+    Nevertheless, \(\varphi\) must be positive, since we are dealing with a ratio of positive numbers, therefore we can discard the second solution:
+    $$\varphi = \frac{1+\sqrt5}{2}$$
+
+    The other remaining value is called the <em>conjugate</em> of \(\varphi\), because it has the sign of the second summand inverted. It is usually denoted 
+    by \(\tilde\varphi\) and, in a enthralling manner, it holds that \(\tilde\varphi = -1/\varphi = 1-\varphi\).
+</div>
+
+<p>To conclude this section, below are listed <a href="http://www.numberworld.org/digits/GoldenRatio/">a hundred significant figures</a> of this curious constant:</p>
+<div align="center" style="font-size: 1.33rem">
+<span style="font-size: 2rem;">1.</span><span style="font-size: 1.75rem;">6</span><span style="font-size: 1.5rem;">1</span>
+<span style="font-size: 1.25rem;">8</span>0339887&nbsp;&nbsp;&nbsp;4989484820&nbsp;&nbsp;&nbsp;4586834365&nbsp;&nbsp;&nbsp;6381177203&nbsp;&nbsp;&nbsp;
+0917980576&nbsp;&nbsp;&nbsp;2862135448&nbsp;&nbsp;&nbsp;6227052604&nbsp;&nbsp;&nbsp;6281890244&nbsp;&nbsp;&nbsp;9707207204&nbsp;&nbsp;&nbsp;1893911374&hellip;
+</div>
+
+<h1 id="the-metallic-numbers">The metallic numbers<a class="headerlink" href="#the-metallic-numbers" title="Permanent link">&para;</a></h1>
+<p>But, why stop here? Sure the golden ratio is such an interesting concept, but will it be the only value with similar characteristics? The solution to this 
+unknown are the "metallic numbers", whose structure we'll study next, and whose name alludes to the <em>gold</em> in <em>golden ratio</em>.</p>
+<h2 id="the-golden-ratio-revisited">The golden ratio, revisited<a class="headerlink" href="#the-golden-ratio-revisited" title="Permanent link">&para;</a></h2>
+<p>Recall the geometric definition for a golden proportion we came up with, and let's put the rods $a+b$ and $a$ perpendicularly, forming a rectangle like the 
+following:</p>
+<div align="center"><svg width="279.8750" height="179.3750" xmlns="http://www.w3.org/2000/svg">
+<path d="M 32.5000 4.3750 L 32.5000 154.3750 L 182.5000 154.3750 L 182.5000 4.3750 L 32.5000 4.3750" fill="LightGreen" stroke="green" />
+<path d="M 182.5000 154.3750 L 275.5000 154.3750 L 275.5000 4.3750 L 182.5000 4.3750 L 182.5000 154.3750" fill="LightBlue" stroke="blue" />
+<circle cx="32.5" cy="4.375" r="1.875" fill="green" stroke="green" />
+<circle cx="32.5" cy="154.375" r="1.875" fill="green" stroke="green" />
+<circle cx="182.5" cy="154.375" r="1.875" fill="green" stroke="green" />
+<circle cx="275.5" cy="154.375" r="1.875" fill="blue" stroke="blue" />
+<foreignObject x="0.0000" y="166.8750" width="215.0000" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+<foreignObject x="178.1250" y="166.8750" width="101.7500" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math></div></foreignObject>
+<foreignObject x="85.1250" y="166.8750" width="194.7500" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&#x0002B;</mo></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="12.5000" height="158.7500">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+<p>Let's now detach the blue rectangle from the former and see what happens:</p>
+<div align="center"><svg width="606.1250" height="189.8750" xmlns="http://www.w3.org/2000/svg">
+<path d="M 32.5000 4.3750 L 32.5000 154.3750 L 182.5000 154.3750 L 182.5000 4.3750 L 32.5000 4.3750" fill="LightGreen" stroke="green" />
+<path d="M 182.5000 154.3750 L 275.5000 154.3750 L 275.5000 4.3750 L 182.5000 4.3750 L 182.5000 154.3750" fill="LightBlue" stroke="blue" />
+<path d="M 451.7500 32.8750 L 451.7500 125.8750 L 601.7500 125.8750 L 601.7500 32.8750 L 451.7500 32.8750" fill="LightBlue" stroke="blue" />
+<circle cx="32.5" cy="4.375" r="1.875" fill="green" stroke="green" />
+<circle cx="32.5" cy="154.375" r="1.875" fill="green" stroke="green" />
+<circle cx="182.5" cy="154.375" r="1.875" fill="green" stroke="green" />
+<circle cx="275.5" cy="154.375" r="1.875" fill="blue" stroke="blue" />
+<circle cx="451.75" cy="32.875" r="1.875" fill="blue" stroke="blue" />
+<circle cx="451.75" cy="125.875" r="1.875" fill="blue" stroke="blue" />
+<circle cx="601.75" cy="125.875" r="1.875" fill="blue" stroke="blue" />
+<foreignObject x="0.0000" y="177.3750" width="215.0000" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="171.3750" width="458.0000" height="18.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="171.3750" width="365.0000" height="18.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&#x0002B;</mo></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="12.5000" height="158.7500">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+<foreignObject x="94.8750" y="0.0000" width="511.2500" height="158.7500">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>&#x027F6;</mi></mrow></math></div></foreignObject>
+<foreignObject x="244.8750" y="0.0000" width="361.2500" height="158.7500">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math></div></foreignObject>
+<foreignObject x="447.3750" y="114.3750" width="158.7500" height="75.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+<p>Like the lengths from our old definition, the new rectangle is equal to the previous one, but deescalated; that is, they are both <em>proportional</em> one another.</p>
+<p>This new property is equivalent to the earlier definition and, perhaps, even more visual. Furthermore, it'll be our starting point to generalize the golden 
+ratio.</p>
+<p>Just as a curiosity, the DIN A<em>x</em> paper formats are based upon a similar idea, but in that case, the proportion is $\sqrt2$, because cutting in half a DIN A3 
+produces two DIN A4, a DIN A4 two DIN A5, and so forth. Can you show why this is the ratio? (Hint: use the proof for the theorem we have just discussed.)</p>
+<h2 id="definition-of-the-metallic-numbers">Definition of the metallic numbers<a class="headerlink" href="#definition-of-the-metallic-numbers" title="Permanent link">&para;</a></h2>
+<p>Allow me to go back to the previous rectangle and tweak it slightly. What if I wanted a rectangle with this same property, but more stretched? At first 
+glance, one may wonder: "Why would I want something like this?", but this shape would have numerous applications, combining the robustness of the former with 
+dimensions more suitable for certain situations.</p>
+<p>By our previous theorem, something <em>exactly</em> equal is impossible, yet we can apply a little trick to obtain what we're looking for:</p>
+<div align="center"><svg width="473.3750" height="217.6250" xmlns="http://www.w3.org/2000/svg">
+<path d="M 32.5000 4.3750 L 32.5000 185.1250 L 394.0000 185.1250 L 394.0000 4.3750 L 32.5000 4.3750" fill="LightGreen" stroke="green" />
+<path d="M 394.0000 185.1250 L 469.0000 185.1250 L 469.0000 4.3750 L 394.0000 4.3750 L 394.0000 185.1250" fill="LightBlue" stroke="blue" />
+<circle cx="32.5" cy="4.375" r="1.875" fill="green" stroke="green" />
+<circle cx="32.5" cy="185.125" r="1.875" fill="green" stroke="green" />
+<circle cx="394.0" cy="185.125" r="1.875" fill="green" stroke="green" />
+<circle cx="469.0" cy="185.125" r="1.875" fill="blue" stroke="blue" />
+<foreignObject x="0.0000" y="205.1250" width="426.5000" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>2</mn><mi>a</mi></mrow></math></div></foreignObject>
+<foreignObject x="389.6250" y="205.1250" width="83.7500" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>b</mi></mrow></math></div></foreignObject>
+<foreignObject x="314.6250" y="205.1250" width="158.7500" height="12.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mo>&#x0002B;</mo></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="12.5000" height="189.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 900.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>a</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+<p>Multiplying the $a$ of the longer segment by a constant yields something along those lines. And the number two here isn't special at all, it could very well 
+be a 3, a 4, or generalizing, any given $n$.</p>
+<p>However, we stumble upon a small problem, being that varying the longitude of the segments changes our proportion too, so the golden ratio would take a new 
+value in this case, although it would receive the name of <em>golden ratio</em>, but rather we shall call it a <em>metallic number</em>. In general, the metallic number 
+resulting from multiplying $a$ by $n$ will be called the $n$th metallic number.</p>
+<h2 id="finding-the-nth-metallic-number">Finding the nth metallic number<a class="headerlink" href="#finding-the-nth-metallic-number" title="Permanent link">&para;</a></h2>
+<p>Before proceeding with the computations, let's introduce some notation to summarize with more precision and rigor the geometric concept we've been developing 
+until now:</p>
+<div class="definition">
+    The nth metallic number, denoted \(\mu_n\), is defined as the quotient \(a/b\), where the values \(a\) and \(b\) verify the following relationship:
+    $$\frac{a}{b}=\frac{na+b}{a}$$
+</div>
+
+<p>I've chosen the Greek letter $\mu_n$ to represent this collection, since metal in Ancient Greek is μέταλλον, and these were the discoverers of this idea; 
+although it is worth pointing out that it can be seen represented as $A(n)$, and virtually as other variations of which I'm unaware.</p>
+<p>Regardless, armed with the previous definition and the proof of the first theorem, we can once and for all find a general expression for $\mu_n$:</p>
+<div class="theorem">
+    The nth metallic number has as value $$\mu_n = \frac{n+\sqrt{n^2+4}}{2}.$$
+</div>
+<div class="proof">
+    Recalling the definition of a metallic number, we have that:
+    $$
+    \begin{align*}
+            \frac{a}{b}=\frac{na+b}{a}&\implies\frac{a}{b}=n+\frac{b}{a}\\
+            &\implies \mu_n = n + {\mu_n}^{-1}\\
+            &\implies {\mu_n}^2 = n{\mu_n} + 1\\
+            &\implies {\mu_n}^2 - n{\mu_n} - 1 = 0
+        \end{align*}
+    $$
+
+    Which is yet another quadratic equation with an easy solution:
+    $$
+    \begin{align*}
+            \mu_n &= \frac{-(-n)\pm\sqrt{(-n)^2-4\cdot(1)\cdot(-1)}}{2\cdot(1)}\\
+            &= \frac{n\pm\sqrt{n^2+4}}{2}
+        \end{align*}
+    $$
+
+    And since all \(\mu_n\) have to be greater than zero &ndash; because they denote the ratio of two positive quantities &ndash; we can discard with no fear 
+    the negative roots:
+    $$\mu_n = \frac{n+\sqrt{n^2+4}}{2}$$
+    As it was to be proven.
+</div>
+
+<p>The first five metallic numbers already have a name (and even symbol), being <a href="https://mathworld.wolfram.com/SilverRatio.html">the following</a>:</p>
+<div align="center">
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;11
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-axxb{background-color:#c0c0c0;border-color:inherit;color:#000000;font-weight:bold;text-align:center;vertical-align:top}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+.tg .tg-2yfi{background-color:#c0c0c0;border-color:inherit;color:#000000;text-align:center;vertical-align:top}
+</style>
+<table class="tg"><thead>
+  <tr>
+    <th class="tg-2yfi">\(n\)</th>
+    <th class="tg-axxb">Metal</th>
+    <th class="tg-axxb">Symbol</th>
+    <th class="tg-axxb">Exact value</th>
+    <th class="tg-axxb">Approximated value</th>
+  </tr></thead>
+<tbody>
+  <tr>
+    <td class="tg-c3ow">1</td>
+    <td class="tg-c3ow">Gold</td>
+    <td class="tg-c3ow">\(\varphi\)</td>
+    <td class="tg-c3ow">\(\frac{1+\sqrt5}{2}\)</td>
+    <td class="tg-c3ow">1.618033989&hellip;</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">2</td>
+    <td class="tg-c3ow">Silver</td>
+    <td class="tg-c3ow">\(\delta_S\)</td>
+    <td class="tg-c3ow">\(1+\sqrt2\)</td>
+    <td class="tg-c3ow">2.414213562&hellip;</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">3</td>
+    <td class="tg-c3ow">Bronze</td>
+    <td class="tg-c3ow">\(\delta_{\text{Br}}\)</td>
+    <td class="tg-c3ow">\(\frac{3+\sqrt{13}}{2}\)</td>
+    <td class="tg-c3ow">3.302775638&hellip;</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">4</td>
+    <td class="tg-c3ow">Copper</td>
+    <td class="tg-c3ow">\(\delta_{\text{Cu}}\)</td>
+    <td class="tg-c3ow">\(2+\sqrt5\)</td>
+    <td class="tg-c3ow">4.236067978&hellip;</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">5</td>
+    <td class="tg-c3ow">Nickel</td>
+    <td class="tg-c3ow">\(\delta_{\text{Ni}}\)</td>
+    <td class="tg-c3ow">\(\frac{5+\sqrt{29}}{2}\)</td>
+    <td class="tg-c3ow">5.192582404&hellip;</td>
+  </tr>
+</tbody></table>
+</div>
+<p><br></p>
+<p>Nonetheless, the remaining infinite ones have neither an official, recognized nickname, nor an associated symbol, so I can take for example $\mu_{14}=7+5\sqrt
+{2}$, and hereby name it <em>Henry's number</em>, giving it the symbol $\mathfrak h$. And, of course, <em>you</em> can do this same thing as well.</p>
+<h2 id="abstraction-in-mathematics">Abstraction in mathematics<a class="headerlink" href="#abstraction-in-mathematics" title="Permanent link">&para;</a></h2>
+<p>There's a quote from the great mathematician J. Henri Poincaré which, from my perspective, brings together exceptionally the main idea of this essay:</p>
+<blockquote>
+<p><em>"Mathematics is the art of giving the same name to different things."</em></p>
+</blockquote>
+<p>And it is true that the spirit of a mathematician isn't fulfilled with discovering an interesting property, but craves to explore the limits of their finding, 
+thus expanding it in such a way that what was earlier thought as a whole, now it isn't but a special case of a more robust theory, which englobes entities 
+formerly unrelated but now connected.</p>
+<p>This process receives the name of <em>abstraction</em> or <em>generalization</em> and, although in principle can appear confusing and useless, it is one of the more 
+powerful tools mathematicians have at their disposal and, more importantly, the fire that fuels their work.</p>
+<h1 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h1>
+<p class="hangingindent">
+Weisstein, E.W. (Sept. 2004). <em>Silver Ratio, Wolfram MathWorld</em>. Available at: <a href="https://mathworld.wolfram.com/SilverRatio.html">
+https://mathworld.wolfram.com/SilverRatio.html</a>. (Accessed on September 4, 2024).
+</p>
+
+<p class="hangingindent">
+Yee, A.J. (Feb. 2019). <em>Golden Ratio, y-cruncher - A Multi-Threaded Pi-Program</em>. Available at: <a
+href="http://www.numberworld.org/digits/GoldenRatio/">http://www.numberworld.org/digits/GoldenRatio/</a>. (Accessed on September 4, 2024).
+</p>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>

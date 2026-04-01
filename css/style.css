@@ -14,6 +14,7 @@ body {
 }
 
 code {
+    font-size: 1rem;
     font-family: monospace;
 }
 
@@ -26,7 +27,7 @@ footer {
     border-top: 1px dashed teal;
     margin-top: 2rem;
     justify-content: space-between;
-    font-size: 1.2em;
+    font-size: 1.2rem;
 }
 
 .headerlink {
@@ -101,9 +102,12 @@ nav li {
 }
 
 p,
-li,
+li {
+    font-size: 1.2rem;
+}
+
 pre {
-    font-size: 1.2em;
+    font-size: 1rem;
 }
 
 sc {

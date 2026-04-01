@@ -13,12 +13,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Henry Díaz Bordón</title>
+    <title>CEMC Problem of the Week 24E, 2025/26 - Henry Díaz Bordón</title>
     
 
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/math.css">
-    <link rel="stylesheet" href="../css/syntax.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
 
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -59,19 +59,19 @@
             <ul>
                 
                 <li>
-                    <a href="../posts/" class="">
+                    <a href="../../posts/" class="">
                         Posts
                     </a>
                 </li>
                 
                 <li>
-                    <a href="./" class="active">
+                    <a href="../" class="">
                         Problems
                     </a>
                 </li>
                 
                 <li>
-                    <a href="../miscellanea/" class="">
+                    <a href="../../miscellanea/" class="">
                         Miscellanea
                     </a>
                 </li>
@@ -84,25 +84,71 @@
         
 
         
+        <p class="date">27 Mar 2026</p>
+        
 
         
     </div>
 
     
     <main>
-        <h1 id="list-of-problems">List of problems<a class="headerlink" href="#list-of-problems" title="Permanent link">&para;</a></h1>
-<p>Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.</p>
-<ul>
-<li><a href="9/">RSME Problem of the Month Jv-028, Nov. 2022.</a></li>
-<li><a href="8/">RSME Problem of the Month S-017, Nov. 2021.</a></li>
-<li><a href="7/">CEMC Problem of the Week 24E, 2025/26.</a></li>
-<li><a href="6/">RSME Problem of the Month Jn-013, Jun. 2021.</a></li>
-<li><a href="5/">Normal, square, upper-triangular matrices are diagonal.</a></li>
-<li><a href="4/">Fibonacci numbers in $\mathscr O(\log n)$.</a></li>
-<li><a href="3/">No nontrivial automorphism implies abelianity and elements of order 2.</a></li>
-<li><a href="2/">100-door divisibility problem.</a></li>
-<li><a href="1/">CEMC Problem of the Week 23E, 2025/26.</a></li>
-</ul>
+        <div class="problem">
+Alyssa, Bilal, Constantine, and Daiyu each live in a house that is numbered with a positive integer.
+<br>
+
+A four-digit perfect square is formed by writing Alyssa's house number followed by Bilal's house number. 
+Another four-digit perfect square is formed by writing Constantine's house number followed Daiyu's house 
+number. Constantine's house number is $31$ more than Alyssa's house number, and Daiyu's house number is $31$
+more than Bilal's house number. What is each person's house number?
+</div>
+
+<p><em>Proposed as the <a href="https://cemc.uwaterloo.ca/sites/default/files/documents/2026/POTWE-25-A-N-24-P.html">problem of the week #24 of year 2025/26</a>, by the Centre for Education in Mathematics and Computing of the University of Waterloo.</em></p>
+<div class="solution">
+Let $a, b, c, d \in \mathbf N$ be the house numbers of Alyssa, Bilal, Constantine, and Daiyu, respectively. By the statement
+$$
+\begin{cases}
+    c &= a + 31,\\
+    d &= b + 31;
+\end{cases}
+$$
+hence, they must all be two-digit numbers, since $c$ and $d$ have at least two digits.
+<br>
+
+From this we now impose that their concatenations give perfect squares:
+$$
+\begin{cases}
+    m^2 &= 100 a + b,\\
+    n^2 &= 100 c + d,
+\end{cases}
+\implies n^2 = 100(a + 31) + (b + 31) = m^2 + 31\cdot 101,
+$$
+where rearranging the terms and factoring the difference of squares yields
+$$
+    n^2 - m^2 = (n+m)(n-m) = 101\cdot 31.
+$$
+These kinds of problems are usually set up so that the resulting factors are either prime or the number of cases to check are
+minimal; this is one of the first category, and thus follows that
+$$
+\begin{cases}
+    n + m &= 101,\\
+    n - m &= 31
+\end{cases}
+\implies
+\begin{cases}
+    m &= 35,\\
+    n &= 66.
+\end{cases}
+$$
+<br>
+
+Finally, because $35^2 = 1225$ and $66^2 = 4356$, the numbers we seek are
+$$
+    a = 12, \qquad
+    b = 25, \qquad
+    c = 43, \qquad
+    d = 56.
+$$
+</div>
     </main>
     
 

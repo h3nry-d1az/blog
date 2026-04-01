@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>RSME Problem of the Month Jv-028, Nov. 2022 - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">1 Apr 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem twocols">
+Let $\rm ABCD$ be a square, $\rm P$ a point inside it, and $\rm E, F, G, H$ the midpoints of the sides. If we know the areas $\rm [HPED] = 24$,
+$\rm [EPFC] = 30$, and $\rm [FPGB] = 48$, you are asked for:
+<ol>
+    <li>The area of the shaded region $\rm [GPHA]$.</li>
+    <li>The coordinates of $\rm P$ in the affine frame of reference $\{\rm A, \overrightarrow{\rm AB}, \overrightarrow{\rm AD}\}$.</li>
+</ol>
+
+<div align="center"><svg width="385.0000" height="305.0000" xmlns="http://www.w3.org/2000/svg">
+<path d="M 152.5000 272.5000 L 132.5000 92.5000 L 32.5000 152.5000 L 32.5000 272.5000 L 152.5000 272.5000" fill="LightGreen" stroke="black" />
+<path d="M 32.5000 152.5000 L 132.5000 92.5000 L 152.5000 32.5000 L 32.5000 32.5000 L 32.5000 152.5000" fill="white" stroke="black" />
+<path d="M 152.5000 32.5000 L 132.5000 92.5000 L 272.5000 152.5000 L 272.5000 32.5000 L 152.5000 32.5000" fill="white" stroke="black" />
+<path d="M 272.5000 152.5000 L 132.5000 92.5000 L 152.5000 272.5000 L 272.5000 272.5000 L 272.5000 152.5000" fill="white" stroke="black" />
+<foreignObject x="0.0000" y="260.0000" width="45.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
+<foreignObject x="180.0000" y="260.0000" width="205.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
+<foreignObject x="180.0000" y="0.0000" width="205.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="45.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="305.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">E</mi></mrow></math></div></foreignObject>
+<foreignObject x="180.0000" y="0.0000" width="205.0000" height="305.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">F</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="260.0000" width="305.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">G</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="45.0000" height="305.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">H</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="245.0000" height="165.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">P</mi></mrow></math></div></foreignObject>
+</svg></div>
+</div>
+
+<p><em>Proposed by F. Damián Aranda Ballesteros on behalf of the RSME, as the <a href="https://rsme.es/el-problema-del-mes-noviembre-2022/">juvenile problem of the month (nov. 2022)</a>.</em></p>
+<div class="solution">
+
+It is useful to consider the coordinates discussed in the second point to solve the problem, so let $x$ be the distance from $\rm P$ to the side
+$\overline{\rm AD}$, and $y$ that to $\overline{\rm AB}$; let also $\ell$ be the side of the square.
+Hence, we can subdivide the figure into the following pieces:
+
+<div align="center"><svg width="385.0000" height="305.0000" xmlns="http://www.w3.org/2000/svg">
+<path d="M 152.5000 272.5000 L 132.5000 92.5000 L 32.5000 152.5000 L 32.5000 272.5000 L 152.5000 272.5000" fill="LightGreen" stroke="black" />
+<path d="M 32.5000 152.5000 L 132.5000 92.5000 L 152.5000 32.5000 L 32.5000 32.5000 L 32.5000 152.5000" fill="white" stroke="black" />
+<path d="M 152.5000 32.5000 L 132.5000 92.5000 L 272.5000 152.5000 L 272.5000 32.5000 L 152.5000 32.5000" fill="white" stroke="black" />
+<path d="M 272.5000 152.5000 L 132.5000 92.5000 L 152.5000 272.5000 L 272.5000 272.5000 L 272.5000 152.5000" fill="white" stroke="black" />
+<path d="M 32.5000 272.5000 L 132.5000 92.5000" fill="none" stroke="green" />
+<path d="M 272.5000 272.5000 L 132.5000 92.5000" fill="none" stroke="green" />
+<path d="M 272.5000 32.5000 L 132.5000 92.5000" fill="none" stroke="green" />
+<path d="M 32.5000 32.5000 L 132.5000 92.5000" fill="none" stroke="green" />
+<foreignObject x="0.0000" y="260.0000" width="45.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
+<foreignObject x="180.0000" y="260.0000" width="205.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
+<foreignObject x="180.0000" y="0.0000" width="205.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="45.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="305.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">E</mi></mrow></math></div></foreignObject>
+<foreignObject x="180.0000" y="0.0000" width="205.0000" height="305.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">F</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="260.0000" width="305.0000" height="45.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">G</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="45.0000" height="305.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">H</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="245.0000" height="165.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 240.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">P</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+From which we obtain these equations:
+$$
+\begin{cases}
+    \frac{1}{4}\ell x + \frac{1}{4}\ell (\ell - y) &= [\rm HPED],\\
+    \frac{1}{4}\ell (\ell - x) + \frac{1}{4}\ell (\ell - y) &= [\rm EPFC],\\
+    \frac{1}{4}\ell (\ell - x) + \frac{1}{4}\ell y &= [\rm FPGB];\\
+\end{cases} \implies
+\begin{cases}
+    \ell (x + \ell - y) &= 96,\\
+    \ell (2\ell - x - y) &= 120,\\
+    \ell (\ell - x + y) &= 192.\\
+\end{cases}
+$$
+<br>
+
+Adding the first and the third gives
+$$
+    2\ell^2 = 288 \implies \color{green} \boxed{\ell = 12,}
+$$
+and notice that ${[\rm GPHA]} = \ell x / 4 + \ell y / 4$, so subtracting the second from the above yields
+$$
+    4{[\rm GPHA]} = \ell (x + y) = 168 \implies \color{green} \boxed{{[\rm GPHA]} = 42.}
+$$
+<br>
+
+With this results, we can now solve for $x$ and $y$:
+$$
+\begin{cases}
+    x - y &= -4,\\
+    x + y &= 14,
+\end{cases}
+\implies \color{green} \boxed{x = 5,\ y = 9,}
+$$
+so the requested coordinates are finally $(5/12, 9/12)$.
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
