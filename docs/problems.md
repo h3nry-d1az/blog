@@ -2,6 +2,7 @@
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [RSME Problem of the Month Jv-028, Nov. 2022.](./problems/9.md)
 * [RSME Problem of the Month S-017, Nov. 2021.](./problems/8.md)
 * [CEMC Problem of the Week 24E, 2025/26.](./problems/7.md)
 * [RSME Problem of the Month Jn-013, Jun. 2021.](./problems/6.md)
