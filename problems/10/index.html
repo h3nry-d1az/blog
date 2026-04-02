@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>CEMC Problem of the Week 25E, 2025/26 - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">3 Apr 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem">
+A glass suncatcher is in the shape of an equilateral triangle with sides of length $144\text{mm}$. The triangle is labeled $\triangle \rm ABC$ and divided 
+into $8$ smaller sections as follows.
+<ul>
+    <li>Sides $\rm AB$ and $\rm BC$ are each divided into $8$ segments of equal length.</li>
+    <li>Each point of division on $\rm AB$ is connected to its corresponding point of division on $\rm BC$, creating $7$ line segments.</li>
+    <li>Each of the $7$ line segments is parallel to the third side of the triangle, $\rm AC$.</li>
+</ul>
+
+One of the sections is coloured blue, as shown. An altitude is constructed from $\rm A$ to $\rm D$ on $\rm BC$, dividing the blue section into two parts.
+
+<div align="center"><svg width="320.0000" height="244.8557" xmlns="http://www.w3.org/2000/svg">
+<path d="M 137.5000 25.0000 L 25.0000 219.8557 L 250.0000 219.8557 L 137.5000 25.0000" fill="none" stroke="black" />
+<path d="M 53.1250 219.8557 L 39.0625 195.4988" fill="none" stroke="black" />
+<path d="M 81.2500 219.8557 L 53.1250 171.1418" fill="none" stroke="black" />
+<path d="M 109.3750 219.8557 L 67.1875 146.7848" fill="none" stroke="black" />
+<path d="M 137.5000 219.8557 L 81.2500 122.4279" fill="none" stroke="black" />
+<path d="M 221.8750 219.8557 L 123.4375 49.3570" fill="none" stroke="black" />
+<path d="M 165.6250 219.8557 L 193.7500 219.8557 L 109.3750 73.7139 L 95.3125 98.0709 L 165.6250 219.8557" fill="LightBlue" stroke="black" />
+<path d="M 137.5000 25.0000 L 137.5000 219.8557" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="0.0000" width="275.0000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="217.3557" width="27.5000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
+<foreignObject x="202.5000" y="217.3557" width="117.5000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="217.3557" width="275.0000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+In the blue section, determine the ratio of the area on the left side of the altitude to the area on the right side of the altitude.
+</div>
+
+<p><em>Proposed as the <a href="https://cemc.uwaterloo.ca/sites/default/files/documents/2026/POTWE-25-G-25-P.html">problem of the week #25 of year 2025/26</a>, by the Centre for Education in Mathematics and Computing of the University of Waterloo.</em></p>
+<div class="solution">
+Let ${\rm X}_i$ be the $i$th point of division of the side $\rm BC$, let ${\rm Y}_i$ be that of $\rm AB$, and let ${\rm Z}_i$ be the $i$th intersection &ndash;
+starting from the bottom &ndash; of $\rm AD$ with ${\rm X}_i {\rm Y}_i$; we thus want to find $[\rm Y_5 Y_6 Z_2 Z_1] : [\rm X_5 X_6 Z_2 Z_1]$.
+
+<div align="center"><svg width="320.0000" height="244.8557" xmlns="http://www.w3.org/2000/svg">
+<path d="M 137.5000 25.0000 L 25.0000 219.8557 L 250.0000 219.8557 L 137.5000 25.0000" fill="none" stroke="black" />
+<path d="M 165.6250 219.8557 L 193.7500 219.8557 L 137.5000 122.4279 L 137.5000 171.1418 L 165.6250 219.8557" fill="LightBlue" stroke="black" />
+<path d="M 137.5000 219.8557 L 165.6250 219.8557 L 137.5000 171.1418 L 137.5000 219.8557" fill="blue" stroke="black" />
+<path d="M 95.3125 98.0709 L 109.3750 73.7139 L 137.5000 122.4279 L 137.5000 171.1418 L 95.3125 98.0709" fill="LightGreen" stroke="black" />
+<path d="M 109.3750 73.7139 L 137.5000 25.0000 L 137.5000 122.4279 L 109.3750 73.7139" fill="green" stroke="black" />
+<path d="M 53.1250 219.8557 L 39.0625 195.4988" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="217.3557" width="106.2500" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>1</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="123.6418" width="55.6250" height="121.2139">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>1</mn></msub></mrow></math></div></foreignObject>
+<path d="M 81.2500 219.8557 L 53.1250 171.1418" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="217.3557" width="162.5000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>2</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="74.9279" width="83.7500" height="169.9279">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>2</mn></msub></mrow></math></div></foreignObject>
+<path d="M 109.3750 219.8557 L 67.1875 146.7848" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="217.3557" width="218.7500" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>3</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="26.2139" width="111.8750" height="218.6418">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>3</mn></msub></mrow></math></div></foreignObject>
+<path d="M 137.5000 219.8557 L 81.2500 122.4279" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="0.0000" width="140.0000" height="222.3557">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>4</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="11.2500" y="217.3557" width="308.7500" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>5</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="168.1250" height="173.6418">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>5</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="67.5000" y="217.3557" width="252.5000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>6</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="196.2500" height="124.9279">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>6</mn></msub></mrow></math></div></foreignObject>
+<path d="M 221.8750 219.8557 L 123.4375 49.3570" fill="none" stroke="black" />
+<foreignObject x="123.7500" y="217.3557" width="196.2500" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>7</mn></msub></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="0.0000" width="224.3750" height="76.2139">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>7</mn></msub></mrow></math></div></foreignObject>
+<path d="M 137.5000 25.0000 L 137.5000 219.8557" fill="none" stroke="black" />
+<foreignObject x="0.0000" y="0.0000" width="275.0000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="217.3557" width="27.5000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
+<foreignObject x="202.5000" y="217.3557" width="117.5000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="217.3557" width="275.0000" height="27.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
+</svg></div>
+
+Notice that all of the triangles of the form $\triangle {\rm D} {\rm X}_j {\rm Z}_{j-4}$ (for $j > 4$) are similar due to Thales' theorem and point number 3 
+in the statement, and in particular $\rm \triangle D X_6 Z_2 \sim \triangle D C A$; hence, because $\rm DX_6 = DC/2$,
+$$
+\rm [\triangle D X_6 Z_2] = \frac 1 4 [\triangle D C A] = \frac 1 8 DC \ DA = \frac 1 8 72 \cdot 144 \sin 60^\circ = 648\sqrt 3 \text{mm}^2.
+$$
+By an analogous reasoning we can compute $[\rm D X_5 Z_1]$ and find $[\rm X_5 X_6 Z_2 Z_1]$ as the difference between the two:
+$$
+\rm [\triangle D X_6 Z_2] = \frac 1 {16} [\triangle D C A] = 162\sqrt 3 \text{mm}^2
+    \implies \color{green} \boxed{[\rm X_5 X_6 Z_2 Z_1] = 486\sqrt 3 \text{mm}^2.}
+$$
+<br>
+
+To obtain $[\rm Y_5 Y_6 Z_2 Z_1]$, we now look at triangles of the form $\triangle {\rm A} {\rm Y}_k {\rm Z}_{k-4}$ &ndash; which are again similar one 
+another by the same arguments discussed above &ndash; and realize that it again can be obtained as the subtraction of two of them, namely
+$\triangle \rm A Y_5 Z_1$ and $\triangle \rm A Y_6 Z_2$. Therefore:
+$$
+\begin{align*}
+\rm [\triangle A Y_5 Z_1] &= \frac 9 {16} [\triangle A Y_4 D] = \frac 9 {32} Y_4 Z_2\ DA = 729 \sqrt{3} \text{mm}^2,\\
+\rm [\triangle A Y_6 Z_2] &= \frac 1 4 [\triangle A Y_4 D] = 324 \sqrt{3} \text{mm}^2;
+\end{align*}
+$$
+and putting everything together:
+$$
+[\rm Y_5 Y_6 Z_2 Z_1] = [\triangle A Y_5 Z_1] - [\triangle A Y_6 Z_2] = \color{green} \boxed{405 \sqrt 3 \text{mm}^2.}
+$$
+<br>
+
+Finally, the requested ratio turns out to be $405/486 = 5/6$.
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
