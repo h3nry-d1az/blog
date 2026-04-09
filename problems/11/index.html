@@ -13,12 +13,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Henry Díaz Bordón</title>
+    <title>Sum of orthogonal matrices with opposite determinants is singular - Henry Díaz Bordón</title>
     
 
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/math.css">
-    <link rel="stylesheet" href="../css/syntax.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
 
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
@@ -59,19 +59,19 @@
             <ul>
                 
                 <li>
-                    <a href="../posts/" class="">
+                    <a href="../../posts/" class="">
                         Posts
                     </a>
                 </li>
                 
                 <li>
-                    <a href="./" class="active">
+                    <a href="../" class="">
                         Problems
                     </a>
                 </li>
                 
                 <li>
-                    <a href="../miscellanea/" class="">
+                    <a href="../../miscellanea/" class="">
                         Miscellanea
                     </a>
                 </li>
@@ -84,27 +84,30 @@
         
 
         
+        <p class="date">9 Apr 2026</p>
+        
 
         
     </div>
 
     
     <main>
-        <h1 id="list-of-problems">List of problems<a class="headerlink" href="#list-of-problems" title="Permanent link">&para;</a></h1>
-<p>Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.</p>
-<ul>
-<li><a href="11/">Sum of orthogonal matrices with opposite determinants is singular.</a></li>
-<li><a href="10/">CEMC Problem of the Week 25E, 2025/26.</a></li>
-<li><a href="9/">RSME Problem of the Month Jv-028, Nov. 2022.</a></li>
-<li><a href="8/">RSME Problem of the Month S-017, Nov. 2021.</a></li>
-<li><a href="7/">CEMC Problem of the Week 24E, 2025/26.</a></li>
-<li><a href="6/">RSME Problem of the Month Jn-013, Jun. 2021.</a></li>
-<li><a href="5/">Normal, square, upper-triangular matrices are diagonal.</a></li>
-<li><a href="4/">Fibonacci numbers in $\mathscr O(\log n)$.</a></li>
-<li><a href="3/">No nontrivial automorphism implies abelianity and elements of order 2.</a></li>
-<li><a href="2/">100-door divisibility problem.</a></li>
-<li><a href="1/">CEMC Problem of the Week 23E, 2025/26.</a></li>
-</ul>
+        <div class="problem">
+Let $A, B \in \mathscr M_n (\mathbf R)$ be two orthogonal matrices such that $\det A + \det B = 0.$
+Prove that $A+B$ is singular.
+</div>
+
+<div class="solution">
+No words needed:
+$$
+\begin{align*}
+    \det (A + B) &= \frac{1}{2} (\det (A+B) + \det(A+B))
+    = \frac{1}{2} (\det A \det (\mathbf 1 + \trans A B) + \det B \det (\mathbf 1 + \trans B A))\\
+    &= \frac{1}{2} (\det A \det (\mathbf 1 + \trans B A) + \det B \det (\mathbf 1 + \trans B A))
+    = \frac{1}{2} (\det A + \det B) \det (\mathbf 1 + \trans B A) = 0.
+\end{align*}
+$$
+</div>
     </main>
     
 
