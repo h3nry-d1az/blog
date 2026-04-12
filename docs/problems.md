@@ -2,6 +2,7 @@
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [Daily integral of 13/04/2026: Medium difficulty.](./problems/12.md)
 * [Sum of orthogonal matrices with opposite determinants is singular.](./problems/11.md)
 * [CEMC Problem of the Week 25E, 2025/26.](./problems/10.md)
 * [RSME Problem of the Month Jv-028, Nov. 2022.](./problems/9.md)
