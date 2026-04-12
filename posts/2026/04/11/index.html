@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Sylvester's determinant theorem - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">11 Apr 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <p>Today I would like to bring up a simple result of which I was unaware until a few days ago: Sylvester's determinant theorem
+&ndash; which is not Sylvester's determinant <em>identity</em>, the one that relates the determinant of a matrix with some special submatrices &ndash;. It is
+more often referred to as the Weinstein-Aronszajn identity (see <a href="https://math.stackexchange.com/questions/4105846/who-first-explicitly-wrote-the-determinant-identity-detiab-detiba">[1]</a>
+and <a href="https://link.springer.com/article/10.1007/bf00251295">[2]</a>), and overall it is very simple to state:</p>
+<div class="theorem">
+Given a field $\mathbf F$ and $A \in \mathscr M_{m \times n} (\mathbf F), B \in \mathscr M_{n \times m} (\mathbf F)$, then
+$$
+    \det (\mathbf 1 + AB) = \det (\mathbf 1 + BA).
+$$
+</div>
+
+<p>As a remark, notice that the first $\mathbf 1$ is the $m\times m$ identity, which differs from the second, $n\times n$ identity; I will be calling both
+indistinguishably henceforth. This theorem is not particularly hard to prove either:</p>
+<div class="proof">
+Recall first the determinant of a block-partitioned matrix; if $A, B, C, D$ are $m\times m, m\times n, n\times m$ and $n\times n$ matrices respectively with
+$A$ and $D$ invertible, then:
+$$
+    \det A \det (D - CA^{-1}B) = \det \begin{pmatrix}
+        A & B\\
+        C & D
+    \end{pmatrix} = \det D \det (A - B D^{-1} C).
+$$
+Applying this result in the two different fashions above yields the desired equality:
+$$
+    \det(\mathbf 1 + AB) = \det \begin{pmatrix}
+        \mathbf 1 & -A\\
+        B & \mathbf 1
+    \end{pmatrix} = \det(\mathbf 1 + BA).
+$$
+</div>
+
+<p>Since the previous determinants look similar to the characteristic polynomials of $AB$ and $BA$, we obtain that they are equal up to a factor of
+$(-\lambda)^{m - n}$ where, without loss of generality, $m \geq n$. In other words, $AB$ and $BA$ have the same eigenvalues counting multiplicities except
+for the zeros.</p>
+<div class="corollary">
+Given $A \in \mathscr M_{m \times n} (\mathbf F), B \in \mathscr M_{n \times m} (\mathbf F)$, with $m \geq n$,
+$$
+    \chi_{AB} = \det (AB - \lambda \mathbf 1) = (-\lambda)^{m-n} \det (BA - \lambda \mathbf 1) = (-\lambda)^{m-n} \chi_{BA}.
+$$
+</div>
+
+<div class="proof">
+$$
+\begin{align*}
+    \chi_{AB} &= \det (AB - \lambda \mathbf 1) = (-\lambda)^m \det \left(\mathbf 1 - \frac{1}{\lambda} AB\right)\\
+    &= (-\lambda)^m \det \left(\mathbf 1 - \frac{1}{\lambda} BA\right) = (-\lambda)^{m - n} \det (BA - \lambda \mathbf 1) = (-\lambda)^{m - n} \chi_{BA}.
+\end{align*}
+$$
+</div>
+
+<p><br></p>
+<p>Because the essence of mathematics is solving problems, let's apply this new tool to one:</p>
+<div class="problem">
+Let $U \in \mathscr M_n (\mathbf C)$ be a unitary matrix, block-partitioned as follows:
+$$
+    U = \begin{pmatrix}
+        U_{11} & U_{12}\\
+        U_{21} & U_{22}
+    \end{pmatrix},
+$$
+where $U_{11}$ is $k\times k$. Prove that $|\det U_{11}| = |\det U_{22}|$.
+</div>
+
+<div class="solution">
+Recall that the definition of being unitary states that $U\adj U = \adj U U = \mathbf 1$, so multiplying the two previous matrices must give
+$$
+\begin{align*}
+    U \adj U &= \begin{pmatrix}
+        U_{11} & U_{12}\\
+        U_{21} & U_{22}
+    \end{pmatrix} \begin{pmatrix}
+        \adj U_{11} & \adj U_{21}\\
+        \adj U_{12} & \adj U_{22}
+    \end{pmatrix} = \begin{pmatrix}
+        U_{11} \adj U_{11} + U_{12} \adj U_{12} & U_{11} \adj U_{21} + U_{12} \adj U_{12}\\
+        U_{21} \adj U_{11} + U_{22} \adj U_{12} & U_{21} \adj U_{21} + U_{22} \adj U_{22}
+    \end{pmatrix} = \begin{pmatrix}
+        \mathbf 1 & 0\\
+        0 & \mathbf 1
+    \end{pmatrix},\\
+    \adj U U &= \begin{pmatrix}
+        \adj U_{11} & \adj U_{21}\\
+        \adj U_{12} & \adj U_{22}
+    \end{pmatrix} \begin{pmatrix}
+        U_{11} & U_{12}\\
+        U_{21} & U_{22}
+    \end{pmatrix} = \begin{pmatrix}
+        \adj U_{11} U_{11} + \adj U_{21} U_{21} & \adj U_{11} U_{12} + \adj U_{21} U_{22}\\
+        \adj U_{12} U_{11} + \adj U_{22} U_{21} & \adj U_{12} U_{12} + \adj U_{22} U_{22}
+    \end{pmatrix} = \begin{pmatrix}
+        \mathbf 1 & 0\\
+        0 & \mathbf 1
+    \end{pmatrix};
+\end{align*}
+$$
+from this we get the following equalities:
+$$
+\begin{align}
+    U_{11} \adj U_{11} &= \mathbf 1 - U_{12} \adj U_{12} \implies |\det U_{11}|^2 = \det(\mathbf 1 - U_{12} \adj U_{12}),\\
+    \adj U_{11} U_{11} &= \mathbf 1 - \adj U_{21} U_{21} \implies |\det U_{11}|^2 = \det(\mathbf 1 - \adj U_{21} U_{21}),\\
+    U_{22} \adj U_{22} &= \mathbf 1 - U_{21} \adj U_{21} \implies |\det U_{22}|^2 = \det(\mathbf 1 - U_{21} \adj U_{21}),\\
+    \adj U_{22} U_{22} &= \mathbf 1 - \adj U_{12} U_{12} \implies |\det U_{22}|^2 = \det(\mathbf 1 - \adj U_{12} U_{12}).
+\end{align}
+$$
+Finally, using Sylvester's theorem for determinants on $(1)$ and $(4)$ finishes the problem off:
+$$
+    |\det U_{11}|^2 = \det(\mathbf 1 - U_{12} \adj U_{12}) = \det(\mathbf 1 - \adj U_{12} U_{12}) = |\det U_{22}|^2
+    \implies |\det U_{11}| = |\det U_{22},|
+$$
+where the last step is possible because the modulus of a complex number is always a positive real.
+</div>
+
+<p>To conclude this post, I would like to cite "The Usefulness of Formulas in Solving Matrix Problems" (Stanescu) in
+<a href="https://cms.math.ca/publications/crux/issue/?volume=51&amp;issue=9"><em>Crux Mathematicorum</em> vol. 51, no. 9</a>, as a good source of some lesser-known determinant
+identities.</p>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
