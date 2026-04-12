@@ -2,6 +2,7 @@
 
 Sorted from newest to oldest, below is a list of my posts. They cover a bit of everything I like.
 
+* [The Antibloatware Brigade at Ada Byron 2026 Regionals.](./posts/2026/04/12.md)
 * [Highlights of `using std::cpp` 2026.](./posts/2026/03/19.md)
 
 # Archive
