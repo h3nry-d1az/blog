@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Daily integral of 13/04/2026: Medium difficulty - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">13 Apr 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem">
+Compute the following integral:
+$$
+{\rm I} = \int\limits_{-0.5}^2 \frac{x \log |x|}{(1+x^2)^2} \diff x.
+$$
+</div>
+
+<p><em>Proposed by the user "laghes" on the website <code>dailyintegral.com</code>.</em></p>
+<div class="solution">
+We first need to check that the integral is indeed well-defined, for which it suffices to show that the integrand does not blow up at 0. Consider then the 
+limit in question:
+$$
+    {\rm L} = \lim_{x\to 0} \frac{x \log |x|}{(1+x^2)^2} = \lim_{x\to 0} x\log |x| = \lim_{x\to 0} \frac{\log |x|}{1/x},
+$$
+since this is an indetermination of the form $\infty/\infty$, we can safely apply L'Hôpital's rule, which gives
+$$
+    {\rm L} = \lim_{x\to 0} \frac{1/x}{-1/x^2} = \lim_{x\to 0} (-x) = 0.
+$$
+<br>
+
+Now call the integrand $f$; the first insight comes from the fact that $f$ is an odd function, i.e. $f(-x) = -f(x)$ because:
+$$
+    f(-x) = \frac{-x \log |-x|}{(1+(-x)^2)^2} = -\frac{x \log |x|}{(1+x^2)^2} = -f(x),
+$$
+so ${\rm I}$ may be rewritten with positive integration bounds, thus dropping the absolute value:
+$$
+    {\rm I} = \int\limits_{-0.5}^0 \frac{x \log (-x)}{(1+x^2)^2} \diff x + \int\limits_0^2 \frac{x \log x}{(1+x^2)^2} \diff x
+    = \int\limits_{0.5}^2 \frac{x \log x}{(1+x^2)^2} \diff x.
+$$
+<br>
+
+The square in the denominator looks very suspicious, and motivates considering the derivative of a quotient with $1+x^2$. Notice then that
+$$
+    \frac{\diff}{\diff x}\left(\frac{g}{1+x^2}\right) = \frac{g'}{1+x^2} - \frac{2xg}{(1+x^2)^2};
+$$
+setting $g=\log x$, rearranging terms and using the fundamental theorem of calculus gives a simpler form for primitive of $f$:
+$$
+    \frac{\diff}{\diff x}\left(\frac{\log x}{1+x^2}\right) = \frac{1}{x(1+x^2)} - \frac{2x\log x}{(1+x^2)^2}
+    \implies 2 \int \frac{x \log x}{(1+x^2)^2} \diff x = \int \frac{\diff x}{x(1+x^2)} - \frac{\log x}{1+x^2},
+$$
+and throwing partial fraction decomposition to the remaining integral does the trick:
+$$
+    \int \frac{x \log x}{(1+x^2)^2} \diff x = \frac{1}{2}\left[\int \frac{\diff x}{x} - \int \frac{x}{x^2+1}\diff x - \frac{\log x}{1+x^2}\right]
+    = \frac{1}{2}\log x - \frac{1}{4}\log(x^2+1) - \frac{\log x}{2x^2 + 2}.
+$$
+<br>
+
+Finally, it only remains to put all the pieces of the puzzle together:
+$$
+    {\rm I} = \left(\frac{1}{2}\log 2 - \frac{1}{4}\log 5 - \frac{1}{10}\log 2\right)
+    - \left(-\frac{1}{2}\log 2 - \frac{1}{4}[\log 5 - 2\log 2] + \frac{2}{5}\log 2\right)
+    = \color{green}\boxed{0.}
+$$
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
