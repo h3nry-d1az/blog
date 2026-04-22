@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Daily mechanics problem of 22/04/2026 - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">22 Apr 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <div class="problem">
+A bob of mass $m$, suspended by a string of length $\ell_1$, is given the minimum velocity required to complete a full circle in the vertical plane. At the 
+highest point, it collides elastically with another bob of mass $m$ suspended by a string of length $\ell_2$ which is initially at rest. Both strings are 
+mass-less and inextensible. If the second bob, after collision, acquires the minimum speed required to complete a full circle in the vertical
+minimum speed required to complete a full circle in the vertical plane, find the ratio $\ell_1/\ell_2$.
+</div>
+
+<p><em>Proposed by the user "phalit" on the website <code>dailyintegral.com</code>.</em></p>
+<div class="solution">
+In order to find such minimum speed, it is convenient to think of the two most important points of the motion of the first ball, namely the starting point 
+where it will have a speed $v_0$, and the apogee of its trajectory, whose speed will be named $v_1$.
+<br>
+<br>
+
+At the last scenario, there are two forces acting upon the ball which constrain its movement to a circular one: gravity and the tension of the string, i.e., 
+if $a_\perp$ is the centripetal acceleration at that point, it follows that $a_\perp = g + T/m$, and so
+$$
+    \frac{v_1^2}{\ell_1} = a_\perp = g + \frac{T}{m} \implies v_1 = \sqrt{\ell_1 \left(g + \frac{T}{m}\right)}.
+$$
+We can now invoke the law of conservation of energy to find $v_0$, setting the origin of our frame of reference at the rest position of the first bob:
+$$
+\begin{align*}
+    K_1 + U_1 &= \frac{1}{2} m \ell_1 \left(g + \frac{T}{m}\right) + 2mg\ell_1 = \frac{1}{2}mv_0^2 = K_0 + U_0\\
+    \implies v_0 &= \sqrt{\ell_1 \left(5g + \frac{T}{m} \right)},
+\end{align*}
+$$so
+since $m, \ell_1, g$ and $m$ are all constant, we conclude that the minimum speed is achieved when $T=0$, and thus
+$$
+    v_0 = \sqrt{5g\ell_1},\qquad v_1 = \sqrt{g\ell_1}.
+$$
+None of the past assumptions are intrinsic to the first ball only, the same reasoning applies to the second one:
+$$
+    v_0' = \sqrt{5g\ell_2},\qquad v_1' = \sqrt{g\ell_2}.
+$$
+<br>
+
+Now consider the collision happening at the top; because of Newton's third law and the fact that the collision is elastic, the momenta of the system is 
+preserved. From this relation we can finally solve for $\ell_1/\ell_2$:
+$$
+    mv_1 = mv_0' \implies \sqrt{g\ell_1} = \sqrt{5g\ell_2} \implies \color{green}\boxed{\frac{\ell_1}{\ell_2} = 5.}
+$$
+
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
