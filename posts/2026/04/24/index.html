@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Kirchhoff's theorem for spanning trees - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">24 Apr 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <p>The engineers among the readers may recall Kirchhoff's two circuit laws, which state that the current and voltage is preserved when transitioning a node,
+i.e., that the sum of the incoming such quantities equals the sum of the outgoing ones. There is, however, another result also attributed to Kirchhoff which
+has little to no relation with the previous one: Kirchhoff's theorem for spanning trees.</p>
+<p>First, it is worth remembering a few concepts about graphs, namely spanning trees themselves and the Laplacian matrix. A <em>tree</em> is a connected, 
+undirected graph with no cycles, and given any connected graph $G$, we can remove some of its edges so that it becomes a tree; the resulting object is called a
+<em>spanning</em> tree of $G$:</p>
+<div class="twocols" style="display: flex; justify-content: center;">
+<figure style="text-align: center;">
+<div align="center"><svg width="303.2473" height="291.7530" xmlns="http://www.w3.org/2000/svg">
+<path d="M 196.5549 204.4375 L 151.2802 151.3142" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 168.1343 105.8971" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 124.3629 249.8948" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 115.4039 202.4110" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 168.6645 281.7530" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 239.5451 155.4433" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 293.2473 208.6602" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 192.2084 52.4181" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 70.7697 149.4760" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 239.5451 155.4433" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 66.6672 223.6087" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 150.2032 10.0000" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 192.2084 52.4181" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 115.4039 202.4110" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 239.5451 155.4433" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 94.7059 55.1583" fill="none" stroke="black" />
+<path d="M 124.3629 249.8948 L 168.6645 281.7530" fill="none" stroke="black" />
+<path d="M 124.3629 249.8948 L 70.7697 149.4760" fill="none" stroke="black" />
+<path d="M 150.2032 10.0000 L 192.2084 52.4181" fill="none" stroke="black" />
+<path d="M 150.2032 10.0000 L 94.7059 55.1583" fill="none" stroke="black" />
+<path d="M 10.0000 189.5278 L 115.4039 202.4110" fill="none" stroke="black" />
+<path d="M 10.0000 189.5278 L 70.7697 149.4760" fill="none" stroke="black" />
+<path d="M 115.4039 202.4110 L 168.6645 281.7530" fill="none" stroke="black" />
+<path d="M 115.4039 202.4110 L 66.6672 223.6087" fill="none" stroke="black" />
+<path d="M 70.7697 149.4760 L 94.7059 55.1583" fill="none" stroke="black" />
+<path d="M 239.5451 155.4433 L 293.2473 208.6602" fill="none" stroke="black" />
+<circle cx="196.5549" cy="204.4375" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="151.2802" cy="151.3142" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="168.1343" cy="105.8971" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="124.3629" cy="249.8948" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="150.2032" cy="10.0" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="192.2084" cy="52.4181" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="10.0" cy="189.5278" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="115.4039" cy="202.411" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="168.6645" cy="281.753" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="70.7697" cy="149.476" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="239.5451" cy="155.4433" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="66.6672" cy="223.6087" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="94.7059" cy="55.1583" r="7.5" fill="LightBlue" stroke="black" />
+<circle cx="293.2473" cy="208.6602" r="7.5" fill="LightBlue" stroke="black" />
+</svg></div>
+<figcaption>A connected graph.</figcaption>
+</figure>
+
+<figure style="text-align: center;">
+<div align="center"><svg width="303.2473" height="291.7530" xmlns="http://www.w3.org/2000/svg">
+<path d="M 196.5549 204.4375 L 151.2802 151.3142" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 168.1343 105.8971" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 124.3629 249.8948" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 115.4039 202.4110" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 168.6645 281.7530" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 239.5451 155.4433" fill="none" stroke="black" />
+<path d="M 196.5549 204.4375 L 293.2473 208.6602" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 192.2084 52.4181" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 70.7697 149.4760" fill="none" stroke="black" />
+<path d="M 151.2802 151.3142 L 66.6672 223.6087" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 150.2032 10.0000" fill="none" stroke="black" />
+<path d="M 168.1343 105.8971 L 94.7059 55.1583" fill="none" stroke="black" />
+<path d="M 10.0000 189.5278 L 115.4039 202.4110" fill="none" stroke="black" />
+<circle cx="196.5549" cy="204.4375" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="151.2802" cy="151.3142" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="168.1343" cy="105.8971" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="124.3629" cy="249.8948" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="150.2032" cy="10.0" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="192.2084" cy="52.4181" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="10.0" cy="189.5278" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="115.4039" cy="202.411" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="168.6645" cy="281.753" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="70.7697" cy="149.476" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="239.5451" cy="155.4433" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="66.6672" cy="223.6087" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="94.7059" cy="55.1583" r="7.5" fill="LightGreen" stroke="black" />
+<circle cx="293.2473" cy="208.6602" r="7.5" fill="LightGreen" stroke="black" />
+</svg></div>
+<figcaption>Its spanning tree.</figcaption>
+</figure>
+</div>
+
+<p>The second concept comes from algebra; the fundamental bridge that joins the two disciplines together is the <em>adjacency matrix</em> of a graph, which has ones at
+the positions $(i, j)$ when $v_i$ and $v_j$ are connected by an edge. Since we are dealing today with undirected graphs, their adjacency matrices are symmetric
+and therefore orthogonally diagonalizable by the spectral theorem, but we will not go down this rabbit hole this time. Instead, we define the <em>Laplacian</em> 
+matrix of a graph as
+$$
+    L = D - A,
+$$
+where $D$ is the diagonal matrix containing the degrees of the vertices as entries, and $A$ is the aforementioned adjacency matrix. This funny name comes from
+the property that interpreting column vectors as functions $f: V \longrightarrow \mathbf R$ yields
+$$
+    Lf_i = \delta(i)f(i) - \sum_{j \sim i} f(j) = \sum_{j \sim i} (f(i) - f(j)),
+$$
+which resembles the Laplacian operator in a discrete fashion; again, let's stick to the point, I may write a whole post on the numerous applications of the 
+Laplacian matrix one day (Fiedler eigenvalues/eigenvectors, spectral drawing, and even the heat equation appears there too!).</p>
+<p>Now we are in the position to know that Kirchhoff's theorem states the following:</p>
+<div class="theorem">
+The number of spanning trees of a graph $G$ is given by any of the cofactors of its Laplacian matrix.
+</div>
+
+<p>This is interesting because the theorem holds for <em>any</em> of the cofactors, not just one, and also because it gives an explicit procedure for computing the 
+number of spanning trees. A not-so-boring proof by induction is given in Moore and Mertens' <em>The Nature of Computation</em>, so I will not go over it here.</p>
+<p>Finally, referring back to electric circuits, an analog to Laplacian matrices may be used to study alternating current circuits, by setting the positions
+$(i, j)$ to be the negative of the reciprocal of the impedance between them. They are complex matrices, but they are symmetric instead of Hermitian, which is
+somewhat disappointing. As far as I know, however, Kirchhoff's theorem still does not have any relation with Kirchhoff's <em>laws</em>.</p>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
