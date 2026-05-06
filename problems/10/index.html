@@ -37,6 +37,10 @@
                 '\\RR': '\\mathbf{R}',
                 '\\CC': '\\mathbf{C}',
                 '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\lint': '\\int\\limits',
+                '\\ihat': '{\\bf i}',
+                '\\jhat': '{\\bf j}',
+                '\\khat': '{\\bf k}',
                 '\\l': '\\left',
                 '\\r': '\\right',
                 '\\tr': '\\operatorname{tr}',
@@ -104,25 +108,25 @@ into $8$ smaller sections as follows.
 One of the sections is coloured blue, as shown. An altitude is constructed from $\rm A$ to $\rm D$ on $\rm BC$, dividing the blue section into two parts.
 
 <div align="center"><svg width="320.0000" height="244.8557" xmlns="http://www.w3.org/2000/svg">
-<path d="M 137.5000 25.0000 L 25.0000 219.8557 L 250.0000 219.8557 L 137.5000 25.0000" fill="none" stroke="black" />
-<path d="M 53.1250 219.8557 L 39.0625 195.4988" fill="none" stroke="black" />
-<path d="M 81.2500 219.8557 L 53.1250 171.1418" fill="none" stroke="black" />
-<path d="M 109.3750 219.8557 L 67.1875 146.7848" fill="none" stroke="black" />
-<path d="M 137.5000 219.8557 L 81.2500 122.4279" fill="none" stroke="black" />
-<path d="M 221.8750 219.8557 L 123.4375 49.3570" fill="none" stroke="black" />
-<path d="M 165.6250 219.8557 L 193.7500 219.8557 L 109.3750 73.7139 L 95.3125 98.0709 L 165.6250 219.8557" fill="LightBlue" stroke="black" />
-<path d="M 137.5000 25.0000 L 137.5000 219.8557" fill="none" stroke="black" />
+<path d="M 137.5000 25.0000 L 25.0000 219.8557 L 250.0000 219.8557 L 137.5000 25.0000" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 53.1250 219.8557 L 39.0625 195.4988" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 81.2500 219.8557 L 53.1250 171.1418" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 109.3750 219.8557 L 67.1875 146.7848" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 137.5000 219.8557 L 81.2500 122.4279" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 221.8750 219.8557 L 123.4375 49.3570" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 165.6250 219.8557 L 193.7500 219.8557 L 109.3750 73.7139 L 95.3125 98.0709 L 165.6250 219.8557" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 137.5000 25.0000 L 137.5000 219.8557" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="0.0000" y="0.0000" width="275.0000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="217.3557" width="27.5000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
 <foreignObject x="202.5000" y="217.3557" width="117.5000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="217.3557" width="275.0000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
 </svg></div>
 
@@ -135,67 +139,67 @@ Let ${\rm X}_i$ be the $i$th point of division of the side $\rm BC$, let ${\rm Y
 starting from the bottom &ndash; of $\rm AD$ with ${\rm X}_i {\rm Y}_i$; we thus want to find $[\rm Y_5 Y_6 Z_2 Z_1] : [\rm X_5 X_6 Z_2 Z_1]$.
 
 <div align="center"><svg width="320.0000" height="244.8557" xmlns="http://www.w3.org/2000/svg">
-<path d="M 137.5000 25.0000 L 25.0000 219.8557 L 250.0000 219.8557 L 137.5000 25.0000" fill="none" stroke="black" />
-<path d="M 165.6250 219.8557 L 193.7500 219.8557 L 137.5000 122.4279 L 137.5000 171.1418 L 165.6250 219.8557" fill="LightBlue" stroke="black" />
-<path d="M 137.5000 219.8557 L 165.6250 219.8557 L 137.5000 171.1418 L 137.5000 219.8557" fill="blue" stroke="black" />
-<path d="M 95.3125 98.0709 L 109.3750 73.7139 L 137.5000 122.4279 L 137.5000 171.1418 L 95.3125 98.0709" fill="LightGreen" stroke="black" />
-<path d="M 109.3750 73.7139 L 137.5000 25.0000 L 137.5000 122.4279 L 109.3750 73.7139" fill="green" stroke="black" />
-<path d="M 53.1250 219.8557 L 39.0625 195.4988" fill="none" stroke="black" />
+<path d="M 137.5000 25.0000 L 25.0000 219.8557 L 250.0000 219.8557 L 137.5000 25.0000" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 165.6250 219.8557 L 193.7500 219.8557 L 137.5000 122.4279 L 137.5000 171.1418 L 165.6250 219.8557" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 137.5000 219.8557 L 165.6250 219.8557 L 137.5000 171.1418 L 137.5000 219.8557" fill="rgb(0, 0, 255)" stroke="rgb(0, 0, 0)" />
+<path d="M 95.3125 98.0709 L 109.3750 73.7139 L 137.5000 122.4279 L 137.5000 171.1418 L 95.3125 98.0709" fill="rgb(144, 238, 144)" stroke="rgb(0, 0, 0)" />
+<path d="M 109.3750 73.7139 L 137.5000 25.0000 L 137.5000 122.4279 L 109.3750 73.7139" fill="rgb(0, 128, 0)" stroke="rgb(0, 0, 0)" />
+<path d="M 53.1250 219.8557 L 39.0625 195.4988" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="0.0000" y="217.3557" width="106.2500" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>1</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="123.6418" width="55.6250" height="121.2139">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>1</mn></msub></mrow></math></div></foreignObject>
-<path d="M 81.2500 219.8557 L 53.1250 171.1418" fill="none" stroke="black" />
+<path d="M 81.2500 219.8557 L 53.1250 171.1418" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="0.0000" y="217.3557" width="162.5000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>2</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="74.9279" width="83.7500" height="169.9279">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>2</mn></msub></mrow></math></div></foreignObject>
-<path d="M 109.3750 219.8557 L 67.1875 146.7848" fill="none" stroke="black" />
+<path d="M 109.3750 219.8557 L 67.1875 146.7848" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="0.0000" y="217.3557" width="218.7500" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>3</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="26.2139" width="111.8750" height="218.6418">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>3</mn></msub></mrow></math></div></foreignObject>
-<path d="M 137.5000 219.8557 L 81.2500 122.4279" fill="none" stroke="black" />
+<path d="M 137.5000 219.8557 L 81.2500 122.4279" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="0.0000" y="0.0000" width="140.0000" height="222.3557">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>4</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="11.2500" y="217.3557" width="308.7500" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>5</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="0.0000" width="168.1250" height="173.6418">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>5</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="67.5000" y="217.3557" width="252.5000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>6</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="0.0000" width="196.2500" height="124.9279">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>6</mn></msub></mrow></math></div></foreignObject>
-<path d="M 221.8750 219.8557 L 123.4375 49.3570" fill="none" stroke="black" />
+<path d="M 221.8750 219.8557 L 123.4375 49.3570" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="123.7500" y="217.3557" width="196.2500" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">X</mi><mn>7</mn></msub></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="0.0000" width="224.3750" height="76.2139">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi mathvariant="normal">Y</mi><mn>7</mn></msub></mrow></math></div></foreignObject>
-<path d="M 137.5000 25.0000 L 137.5000 219.8557" fill="none" stroke="black" />
+<path d="M 137.5000 25.0000 L 137.5000 219.8557" fill="none" stroke="rgb(0, 0, 0)" />
 <foreignObject x="0.0000" y="0.0000" width="275.0000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">A</mi></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="217.3557" width="27.5000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">B</mi></mrow></math></div></foreignObject>
 <foreignObject x="202.5000" y="217.3557" width="117.5000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">C</mi></mrow></math></div></foreignObject>
 <foreignObject x="0.0000" y="217.3557" width="275.0000" height="27.5000">
-<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 2700.0000px;">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
 <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi mathvariant="normal">D</mi></mrow></math></div></foreignObject>
 </svg></div>
 

@@ -37,6 +37,10 @@
                 '\\RR': '\\mathbf{R}',
                 '\\CC': '\\mathbf{C}',
                 '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\lint': '\\int\\limits',
+                '\\ihat': '{\\bf i}',
+                '\\jhat': '{\\bf j}',
+                '\\khat': '{\\bf k}',
                 '\\l': '\\left',
                 '\\r': '\\right',
                 '\\tr': '\\operatorname{tr}',
@@ -106,7 +110,10 @@ of order greater than two, it has a nontrivial automorphism.
 Consider now the first of the two cases, and let $g, h \in G$ such that $gh \neq hg$;
 in this case conjugation by $g$, given by
 $$
-\pi_g (a) = g a g^{-1}
+\begin{align*}
+\pi_g : G &\longrightarrow G\\
+    a &\longmapsto g a g^{-1}
+\end{align*}
 $$
 constitutes the desired map, since
 $$
