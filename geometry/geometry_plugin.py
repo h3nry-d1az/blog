@@ -3,6 +3,7 @@ import textwrap
 import traceback
 from mkdocs.plugins import BasePlugin
 from pythagoras import prelude as gm
+import math
 
 
 def update_namespace(ns, mod):
@@ -19,10 +20,7 @@ class GeometryPlugin(BasePlugin):
             ctx = gm.Canvas()
             namespace = {"ctx": ctx}
             update_namespace(namespace, gm)
-            update_namespace(namespace, gm.color)
-            update_namespace(namespace, gm.draw)
-            update_namespace(namespace, gm.line)
-            update_namespace(namespace, gm.opacity)
+            update_namespace(namespace, math)
             try:
                 exec(code, namespace, namespace)
                 return f'<div align="center">{ctx.svg()}</div>'
