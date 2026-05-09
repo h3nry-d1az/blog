@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Daily integral of 7/5/2026: Medium difficulty - Henry Díaz Bordón</title>
+    <title>Daily integral of 9/5/2026: Medium difficulty - Henry Díaz Bordón</title>
     
 
     <link rel="stylesheet" href="../../css/style.css">
@@ -88,7 +88,7 @@
         
 
         
-        <p class="date">6 May 2026</p>
+        <p class="date">9 May 2026</p>
         
 
         
@@ -99,26 +99,27 @@
         <div class="problem">
 Compute the following integral:
 $$
-{\rm I} = \lint_0^{\pi/2} \frac{\sqrt{1-\cos(4x)}}{\sin^4 x - 2\sin^2 x + 2} \diff x.
+{\rm I} = \lint_0^{\pi/2} \left(1 + \frac{\sin x}{2 + \frac{\sin x}{2 + \frac{\sin x}{2 + \cdots}}}\right) \diff x.
 $$
 </div>
 
-<p><em>Proposed by the user "EkineticEnergy" on the website <code>dailyintegral.com</code>.</em></p>
+<p><em>Proposed by the user "Saksham Rana" on the website <code>dailyintegral.com</code>.</em></p>
 <div class="solution">
-This problem is mostly about remembering the trigonometric identities, in particular, the double-angle formulae. Recall that
+Notice that the sequence $\{a_k\}_{k=0}^\infty$ given by
 $$
-    \cos(2\theta) = \cos^2 \theta - \sin^2 \theta,\qquad
-    \sin(2\theta) = 2\sin\theta \cos\theta;
+    a_0 = \sin x,\qquad a_{k+1} = \frac{\sin x}{2 + a_k}
 $$
-with this, the radicand in the numerator becomes
+is monotonic and bounded, because the denominator is always greater than or equal to one. Therefore, it has a limit, for which we can solve to get the 
+integrand as a closed expression with respect to $x$:
 $$
-    \sqrt{1 - \cos(4x)} = \sqrt{1 - \cos^2 (2x) + \sin^2 (2x)} = \sqrt{2\sin^2(2x)} = 2\sqrt2 \sin x \cos x,
+    y = \frac{\sin x}{2 + y} \implies y^2 + 2y - \sin x = 0 \implies y = -1 \pm \sqrt{1 + \sin x}.
 $$
-and therefore, also completing the square in the denominator
+Since we are integrating from $0$ to $\pi/2$, $\sin x$ is always positive and thus we can drop the negative sign. A simple substitution finishes the problem
 $$
-    {\rm I} = \lint_0^{\pi/2} \frac{2\sqrt2 \sin x\cos x}{1 + (\sin^2 x - 1)^2} \diff x
-    = \left\{\begin{aligned} t &= \sin^2 x - 1\\ \diff t &= 2\sin x \cos x\diff x \end{aligned}\right\}
-    = \lint_{-1}^0 \frac{\sqrt2 \diff t}{1 + t^2} = \sqrt2 \arctan 1 = \color{green}\boxed{\frac{\sqrt2 \pi}{4}.}
+    {\rm I} = \lint_0^{\pi/2} \sqrt{1 + \sin x} \diff x
+    = \left\{\begin{aligned} t &= 1 - \sin x\\ \diff t &= -\cos x\diff x \end{aligned}\right\}
+    = \lint_0^1 \frac{\sqrt{2 - t}}{\sqrt{2t - t^2}} \diff t
+    = \lint_0^1 \frac{\diff t}{\sqrt t} = \color{green} \boxed{2.}
 $$
 </div>
     </main>

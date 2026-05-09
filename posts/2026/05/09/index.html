@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Two from Romania to master the Jordan canonical form - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\lint': '\\int\\limits',
+                '\\ihat': '{\\bf i}',
+                '\\jhat': '{\\bf j}',
+                '\\khat': '{\\bf k}',
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">9 May 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <p>A few weeks ago MIT published <a href="https://mathnet.mit.edu/">MathNet</a>, a huge dataset containing Olympiad problems from almost every national and international
+competition, being the aim of this compilation is to enhance AI reasoning power in mathematics. I am not interested in the former application, but rather, I 
+see it as a unified platform for accessing a content which used to be spread along multiple journals, websites, etc.</p>
+<p>I have been particularly enjoying some of the problems proposed in the Romanian Mathematical Olympiad, since they tend to include abstract and linear algebra
+among its topics, and today I bring two on the latter which can be solved by peeking into the Jordan canonical form (JCF) of its matrices. Without further 
+ado, let us get started with the first one.</p>
+<div class="problem">
+Let $n$ be a natural number with $n > 2$, and let $A \in \mathscr M_n(\CC)$ such that $\operatorname{rank} A \neq \operatorname{rank} A^2$.
+Prove that there exists a non-zero matrix $B \in \mathscr M_n(\CC)$ such that $AB = BA = B^2 = \mathbf 0$.
+</div>
+
+<p><em>Proposed in Romanian Mathematical Olympiad 2018, 11th Grade, Problem 4.</em></p>
+<div class="solution">
+Notice that the assertion that the rank of $A$ varies when exponentiated necessarily implies that it decreases; if it were to increase, this would mean that 
+the multiplicity of the $0$ eigenvalue drops magically, which is impossible since an $Av = 0$ gives $A^2 v = 0$. This, as said in the preamble, motivates
+studying the Jordan canonical form of $A$, as it must have at least one nilpotent Jordan block:
+$$
+    A = P\left(\begin{array}{cccc|cc}
+        0 & 1\\
+        & 0 & \ddots\\
+        & & \ddots & 1\\
+        & & & 0\\
+        \hline
+        & & & & \ddots\\
+        & & & & & \lambda_n
+    \end{array}\right)P^{-1} = P\begin{pmatrix}
+        J_{m_0}(0)\\
+        & J_{m_1}(\lambda_1)\\
+        & & \ddots\\
+        & & & J_{m_k}(\lambda_k)
+    \end{pmatrix}P^{-1}.
+$$
+
+We can now leverage the fact that $J_{m_0}(0)^{m_0} = \mathbf 0$ to construct the requested $B$. For starters, we set its basis of generalized eigenvectors to
+be that of $A$, i.e., we let the $P$ be identical to keep the product easy; now, all its blocks will be zero except those analogous to the nilpotent ones of 
+$A$, which we raise to its dimension minus one unit so they vanish when multiplied. Seeing $B$ typeset might be more clarifying
+$$
+    A = P\begin{pmatrix}
+        J_{n_1}(0)\\
+        & \ddots\\
+        & & J_{n_k}(0)\\
+        & & & J_{m_1}(\lambda_1)\\
+        & & & & \ddots\\
+        & & & & & J_{m_l}(\lambda_l)
+    \end{pmatrix}P^{-1}
+    \implies B = P\begin{pmatrix}
+        J_{n_1}(0)^{n_1 - 1}\\
+        & \ddots\\
+        & & J_{n_k}(0)^{n_k - 1}\\
+        & & & \mathbf 0\\
+        & & & & \ddots\\
+        & & & & & \mathbf 0
+    \end{pmatrix}P^{-1}.
+$$
+Indeed, this works since these two matrices are multiplied elementwise because they are block-diagonal. The key insight we used to solve this problem was 
+that a matrix whose rank diminishes when powered has necessarily some nilpotent structure when we study it under the lens of the JCF.
+</div>
+
+<p>The solution to second problem proceeds in an analogous fashion, so it may be worth trying to solve it before looking at the construction presented here.</p>
+<div class="problem">
+Let $n$ be a positive integer and let $A \in \mathscr M_n(\CC)$. Prove that $A^2 = \mathbf 0$ if and only if there exist two matrices
+$B, C \in \mathscr M_n(\CC)$ so that $A = BC$ and $CB = \mathbf 0$.
+</div>
+
+<p><em>Proposed in Romanian Mathematical Olympiad Shortlist 2018, Putnam Seniors, Problem 4.</em></p>
+<div class="solution">
+Firstly, the <em>if</em> part is quite trivial, as it follows that
+$$
+    A^2 = BCBC = B(CB)C = B\mathbf 0 C = 0.
+$$
+<br>
+
+For the challenging direction, thinking once again in terms of the JCF and playing with the blocks reveals that they must be either $J_1(0)$ or $J_2(0)$; let
+us prove this formally. On the one hand, $A$ does not have any nonzero eigenvalues, since
+$$
+    A^2 v = \lambda^2 v = 0 = \mathbf 0 v.
+$$
+Likewise, it cannot have a $0$-block with dimension larger than two, since that would imply that $\ker \mathbf 0 = \ker A^2 < n$, because by definition
+there would be a generalized eigenvector of rank at least $3$. All together,
+$$
+    P^{-1}AP = \operatorname{diag}(J_2(0), \cdots, J_2(0), 0, \cdots, 0),
+$$
+so we must find a way to factor $J_2(0)$ as $\bar B \bar C$ such that $\bar C \bar B = \mathbf 0$.
+<br>
+<br>
+
+Indeed, by choosing
+$$
+    \bar B = \begin{pmatrix} 0 & 1\\ 0 & 0\end{pmatrix}, \qquad
+    \bar C = \begin{pmatrix} 0 & 0\\ 0 & 1\end{pmatrix}
+$$
+we get that
+$$
+    \bar B \bar C = \begin{pmatrix} 0 & 1\\ 0 & 0\end{pmatrix} = J_2(0),\qquad
+    \bar C \bar B = \begin{pmatrix} 0 & 0\\ 0 & 0\end{pmatrix} = \mathbf 0.
+$$
+The construction is then done as
+$$
+    A = P\begin{pmatrix}
+        J_2(0)\\
+        & \ddots\\
+        & & J_2(0)\\
+        & & & 0\\
+        & & & & \ddots\\
+        & & & & & 0
+    \end{pmatrix}P^{-1} \implies
+    B = P\begin{pmatrix}
+        \bar B\\
+        & \ddots\\
+        & & \bar B\\
+        & & & 0\\
+        & & & & \ddots\\
+        & & & & & 0
+    \end{pmatrix}P^{-1},\
+    C = P\begin{pmatrix}
+        \bar C\\
+        & \ddots\\
+        & & \bar C\\
+        & & & 0\\
+        & & & & \ddots\\
+        & & & & & 0
+    \end{pmatrix}P^{-1}.
+$$
+</div>
+
+<p>The Jordan canonical form is after all a nice tool to have in one's belt when dealing with matrices that need not be diagonalizable. The singular value 
+decomposition may as well be useful, but sometimes resorting to similarities proves to be easier than working with equivalences (even if they are 
+orthogonal), as it was the case here. We employed the Jordan canonical form also because both problems had some loss of structure under exponentiation,
+which is very closely related to the idea of generalized eigenvectors that gives raise to this factorization itself, so it is worth taking into account
+for future problems.</p>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
