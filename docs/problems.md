@@ -5,6 +5,7 @@ title: Problems
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [All-Union Mathematical Olympiad 1985: Problem 15.](./problems/18.md)
 * [Daily integral of 9/5/2026: Medium difficulty.](./problems/17.md)
 * [Daily integral of 7/5/2026: Medium difficulty.](./problems/16.md)
 * [Integral of a vector field over a helix.](./problems/15.md)
