@@ -31,6 +31,8 @@
                 {left: '\\(', right: '\\)', display: false}
             ],
             macros: {
+                '\\l': '\\left',
+                '\\r': '\\right',
                 '\\NN': '\\mathbf{N}',
                 '\\ZZ': '\\mathbf{Z}',
                 '\\QQ': '\\mathbf{Q}',
@@ -41,11 +43,11 @@
                 '\\ihat': '{\\bf i}',
                 '\\jhat': '{\\bf j}',
                 '\\khat': '{\\bf k}',
-                '\\l': '\\left',
-                '\\r': '\\right',
                 '\\tr': '\\operatorname{tr}',
                 '\\trans': '{\#1}^{\\mathsf T}',
                 '\\adj': '{\#1}^{\\mathsf H}',
+                '\\re': '\\operatorname{Re}',
+                '\\im': '\\operatorname{Im}',
             },
             throwOnError: false
         });">
@@ -145,9 +147,9 @@ $$
         J_{n_1}(0)^{n_1 - 1}\\
         & \ddots\\
         & & J_{n_k}(0)^{n_k - 1}\\
-        & & & \mathbf 0\\
+        & & & 0\\
         & & & & \ddots\\
-        & & & & & \mathbf 0
+        & & & & & 0
     \end{pmatrix}P^{-1}.
 $$
 Indeed, this works since these two matrices are multiplied elementwise because they are block-diagonal. The key insight we used to solve this problem was 
@@ -173,8 +175,8 @@ us prove this formally. On the one hand, $A$ does not have any nonzero eigenvalu
 $$
     A^2 v = \lambda^2 v = 0 = \mathbf 0 v.
 $$
-Likewise, it cannot have a $0$-block with dimension larger than two, since that would imply that $\ker \mathbf 0 = \ker A^2 < n$, because by definition
-there would be a generalized eigenvector of rank at least $3$. All together,
+Likewise, it cannot have a $0$-block with dimension larger than two, since that would imply that $\dim \ker \mathbf 0 = \dim \ker A^2 < n$, because by 
+definition there would be a generalized eigenvector of rank at least $3$. All together,
 $$
     P^{-1}AP = \operatorname{diag}(J_2(0), \cdots, J_2(0), 0, \cdots, 0),
 $$
