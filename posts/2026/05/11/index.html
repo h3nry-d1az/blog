@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>A bunch of doable integrals from the MIT Integration Bee - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\lint': '\\int\\limits',
+                '\\ihat': '{\\bf i}',
+                '\\jhat': '{\\bf j}',
+                '\\khat': '{\\bf k}',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+                '\\re': '\\operatorname{Re}',
+                '\\im': '\\operatorname{Im}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">11 May 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <p>Today, scrolling through Instagram, I came across <a href="https://www.instagram.com/p/DYNIUdmCq94/">a post</a> from the user <em><code>pringlesmaths</code></em> that caught my attention.
+I am quite a fan of his/her publications, since they are papers featuring interesting problems from different Olympiads; in this case it was an integral
+from the MIT Integration Bee 2010 which was surprisingly easy to solve, and as I delved into the other editions of the contest I found many others that I
+believe any high-schooler could do after thinking for some time.</p>
+<p>Before proceeding, though, I must mention that, first, these integrals all come from the qualifying rounds rather than the actual, much more challenging 
+competition, and second, the real difficulty comes from solving them in a very short period of time &ndash; students are given only 20 minutes to complete 
+the whole test &ndash;. That being said, at least the ones I will discuss in a moment were almost immediate to a relatively untrained eye such as mine.</p>
+<p>Let us start with the one in <em><code>pringlesmaths</code></em>' sheet; he/she used the Laplace transform in the solution, but it can be done in a much easier fashion:</p>
+<div class="problem">
+Evaluate the integral
+$$
+    {\rm I} = \lint_0^1 \sin^2 (\log x) \diff x.
+$$
+</div>
+
+<p><em>Proposed in MIT Integration Bee Qualifying Exam, 2010, Q5.</em></p>
+<div class="solution">
+Notice that substituting $t := \log x$ transforms the integral into the product of an exponential and a sine squared, which by the double-angle cosine formula
+can be further simplified into an exponential times a cosine. These integrals are well-known examples of the so-called cyclic integrals, and their result is 
+revealed after two iterations of integration by parts by leveraging the fact that sines are cosines acquire a minus sign after being differentiated twice:
+$$
+    \lint_0^1 \sin^2 (\log x) \diff x = \left\{\begin{aligned}
+        t &= \log x\\
+        \diff t &= \diff x/x
+    \end{aligned}\right\} = \lint_{-\infty}^0 e^t \sin^2 t \diff t
+    = \frac12 \lint_{-\infty}^0 e^t (1 - \cos(2t)) \diff t = \frac12 - \frac12\underbrace{\lint_{-\infty}^0 e^t \cos(2t) \diff t}_{\rm J}.
+$$
+As said, performing integration by parts on $\rm J$ and the subsequent $\rm K$ yields
+$$
+    {\rm J} = e^t \cos(2t)\bigg|_{-\infty}^0 + 2 \underbrace{\lint_{-\infty}^0 e^t \sin(2t) \diff t}_{\rm K};
+    \qquad {\rm K} = \cancel{e^t \sin(2t)\bigg|_{-\infty}^0} - 2\lint_{-\infty}^0 e^t \cos (2t) \diff t = -2{\rm J},
+$$
+from which we can solve for $\rm J$ and then substitute back into $\rm I$ to finish off the problem
+$$
+    {\rm J} = 1 - 4{\rm J} \implies {\rm J} = \frac15 \implies {\rm I} = \frac12 - \frac1{10} = \color{green}\boxed{\frac25.}
+$$
+</div>
+
+<p>We stay in 2010 for the next one, which is even shorter:</p>
+<div class="problem">
+Find the following antiderivative
+$$
+    \int \left(\frac1{\log x} - \frac1{\log^2 x}\right) \diff x.
+$$
+</div>
+
+<p><em>Proposed in MIT Integration Bee Qualifying Exam, 2010, Q24.</em></p>
+<div class="solution">
+Putting both terms into a single fraction reminds one of structure of the derivative of a quotient. Indeed, that is the case:
+$$
+    \int \left(\frac1{\log x} - \frac1{\log^2 x}\right) \diff x
+    = \int \frac{\log x - 1}{\log^2 x} \diff x
+    = \int \left(\frac{\diff}{\diff x} \left[\frac{x}{\log x}\right]\right) \diff x
+    = \color{green}\boxed{\frac{x}{\log x} + C.}
+$$
+</div>
+
+<p>I have selected the last two from this year (2026). The first one only requires a couple trigonometric identities:</p>
+<div class="problem">
+Find the following antiderivative
+$$
+    \int \sqrt{\frac{\cos x \cot x \csc x}{\sin x \tan x \sec x}} \diff x.
+$$
+</div>
+
+<p><em>Proposed in MIT Integration Bee Qualifying Exam, 2026, Q16.</em></p>
+<div class="solution">
+Notice that the integrand simplifies into $\cot^2 x$, so
+$$
+    \int \sqrt{\frac{\cos x \cot x \csc x}{\sin x \tan x \sec x}} \diff x
+    = \int \cot^2 x \diff x = -x + \int \frac{\diff x}{\sin^2 x} = \color{green}\boxed{-x - \cot x + C.}
+$$
+</div>
+
+<p>Finally, this last one looks funny, but it takes more time to typeset than to solve it:</p>
+<div class="problem">
+Evaluate the integral
+$$
+    {\rm I} = \lint_0^{1000} \left(
+        \lfloor\lceil x\rceil\rfloor + \lceil\lfloor x\rfloor\rceil + \lfloor\{x\}\rfloor
+        + \{\lfloor x\rfloor\} + \lceil\{x\}\rceil + \{\lceil x\rceil\}\right) \diff x.
+$$
+</div>
+
+<p><em>Proposed in MIT Integration Bee Qualifying Exam, 2026, Q15.</em></p>
+<div class="solution">
+Notice that from the definition of the floor, ceil, and fractionary part functions, the third, fourth, and sixth summands are zero; the fifth one is always 1,
+and the first two are simply the floor and the ceil respectively (since these operations acting on integers are idempotent). Hence
+$$
+    {\rm I} = 1000 + \lint_0^{1000} \lfloor x\rfloor \diff x +  \lint_0^{1000} \lceil x\rceil \diff x
+    = 1000 + \sum_{k = 0}^{999} k + \sum_{k = 1}^{1000} k = 2000 + 999\cdot 1000 = \color{green}\boxed{1001000.}
+$$
+</div>
+
+<p>All of these (and more) are available at the <a href="https://math.mit.edu/~yyao1/integrationbee.html">MIT Integration Bee website</a>.</p>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
