@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Daily integrals of 13/5/2026: Medium and Hard difficulties - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/math.css">
+    <link rel="stylesheet" href="../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\lint': '\\int\\limits',
+                '\\ihat': '{\\bf i}',
+                '\\jhat': '{\\bf j}',
+                '\\khat': '{\\bf k}',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+                '\\re': '\\operatorname{Re}',
+                '\\im': '\\operatorname{Im}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../posts/" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">12 May 2026</p>
+        
+
+        
+    </div>
+
+    
+    <main>
+        <p>Let us begin with the medium integral, since I believe it is actually more challenging and interesting:</p>
+<div class="problem">
+Compute the following integral:
+$$
+{\rm I} = \lint_0^{\pi/2} \frac{x\sin x\cos x}{\sin^4 x + \cos^4 x} \diff x.
+$$
+</div>
+
+<p><em>Proposed by the user "Phalit Sehgal" on the website <code>dailyintegral.com</code>.</em></p>
+<div class="solution">
+The key step is to notice the symmetry of the trigonometric functions on $[0, 2\pi]$, and from there apply King's rule to remove the linear term:
+$$
+{\rm I} = \lint_0^{\pi/2} \frac{(\pi/2 - x)\sin(\pi/2 - x)\cos(\pi/2 - x)}{\sin^4(\pi/2 - x) + \cos^4(\pi/2 - x)} \diff x
+    = \frac{\pi}{2}\lint_0^{\pi/2} \frac{\sin x\cos x}{\sin^4 x + \cos^4 x} \diff x - {\rm I}
+    \implies {\rm I} = \frac\pi4 \lint_0^{\pi/2} \frac{\sin x\cos x}{\sin^4 x + \cos^4 x} \diff x.
+$$
+With the double-angle sine formula the numerator becomes $\sin(2x)/2$, whereas the denominator requires a bit more work. From the cosine of a double
+angle it follows that
+$$
+\begin{align*}
+\cos(2x) = \cos^2 x - \sin^2 x &\implies \begin{cases}
+    \sin^2 x &= (1 - \cos(2x))/2\\
+    \cos^2 x &= (1 + \cos(2x))/2\\
+\end{cases}\\
+&\implies \sin^4 x + \cos^4 x = \frac14 [(1 - \cos(2x))^2 + (1 + \cos(2x))^2] = \frac12 (1 + \cos^2(2x));
+\end{align*}
+$$
+putting everything together a final $t$-substitution completes the problem:
+$$
+    {\rm I} = \frac\pi4 \lint_0^{\pi/2} \frac{\sin(2x)}{1 + \cos^2(2x)} \diff x = \left\{\begin{aligned}
+        t &= \cos (2x)\\
+        \diff t &= -2\sin(2x)\diff x
+    \end{aligned}\right\} = \frac\pi8 \lint_{-1}^1 \frac{\diff t}{1 + t^2} = \color{green}\boxed{\frac{\pi^2}{16}.}
+$$
+</div>
+
+<p>Now for the "hard" one:</p>
+<div class="problem">
+Evaluate the following expression:
+$$
+    a^2 \lint_0^\infty \frac{\sin(xy)}{x(x^2 + a^2)} \diff x
+    - \frac{\partial^2}{\partial y^2}\lint_0^\infty \frac{\sin(xy)}{x(x^2 + a^2)} \diff x.
+$$
+</div>
+
+<p><em>Proposed by the user "Ege A." on the website <code>dailyintegral.com</code>.</em></p>
+<div class="solution">
+Leibniz's rule allows us to move the partial derivative into the integral, and after doing that the expression heavily simplifies:
+$$
+\begin{align*}
+    a^2 \lint_0^\infty \frac{\sin(xy)}{x(x^2 + a^2)} \diff x - \frac{\partial^2}{\partial y^2}\lint_0^\infty \frac{\sin(xy)}{x(x^2 + a^2)} \diff x
+    &= \lint_0^\infty \frac{a^2\sin(xy)}{x(x^2 + a^2)}\diff x - \lint_0^\infty\frac{\partial^2}{\partial y^2}\left(\frac{\sin(xy)}{x(x^2+a^2)}\right)\diff x\\
+    &= \lint_0^\infty \frac{\cancel{(x^2 + a^2)}\sin(xy)}{x\cancel{(x^2 + a^2)}} \diff x
+    = \lint_0^\infty \frac{\sin(xy)}{x} \diff x.
+\end{align*}
+$$
+After the obvious change of variables, this becomes the famous Dirichlet integral, whose value is widely known:
+$$
+    \lint_0^\infty \frac{\sin(xy)}{x} \diff x = \left\{\begin{aligned}
+        t &= xy\\
+        \diff t &= y\diff x
+    \end{aligned}\right\} = \lint_0^{\pm \infty} \frac{\sin t}{t} \diff t = \color{green}\boxed{\frac\pi2.}
+$$
+</div>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
