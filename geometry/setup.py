@@ -6,7 +6,7 @@ setup(
     py_modules=["geometry_plugin"],
     install_requires=[
         "mkdocs>=1.0.0",
-        "pythagoras==0.3.0",
+        "pythagoras==0.4.1",
     ],
     entry_points={
         "mkdocs.plugins": [

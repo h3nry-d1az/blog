@@ -50,6 +50,7 @@
                 '\\adj': '{\#1}^{\\mathsf H}',
                 '\\re': '\\operatorname{Re}',
                 '\\im': '\\operatorname{Im}',
+                '\\e': '{\\rm e}',
             },
             throwOnError: false
         });">
@@ -87,6 +88,10 @@
 
         {% if page and page.meta.updated %}
         <p class="updated">{{ page.meta.updated }}</p>
+        {% endif %}
+
+        {% if page and page.meta.note %}
+        <p class="note">{{ page.meta.note }}</p>
         {% endif %}
     </div>
 

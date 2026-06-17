@@ -155,6 +155,18 @@ sc {
     font-weight: bolder;
 }
 
+.note {
+    text-align: right;
+    font-variant-caps: normal;
+    font-weight: normal;
+}
+
+.note::before {
+    content: "Note: ";
+    font-variant-caps: small-caps;
+    font-weight: bold;
+}
+
 .updated::before {
     content: "Updated: ";
     font-style: normal;
