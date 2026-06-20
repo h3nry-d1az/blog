@@ -190,3 +190,53 @@ sc {
     column-gap: 20px;
     column-rule: 1px dotted teal;
 }
+
+.print-button {
+    background: none;
+    border: none;
+    color: teal;
+    font-family: inherit;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-decoration-thickness: 1px;
+    padding: 0;
+}
+
+.print-button:hover {
+    color: darkcyan;
+}
+
+@media screen and (max-width: 920px) {
+    body { padding: 3% 5% 5% 5%; }
+
+    nav {
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .blog-title {
+        margin-right: 0; 
+        text-align: center;
+    }
+
+    nav ul {
+        gap: 1.5rem; 
+        justify-content: center;
+    }
+
+    footer {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1rem;
+        text-align: center;
+    }
+}
+
+@media print {
+    .print-button { display: none; }
+    nav ul { display: none; }
+}
