@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="description" content="A potpourri of mathematics and computing">
+    
+    <meta name="author" content="Henry Díaz Bordón">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>How Do Calculators Compute Hard Integrals? - Henry Díaz Bordón</title>
+    
+
+    <link rel="stylesheet" href="../../../../css/style.css">
+    <link rel="stylesheet" href="../../../../css/math.css">
+    <link rel="stylesheet" href="../../../../css/syntax.css">
+
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\[', right: '\\]', display: true},
+                {left: '$', right: '$', display: false},
+                {left: '\\(', right: '\\)', display: false}
+            ],
+            macros: {
+                '\\l': '\\left',
+                '\\r': '\\right',
+                '\\NN': '\\mathbf{N}',
+                '\\ZZ': '\\mathbf{Z}',
+                '\\QQ': '\\mathbf{Q}',
+                '\\RR': '\\mathbf{R}',
+                '\\CC': '\\mathbf{C}',
+                '\\diff': '\\mathop{}\\!\\mathrm{d}',
+                '\\lint': '\\int\\limits',
+                '\\ihat': '{\\bf i}',
+                '\\jhat': '{\\bf j}',
+                '\\khat': '{\\bf k}',
+                '\\tr': '\\operatorname{tr}',
+                '\\trans': '{\#1}^{\\mathsf T}',
+                '\\adj': '{\#1}^{\\mathsf H}',
+                '\\re': '\\operatorname{Re}',
+                '\\im': '\\operatorname{Im}',
+                '\\e': '{\\rm e}',
+                '\\arccosh': '\\operatorname{arccosh}',
+                '\\arcsinh': '\\operatorname{arcsinh}',
+            },
+            throwOnError: false
+        });">
+        </script>
+    
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="blog-title">
+                <a href="https://h3nry-d1az.github.io/">Henry Díaz Bordón</a>
+            </div>
+
+            <ul>
+                
+                <li>
+                    <a href="../../../" class="">
+                        Posts
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../problems/" class="">
+                        Problems
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../../../../miscellanea/" class="">
+                        Miscellanea
+                    </a>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <div style="line-height: 0.5;">
+        
+
+        
+        <p class="date">20 Jun 2026</p>
+        
+
+        
+
+        
+        <p class="note">This article is part of the 5<sup>th</sup> edition of the <em>Summer of Math Exposition</em> (<a href="https://some.3b1b.co/archive?year=2026&page=1">SoME5</a>).</p>
+        
+    </div>
+
+    
+    <main>
+        <style>
+    .terminal-box {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        font-family: 'Courier New', Courier, monospace;
+        width: 100%;
+        height: 225px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
+        position: relative;
+    }
+
+    .output {
+        flex-grow: 1;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        margin-bottom: 10px;
+        scrollbar-width: thin;
+        scrollbar-color: #555 #1e1e1e;
+    }
+
+    .output::-webkit-scrollbar { width: 8px; }
+    .output::-webkit-scrollbar-thumb { background-color: #555; border-radius: 4px; }
+
+    .input-line { display: flex; align-items: center; }
+    .prompt { margin-right: 10px; color: #4af626; }
+
+    .command-input {
+        background: transparent;
+        border: none;
+        color: #4af626;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1em;
+        flex-grow: 1;
+        outline: none;
+    }
+
+    .welcome {
+        color: azure;
+        font-weight: bolder;
+        text-shadow:
+            0 0 3px rgba(255, 255, 255, 0.8),
+            0 0 8px rgba(255, 255, 255, 0.3);
+        font-size: 1.1em;
+        padding: 10px 20px;
+        background-color: #222222;
+        border: 1px solid #ffffff;
+        border-radius: 12px;
+        width: fit-content;
+        margin-bottom: 0.8em;
+    }
+    .error { color: #ff5555; }
+    .result { color: #569cd6; }
+    .command { color: #ffffff; font-weight: bold; }
+</style>
+
+<h1 id="the-problem">The problem<a class="headerlink" href="#the-problem" title="Permanent link">&para;</a></h1>
+<p>It is a very well known fact that integration can be a really, really hard
+process; the usual way of computing the exact value of a definite inegral
+requires finding an antiderivative for the integrand, evaluating it at the
+boundary points, and then subtracting the results. The problem is that this
+first step can be very difficult, if not impossible<sup>1</sup>, since the
+primitives of many simple functions such as $\e^{-x^2}$ or $x^x$ cannot be
+written in terms of elementary functions (sines, cosines, exponentials, inverse
+trigonometric functions, ...).</p>
+<p>So what then? Sometimes Taylor-expanding the function and then interchanging
+the infinite sum with the integral via the dominated convergence theorem works,
+others fancy theorems such as Glasser's and Ramanujan's master theorems may do
+the trick, or even moving up to the complex plane and using the residue theorem
+there. When all the previous fail, though, there is no choice but to resort to 
+<em>numerical integration</em>, that is, giving up the exact result and instead try to
+find a very precise estimate with the aid of a computer or calculator.</p>
+<p>The aim of this post is to explain the integration method developed by Turing
+Award laureate William Kahan for HP calculators in the 1980s (HP-34C, HP-15C,
+HP-42S), but this will be the culmination of an introduction to numerical
+analysis (with a special emphasis on numerical integration).</p>
+<h1 id="a-word2-about-errors">A word<sup>2</sup> about errors<a class="headerlink" href="#a-word2-about-errors" title="Permanent link">&para;</a></h1>
+<p>Computers are undoubtedly very poweful machines, capable of performing
+computations that would take days (if not months or years) to a regular human
+in a fraction of a second. However, because of their own nature as physical,
+material objects, they are still constrained by space and time, so they can
+only manipulate numbers with a finite amount of digits.</p>
+<p>This is a problem, and a big one since the vast majority of real numbers are
+irrational, including ubiquitous constants such as $\pi$ or the aforementioned
+$\e$, and even periodic rational numbers like $1/3$ or $2/7$ cannot be
+represented with a finite precision.</p>
+<h2 id="floating-point-numbers">Floating-point numbers<a class="headerlink" href="#floating-point-numbers" title="Permanent link">&para;</a></h2>
+<p>The current standard that dictates how the so-called <em>floating-point</em> numbers
+are stored and handled is the IEEE 754 (a number that you might eventually end
+up memorizing), which works like scientific notation but in binary. For
+instance, let us examine the 32 bits of the IEEE 754 representation of $2.875$:
+$$
+    2.875 = 1.4375 \cdot 2^1 = \texttt{0b}
+    \underbrace{\color{blue} \texttt{0}}_{\text{Sign bit}}\:
+    \underbrace{\color{orange} \texttt{10000000}}_{\text{Exponent}}\:
+    \underbrace{\color{green} \texttt{01110000000000000000000}}_{\text{Mantissa}};
+$$
+the mantissa encodes the decimal part of the factor, since $0.4375=0\cdot2^{-1}
++ 1\cdot2^{-2} + 1\cdot2^{-3} + 1\cdot2^{-4}$, whereas the exponent bits store,
+well, the exponent of the power of $2$ multiplying; finally, the sign bit is
+set to 0 when the number is positive, and 1 when it is negative.</p>
+<div class="terminal-box" welcome="Try it out! Type $\texttt{IEEE754}(2.875)$ and verify that I did not make a mistake, or replace $2.875$ by any floating-point number you like to see it happen in real time.">
+    <div class="output"></div>
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input type="text" class="command-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+<p>There are also 64-bit floats, and if your computer has an x86 CPU with a
+floating-point unit (it most likely does) it even supports 80-bit
+floating-point numbers; if you know some C, the three formats described above
+correspond to the <code>float</code>, <code>double</code> and <code>long double</code> types when available.
+Most interpreted languages such as Python and JavaScript (the latter is the one
+running in the previous console) make things easy by keeping all decimal
+numbers 64-bit floats by default, so why not go up again and try executing
+<code>IEEE754f64(2.875)</code> this time to see how the number is actually saved in
+memory?</p>
+<h2 id="truncation-and-overflowunderflow-errors">Truncation and overflow/underflow errors<a class="headerlink" href="#truncation-and-overflowunderflow-errors" title="Permanent link">&para;</a></h2>
+<p>Anyway, this is not the topic of this section, but rather what happens when you
+operate with two floats and the result cannot be stored within the given size:
+the number gets truncated and the mantissa rounds to the nearest even number
+when interpreted as an integer (i.e., it keeps its last bit equal to 0). This
+means that our computations <em>lose</em> precision, and whilst rounding
+$2.19856478212575$ to $2.1985647821258$ is not a big deal if done only once,
+the error can accumulate, and after many iterations end up giving a completely
+wrong result.</p>
+<p>A tragic example of this phenomenon is the <a href="https://www.gao.gov/products/imtec-92-26">Patriot Missile incident in
+Dharan</a>: Three decades ago, back
+during the times of the Second Gulf War, the US military had installed a
+battery of defense missiles in Dharan (South Arabia), but it failed to
+intercept an Iraqi Scud missile due to computer arithmetic errors, causing the
+death of 28 soldiers and over a hundred other people. Specifically, the
+system's internal clock measured time in tenths of a second, so the error came
+when multiplying by $1/10$ to perform the conversion; all of this in a
+fixed-point<sup>3</sup> 24-bit register.</p>
+<p>Another type of behavior floating-point numbers may exhibit when operating with
+them are the so-called <em>overflow</em> and <em>underflow</em> errors. When adding two very
+large numbers, their sum may exceed the maximum value of the corresponding
+float type, and what happens in this case is that the output rolls back to a
+nonsense result. Likewise, when subtracting two very close floats, if the
+infimum result cannot be represented precisely, it may round down to zero.</p>
+<p>For instance, recall that
+$$
+    \frac{\diff f}{\diff x} = \lim_{h\to 0} \frac{f(x + h) - f(x)}h
+    \approx \frac{f(x + \varepsilon) - f(x)}\varepsilon
+$$
+for some very small value of $\varepsilon$. However, doing this in practice
+conveys the risk of having $f(x+\varepsilon)-f(x)$ underflow, and hence
+incorrectly yielding $f'(x) = 0$.</p>
+<div class="terminal-box" welcome="What is $0.1 + 0.2$? Can you explain from what we have seen in the last two topics why do we get this result?
+HINT: Maybe $\texttt{IEEE754f64}(0.1)$ and $\texttt{IEEE754f64}(0.2)$ give you some information.">
+    <div class="output"></div>
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input type="text" class="command-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+<h2 id="asymptotic-notation">Asymptotic notation<a class="headerlink" href="#asymptotic-notation" title="Permanent link">&para;</a></h2>
+<p>If errors are unavoidable in numerical computations, can we at least estimate
+and control them? The answer is thankfully affirmative, and mathematicians have
+developed a special set of notations for that. Let us first delve into the
+formal definition of the most famous of them all, the big-O:</p>
+<div class="definition">
+Given two functions $f$ and $g$, we say that $f = \mathscr O(g)$ (read as "$f$
+is big-O of $g$") if there exists $\lambda \in \RR^+$ such that $|f(x)| \leq
+\lambda g(x)$ for every $x$ in the domain of $f$.
+</div>
+
+<p>Intuitively, having $f=\mathscr O(g)$ means that $f$ is bounded in magnitude
+from above by $g$ (possibly scaled by a factor), and in particular that when
+$x$ goes to infinity, $f$ grows as fast or slower than $g$. You might have seen
+this in computer science when analyzing the time complexity of an algorithm,
+and indeed it is the exact same concept, where $f$ in this case is the time (or
+memory, or any other resource) the algorithm needs to run.</p>
+<p>As it was previously stated, there are other symbols in the literature that
+play similar roles (mostly due to Donald Knuth), for instance $f=\Omega(g)$ to
+denote a <em>lower bound</em>, or $f=\Theta(g)$ to represent an exact bound.<sup>4</sup></p>
+<figure style="text-align: center;">
+<div align="center"><svg width="524.0000" height="179.7811" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 174.7811 L 502.5000 174.7811" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 158.9698 L 502.5000 158.9698" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 143.1584 L 502.5000 143.1584" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 127.3470 L 502.5000 127.3470" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 111.5356 L 502.5000 111.5356" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 95.7242 L 502.5000 95.7242" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 79.9128 L 502.5000 79.9128" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 64.1014 L 502.5000 64.1014" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 48.2900 L 502.5000 48.2900" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 32.4787 L 502.5000 32.4787" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 16.6673 L 502.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 174.7811 L 2.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 52.5000 174.7811 L 52.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 102.5000 174.7811 L 102.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 152.5000 174.7811 L 152.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 202.5000 174.7811 L 202.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 252.5000 174.7811 L 252.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 302.5000 174.7811 L 302.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 352.5000 174.7811 L 352.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 402.5000 174.7811 L 402.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 452.5000 174.7811 L 452.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 502.5000 174.7811 L 502.5000 16.6673" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 7.5000 158.9698 L 12.5000 152.4205 L 17.5000 147.3950 L 22.5000 143.1584 L 27.5000 139.4258 L 32.5000 136.0513 L 37.5000 132.9481 L 42.5000 130.0598 L 47.5000 127.3470 L 52.5000 124.7811 L 57.5000 122.3407 L 62.5000 120.0089 L 67.5000 117.7724 L 72.5000 115.6203 L 77.5000 113.5439 L 82.5000 111.5356 L 87.5000 109.5891 L 92.5000 107.6991 L 97.5000 105.8609 L 102.5000 104.0705 L 107.5000 102.3243 L 112.5000 100.6192 L 117.5000 98.9524 L 122.5000 97.3215 L 127.5000 95.7242 L 132.5000 94.1586 L 137.5000 92.6228 L 142.5000 91.1151 L 147.5000 89.6342 L 152.5000 88.1786 L 157.5000 86.7471 L 162.5000 85.3384 L 167.5000 83.9516 L 172.5000 82.5857 L 177.5000 81.2397 L 182.5000 79.9128 L 187.5000 78.6042 L 192.5000 77.3132 L 197.5000 76.0391 L 202.5000 74.7811 L 207.5000 73.5389 L 212.5000 72.3116 L 217.5000 71.0989 L 222.5000 69.9003 L 227.5000 68.7151 L 232.5000 67.5431 L 237.5000 66.3837 L 242.5000 65.2366 L 247.5000 64.1014 L 252.5000 62.9777 L 257.5000 61.8652 L 262.5000 60.7636 L 267.5000 59.6725 L 272.5000 58.5916 L 277.5000 57.5208 L 282.5000 56.4595 L 287.5000 55.4078 L 292.5000 54.3652 L 297.5000 53.3316 L 302.5000 52.3067 L 307.5000 51.2903 L 312.5000 50.2821 L 317.5000 49.2821 L 322.5000 48.2900 L 327.5000 47.3057 L 332.5000 46.3288 L 337.5000 45.3594 L 342.5000 44.3971 L 347.5000 43.4419 L 352.5000 42.4936 L 357.5000 41.5520 L 362.5000 40.6171 L 367.5000 39.6886 L 372.5000 38.7664 L 377.5000 37.8505 L 382.5000 36.9407 L 387.5000 36.0368 L 392.5000 35.1387 L 397.5000 34.2465 L 402.5000 33.3598 L 407.5000 32.4787 L 412.5000 31.6029 L 417.5000 30.7325 L 422.5000 29.8674 L 427.5000 29.0073 L 432.5000 28.1524 L 437.5000 27.3023 L 442.5000 26.4572 L 447.5000 25.6168 L 452.5000 24.7811 L 457.5000 23.9501 L 462.5000 23.1236 L 467.5000 22.3016 L 472.5000 21.4840 L 477.5000 20.6708 L 482.5000 19.8618 L 487.5000 19.0570 L 492.5000 18.2564 L 497.5000 17.4598 L 502.5000 16.6673 L 507.5000 15.8787" stroke="rgb(255, 0, 0)" fill="none" />
+<path d="M 7.5000 125.7679 L 12.5000 128.5723 L 17.5000 132.7517 L 22.5000 137.6461 L 27.5000 142.4830 L 32.5000 146.4986 L 37.5000 149.0589 L 42.5000 149.7598 L 47.5000 148.4906 L 52.5000 145.4517 L 57.5000 141.1228 L 62.5000 136.1874 L 67.5000 131.4247 L 72.5000 127.5866 L 77.5000 125.2790 L 82.5000 124.8663 L 87.5000 126.4137 L 92.5000 129.6768 L 97.5000 134.1404 L 102.5000 139.0999 L 107.5000 143.7723 L 112.5000 147.4198 L 117.5000 149.4667 L 122.5000 149.5897 L 127.5000 147.7695 L 132.5000 144.2934 L 137.5000 139.7103 L 142.5000 134.7436 L 147.5000 130.1775 L 152.5000 126.7330 L 157.5000 124.9537 L 162.5000 125.1207 L 167.5000 127.2076 L 172.5000 130.8848 L 177.5000 135.5719 L 182.5000 140.5289 L 187.5000 144.9731 L 192.5000 148.2029 L 197.5000 149.7084 L 202.5000 149.2519 L 207.5000 146.9055 L 212.5000 143.0396 L 217.5000 138.2646 L 222.5000 133.3343 L 227.5000 129.0272 L 232.5000 126.0231 L 237.5000 124.7965 L 242.5000 125.5409 L 247.5000 128.1388 L 252.5000 132.1801 L 257.5000 137.0268 L 262.5000 141.9136 L 267.5000 146.0690 L 272.5000 148.8370 L 277.5000 149.7807 L 282.5000 148.7509 L 287.5000 145.9103 L 292.5000 141.7073 L 297.5000 136.8056 L 302.5000 131.9789 L 307.5000 127.9894 L 312.5000 125.4668 L 317.5000 124.8094 L 322.5000 126.1211 L 327.5000 129.1947 L 332.5000 133.5449 L 337.5000 138.4851 L 342.5000 143.2351 L 347.5000 147.0452 L 352.5000 149.3137 L 357.5000 149.6826 L 362.5000 148.0935 L 367.5000 144.7974 L 372.5000 140.3147 L 377.5000 135.3530 L 382.5000 130.6957 L 387.5000 127.0782 L 392.5000 125.0714 L 397.5000 124.9923 L 402.5000 126.8534 L 407.5000 130.3607 L 412.5000 134.9606 L 417.5000 139.9269 L 422.5000 144.4755 L 427.5000 147.8883 L 432.5000 149.6264 L 437.5000 149.4155 L 442.5000 147.2888 L 447.5000 143.5821 L 452.5000 138.8807 L 457.5000 133.9267 L 462.5000 129.5023 L 467.5000 126.3060 L 472.5000 124.8425 L 477.5000 125.3427 L 482.5000 127.7278 L 487.5000 131.6211 L 492.5000 136.4080 L 497.5000 141.3328 L 502.5000 145.6179 L 507.5000 148.5868" stroke="rgb(0, 0, 255)" fill="none" />
+<path d="M 7.5000 119.8144 L 12.5000 115.0457 L 17.5000 110.6651 L 22.5000 106.8472 L 27.5000 103.7444 L 32.5000 101.4802 L 37.5000 100.1449 L 42.5000 99.7918 L 47.5000 100.4350 L 52.5000 102.0487 L 57.5000 104.5687 L 62.5000 107.8946 L 67.5000 111.8936 L 72.5000 116.4064 L 77.5000 121.2531 L 82.5000 126.2405 L 87.5000 131.1697 L 92.5000 135.8442 L 97.5000 140.0776 L 102.5000 143.7012 L 107.5000 146.5705 L 112.5000 148.5712 L 117.5000 149.6234 L 122.5000 149.6853 L 127.5000 148.7543 L 132.5000 146.8675 L 137.5000 144.1003 L 142.5000 140.5628 L 147.5000 136.3962 L 152.5000 131.7665 L 157.5000 126.8584 L 162.5000 121.8674 L 167.5000 116.9926 L 172.5000 112.4283 L 177.5000 108.3565 L 182.5000 104.9394 L 187.5000 102.3134 L 192.5000 100.5832 L 197.5000 99.8176 L 202.5000 100.0472 L 207.5000 101.2629 L 212.5000 103.4162 L 217.5000 106.4212 L 222.5000 110.1582 L 227.5000 114.4782 L 232.5000 119.2089 L 237.5000 124.1618 L 242.5000 129.1393 L 247.5000 133.9431 L 252.5000 138.3817 L 257.5000 142.2780 L 262.5000 145.4768 L 267.5000 147.8505 L 272.5000 149.3046 L 277.5000 149.7809 L 282.5000 149.2606 L 287.5000 147.7644 L 292.5000 145.3519 L 297.5000 142.1193 L 302.5000 138.1955 L 307.5000 133.7369 L 312.5000 128.9212 L 317.5000 123.9406 L 322.5000 118.9934 L 327.5000 114.2770 L 332.5000 109.9793 L 337.5000 106.2717 L 342.5000 103.3021 L 347.5000 101.1888 L 352.5000 100.0160 L 357.5000 99.8305 L 362.5000 100.6397 L 367.5000 102.4114 L 372.5000 105.0748 L 377.5000 108.5239 L 382.5000 112.6212 L 387.5000 117.2032 L 392.5000 122.0873 L 397.5000 127.0788 L 402.5000 131.9787 L 407.5000 136.5917 L 412.5000 140.7338 L 417.5000 144.2399 L 422.5000 146.9703 L 427.5000 148.8161 L 432.5000 149.7036 L 437.5000 149.5976 L 442.5000 148.5023 L 447.5000 146.4612 L 452.5000 143.5558 L 457.5000 139.9020 L 462.5000 135.6453 L 467.5000 130.9555 L 472.5000 126.0195 L 477.5000 121.0342 L 482.5000 116.1983 L 487.5000 111.7045 L 492.5000 107.7321 L 497.5000 104.4393 L 502.5000 101.9575 L 507.5000 100.3856" stroke="rgb(255, 215, 0)" fill="none" />
+<path d="M 2.5000 174.7811 L 2.5000 16.6673" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 174.7811 L 502.5000 174.7811" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="28.3345" height="10.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="514.0000" y="169.7811" width="10.0000" height="10.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<foreignObject x="514.0000" y="0.0000" width="10.0000" height="33.3345">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+<foreignObject x="514.0000" y="24.1339" width="10.0000" height="155.6473">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>g</mi></mrow></math></div></foreignObject>
+<foreignObject x="514.0000" y="111.4546" width="10.0000" height="68.3265">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>h</mi></mrow></math></div></foreignObject>
+</svg></div>
+<figcaption>$f = \mathscr O(g)$, $h = \Omega(f)$ and $g = \Theta(h)$.</figcaption>
+</figure>
+
+<p>But again, we came here seeking to somewhat understand the error of our
+algorithms, and to see how the definitions above make sense when doing
+mathematics, the example of the Taylor polynomial is very enlightening. Recall
+first Taylor's theorem:</p>
+<div class="theorem">
+Given a function $\mathscr C^{n+1} \ni f: D \longrightarrow \RR$ ($n+1$ times
+differentiable), it can be written as a polynomial of degree at most $n$ plus
+an error term; that is:
+$$
+    f(x) = \sum_{j=0}^k \left(\frac{f^{(j)}(\alpha)}{j!} (x-\alpha)^j\right) +
+    \underbrace{\frac{f^{(k+1)}(\xi)}{(k+1)!}(x-\alpha)^{k+1}}_{\mathscr E_k(x)},
+    \qquad\text{where}\qquad
+    k \leq n,\
+    \alpha \in D,\
+    \alpha \leq \xi \leq x.
+$$
+</div>
+
+<p>As much as I dislike not proving the results I use, from the fact above it
+follows, for example, that
+$$
+\begin{alignat*}{5}
+    \sin x &amp;= x &amp;&amp;-\frac{x^3}6 &amp;&amp;+\frac{x^5}{120} &amp;&amp;-\frac{x^7}{5040}
+        &amp;&amp;+\mathscr O(x^9),\\
+    \cos (\pi x) &amp;= 1 &amp;&amp;-\frac{(\pi x)^2}2 &amp;&amp;+\frac{(\pi x)^4}{24}
+        &amp;&amp;-\frac{(\pi x)^6}{720} &amp;&amp;+\mathscr O((\pi x)^8),\\
+    \e^{x-4} &amp;= 1 &amp;&amp;+(x-4) &amp;&amp;+\frac{(x-4)^2}2 &amp;&amp;+\frac{(x-4)^3}6
+        &amp;&amp;+\mathscr O((x-4)^4);
+\end{alignat*}
+$$
+we have approximated three previous functions whilst still retaining some
+information about how big can be the difference with respect to the actual
+value.</p>
+<p>If real analysis is the art of bounding, numerical analysis is the art of
+approximating.</p>
+<h1 id="newton-cotes-formulae">Newton-Cotes formulae<a class="headerlink" href="#newton-cotes-formulae" title="Permanent link">&para;</a></h1>
+<p>Now comes the time to talk about integration itself, but before bringing up the
+clever methods developed for this purpose, it is worth going back and
+remembering the concept of <em>Riemann sums</em>.</p>
+<h2 id="riemann-sums">Riemann sums<a class="headerlink" href="#riemann-sums" title="Permanent link">&para;</a></h2>
+<p>Let us recall their formal definition:</p>
+<div class="definition">
+Let $f:[a,b]\longrightarrow\RR$ and $P=(x_0,x_1,\cdots,x_n)$ be a partition of
+$[a,b]$, that is, $a=x_0 < x_1 < \cdots < x_n = b$. A Riemann sum of $f$ over
+$[a,b]$ with partition $P$ is defined as
+$$
+    {\rm S}_{[a, b]}^P = \sum_{i = 1}^n f(x_i^*) \Delta x_i,
+    \qquad\text{where}\qquad
+    \Delta x_i = x_i - x_{i-1},
+    \ x_i^* \in [x_{i-1}, x_i].
+$$
+</div>
+
+<p>The previous analytic statement may nevertheless hide its geometric intuition:
+We want to approximate the area under a curve, so we pick $n$ distinct points
+on $[a,b]$, compute the area of the rectangle with the value of the function
+as height and the difference between the points as width, and then take their
+sum. A plot will explain it better than 100 paragraphs of my prose.</p>
+<div class="twocols" style="display: flex; justify-content: center;">
+</figure>
+
+<figure style="text-align: center;">
+<div align="center"><svg width="410.9000" height="215.8340" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 210.5840 L 387.5000 210.5840" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 210.5840 L 2.5000 18.0840" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="30.6680" height="10.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="400.4000" y="205.3340" width="10.5000" height="10.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<foreignObject x="400.4000" y="0.0000" width="10.5000" height="36.1680">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+<path d="M 57.5000 210.5840 L 85.0000 210.5840 L 85.0000 150.0840 L 57.5000 150.0840 L 57.5000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 85.0000 210.5840 L 112.5000 210.5840 L 112.5000 154.2090 L 85.0000 154.2090 L 85.0000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 112.5000 210.5840 L 140.0000 210.5840 L 140.0000 155.5840 L 112.5000 155.5840 L 112.5000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 140.0000 210.5840 L 167.5000 210.5840 L 167.5000 154.2090 L 140.0000 154.2090 L 140.0000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 167.5000 210.5840 L 195.0000 210.5840 L 195.0000 150.0840 L 167.5000 150.0840 L 167.5000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 195.0000 210.5840 L 222.5000 210.5840 L 222.5000 143.2090 L 195.0000 143.2090 L 195.0000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 222.5000 210.5840 L 250.0000 210.5840 L 250.0000 133.5840 L 222.5000 133.5840 L 222.5000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 250.0000 210.5840 L 277.5000 210.5840 L 277.5000 121.2090 L 250.0000 121.2090 L 250.0000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 277.5000 210.5840 L 305.0000 210.5840 L 305.0000 106.0840 L 277.5000 106.0840 L 277.5000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 305.0000 210.5840 L 332.5000 210.5840 L 332.5000 88.2090 L 305.0000 88.2090 L 305.0000 210.5840" stroke="rgb(0, 0, 0)" fill="rgb(255, 128, 128)" />
+<path d="M 6.3500 135.0970 L 10.2000 136.5562 L 14.0500 137.9614 L 17.9000 139.3128 L 21.7500 140.6102 L 25.6000 141.8538 L 29.4500 143.0434 L 33.3000 144.1792 L 37.1500 145.2610 L 41.0000 146.2890 L 44.8500 147.2630 L 48.7000 148.1832 L 52.5500 149.0494 L 56.4000 149.8618 L 60.2500 150.6202 L 64.1000 151.3248 L 67.9500 151.9754 L 71.8000 152.5722 L 75.6500 153.1150 L 79.5000 153.6040 L 83.3500 154.0390 L 87.2000 154.4202 L 91.0500 154.7474 L 94.9000 155.0208 L 98.7500 155.2402 L 102.6000 155.4058 L 106.4500 155.5174 L 110.3000 155.5752 L 114.1500 155.5790 L 118.0000 155.5290 L 121.8500 155.4250 L 125.7000 155.2672 L 129.5500 155.0554 L 133.4000 154.7898 L 137.2500 154.4702 L 141.1000 154.0968 L 144.9500 153.6694 L 148.8000 153.1882 L 152.6500 152.6530 L 156.5000 152.0640 L 160.3500 151.4210 L 164.2000 150.7242 L 168.0500 149.9734 L 171.9000 149.1688 L 175.7500 148.3102 L 179.6000 147.3978 L 183.4500 146.4314 L 187.3000 145.4112 L 191.1500 144.3370 L 195.0000 143.2090 L 198.8500 142.0270 L 202.7000 140.7912 L 206.5500 139.5014 L 210.4000 138.1578 L 214.2500 136.7602 L 218.1000 135.3088 L 221.9500 133.8034 L 225.8000 132.2442 L 229.6500 130.6310 L 233.5000 128.9640 L 237.3500 127.2430 L 241.2000 125.4682 L 245.0500 123.6394 L 248.9000 121.7568 L 252.7500 119.8202 L 256.6000 117.8298 L 260.4500 115.7854 L 264.3000 113.6872 L 268.1500 111.5350 L 272.0000 109.3290 L 275.8500 107.0690 L 279.7000 104.7552 L 283.5500 102.3874 L 287.4000 99.9658 L 291.2500 97.4902 L 295.1000 94.9608 L 298.9500 92.3774 L 302.8000 89.7402 L 306.6500 87.0490 L 310.5000 84.3040 L 314.3500 81.5050 L 318.2000 78.6522 L 322.0500 75.7454 L 325.9000 72.7848 L 329.7500 69.7702 L 333.6000 66.7018 L 337.4500 63.5794 L 341.3000 60.4032 L 345.1500 57.1730 L 349.0000 53.8890 L 352.8500 50.5510 L 356.7000 47.1592 L 360.5500 43.7134 L 364.4000 40.2138 L 368.2500 36.6602 L 372.1000 33.0528 L 375.9500 29.3914 L 379.8000 25.6762 L 383.6500 21.9070 L 387.5000 18.0840" stroke="rgb(255, 0, 0)" fill="none" />
+</svg></div>
+<figcaption>The so-called <em>left sums</em>, named as such because $x_i^* = x_{i-1}$.</figcaption>
+</figure>
+<figure style="text-align: center;">
+<div align="center"><svg width="382.1000" height="222.5005" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 217.7505 L 362.5000 217.7505" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 217.7505 L 2.5000 15.2505" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="26.0011" height="9.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="372.6000" y="213.0005" width="9.5000" height="9.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<foreignObject x="372.6000" y="14.1905" width="9.5000" height="208.3100">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+<path d="M 316.3451 217.7505 L 307.2237 217.7505 L 307.2237 30.4559 L 316.3451 30.4559 L 316.3451 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 307.2237 217.7505 L 289.6027 217.7505 L 289.6027 19.0775 L 307.2237 19.0775 L 307.2237 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 289.6027 217.7505 L 264.6828 217.7505 L 264.6828 16.7048 L 289.6027 16.7048 L 289.6027 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 264.6828 217.7505 L 234.1623 217.7505 L 234.1623 42.2903 L 264.6828 42.2903 L 264.6828 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 234.1623 217.7505 L 200.1210 217.7505 L 200.1210 100.0851 L 234.1623 100.0851 L 234.1623 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 200.1210 217.7505 L 164.8790 217.7505 L 164.8790 164.0785 L 200.1210 164.0785 L 200.1210 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 164.8790 217.7505 L 130.8377 217.7505 L 130.8377 194.8976 L 164.8790 194.8976 L 164.8790 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 130.8377 217.7505 L 100.3172 217.7505 L 100.3172 178.0387 L 130.8377 178.0387 L 130.8377 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 100.3172 217.7505 L 75.3973 217.7505 L 75.3973 134.0763 L 100.3172 134.0763 L 100.3172 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 75.3973 217.7505 L 57.7763 217.7505 L 57.7763 92.0997 L 75.3973 92.0997 L 75.3973 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 57.7763 217.7505 L 48.6549 217.7505 L 48.6549 66.6082 L 57.7763 66.6082 L 57.7763 217.7505" stroke="rgb(0, 0, 0)" fill="rgb(173, 216, 230)" />
+<path d="M 6.1000 15.5384 L 9.7000 16.4001 L 13.3000 17.8301 L 16.9000 19.8193 L 20.5000 22.3550 L 24.1000 25.4210 L 27.7000 28.9976 L 31.3000 33.0619 L 34.9000 37.5880 L 38.5000 42.5469 L 42.1000 47.9069 L 45.7000 53.6337 L 49.3000 59.6907 L 52.9000 66.0391 L 56.5000 72.6383 L 60.1000 79.4462 L 63.7000 86.4191 L 67.3000 93.5124 L 70.9000 100.6808 L 74.5000 107.8785 L 78.1000 115.0593 L 81.7000 122.1775 L 85.3000 129.1873 L 88.9000 136.0440 L 92.5000 142.7038 L 96.1000 149.1239 L 99.7000 155.2635 L 103.3000 161.0831 L 106.9000 166.5456 L 110.5000 171.6160 L 114.1000 176.2619 L 117.7000 180.4535 L 121.3000 184.1641 L 124.9000 187.3700 L 128.5000 190.0505 L 132.1000 192.1887 L 135.7000 193.7707 L 139.3000 194.7865 L 142.9000 195.2296 L 146.5000 195.0971 L 150.1000 194.3899 L 153.7000 193.1125 L 157.3000 191.2731 L 160.9000 188.8834 L 164.5000 185.9588 L 168.1000 182.5179 L 171.7000 178.5828 L 175.3000 174.1786 L 178.9000 169.3335 L 182.5000 164.0785 L 186.1000 158.4471 L 189.7000 152.4756 L 193.3000 146.2019 L 196.9000 139.6663 L 200.5000 132.9105 L 204.1000 125.9778 L 207.7000 118.9125 L 211.3000 111.7599 L 214.9000 104.5656 L 218.5000 97.3756 L 222.1000 90.2361 L 225.7000 83.1926 L 229.3000 76.2902 L 232.9000 69.5730 L 236.5000 63.0840 L 240.1000 56.8648 L 243.7000 50.9551 L 247.3000 45.3927 L 250.9000 40.2131 L 254.5000 35.4496 L 258.1000 31.1326 L 261.7000 27.2896 L 265.3000 23.9454 L 268.9000 21.1212 L 272.5000 18.8352 L 276.1000 17.1019 L 279.7000 15.9325 L 283.3000 15.3344 L 286.9000 15.3115 L 290.5000 15.8639 L 294.1000 16.9880 L 297.7000 18.6768 L 301.3000 20.9193 L 304.9000 23.7012 L 308.5000 27.0048 L 312.1000 30.8088 L 315.7000 35.0891 L 319.3000 39.8181 L 322.9000 44.9657 L 326.5000 50.4989 L 330.1000 56.3823 L 333.7000 62.5784 L 337.3000 69.0473 L 340.9000 75.7479 L 344.5000 82.6371 L 348.1000 89.6711 L 351.7000 96.8046 L 355.3000 103.9922 L 358.9000 111.1879 L 362.5000 118.3455" stroke="rgb(0, 0, 255)" fill="none" />
+</svg></div>
+<figcaption>Riemann sum with a non-equally spaced partition, taking $x_i^* = (x_{i-1}+x_i)/2$</figcaption>
+</div>
+
+<p>Riemann sums are constructed as part of the apparatus needed to define the
+Riemann integral<sup>5</sup>, so although they are asymptotically optimal, in
+practice their convergence is very slow, since we are approximating $f$ on an
+interval by only one of its values; we can do much better.</p>
+<h2 id="every-function-is-approximately-a-polynomial">Every function is (approximately) a polynomial<a class="headerlink" href="#every-function-is-approximately-a-polynomial" title="Permanent link">&para;</a></h2>
+<p>Nowadays, it is very hard to imagine life without a computer, especially when
+doing quantitative sciences; it would be insufferable to the majority of the
+readers (also including the author) to numerically estimate an integral by
+hand, or multiply two very long decimal numbers, or anything along those lines.
+Nonetheless, if you go through the notes of old geniuses such as Newton, you
+will find immense patience to perform these kinds of computations, and those
+endeavors in the long term ended up leading to new insights on how to do the
+calculations faster; the focus of this section are the Newton-Cotes formulas,
+one of those brilliant discoveries.</p>
+<p>As said before, integrating is hard, but integrating <em>polynomials</em> is something
+that can be done quite easily; if any complicated function $\mathfrak f$ could
+be rewritten in this form, the problem would be solved. Unfortunately, this is
+not possible because, well, it would imply that any function is a combination
+of polynomials (and hence a polynomial itself), which is certainly not the
+case; however, we can <em>approximate</em> $\mathfrak f$ by a function of this kind
+$\tilde{\mathfrak f}$ to get an estimate of the value of the integral, and this
+is the fundamental idea behind these formulas.</p>
+<p>What are our choices? The Taylor polynomial has appeared before, but it has two
+significant downsides:</p>
+<ol>
+<li>
+<p>It is <strong>expensive</strong> to compute, because it requires knowing (or estimating,
+    which takes even more resources) $n$ derivatives of $\mathfrak f$ at
+    the center in order to find the Taylor polynomial of degree $n$.</p>
+</li>
+<li>
+<p>It is not really that good; you can look at the plot below and convince
+    yourself that the error is quite noticeable once you move away from the
+    center, and to explain this behavior you may recall that among the
+    properties of the Taylor polynomial were included equality on the first,
+    second, and so forth up until the $n$<sup>th</sup> derivative, which is a
+    constraint that caps its precision.</p>
+</li>
+</ol>
+<figure style="text-align: center;">
+<div align="center"><svg width="460.6991" height="364.1421" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 361.6421 L 2.5000 21.6421" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 201.6421 L 395.1991 201.6421" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 361.6421 L 392.5000 361.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 346.6421 L 392.5000 346.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 331.6421 L 392.5000 331.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 316.6421 L 392.5000 316.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 301.6421 L 392.5000 301.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 286.6421 L 392.5000 286.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 271.6421 L 392.5000 271.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 256.6421 L 392.5000 256.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 241.6421 L 392.5000 241.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 226.6421 L 392.5000 226.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 211.6421 L 392.5000 211.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 196.6421 L 392.5000 196.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 181.6421 L 392.5000 181.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 166.6421 L 392.5000 166.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 151.6421 L 392.5000 151.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 136.6421 L 392.5000 136.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 121.6421 L 392.5000 121.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 106.6421 L 392.5000 106.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 91.6421 L 392.5000 91.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 76.6421 L 392.5000 76.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 61.6421 L 392.5000 61.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 46.6421 L 392.5000 46.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 31.6421 L 392.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 361.6421 L 2.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 32.5000 361.6421 L 32.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 62.5000 361.6421 L 62.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 92.5000 361.6421 L 92.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 122.5000 361.6421 L 122.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 152.5000 361.6421 L 152.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 182.5000 361.6421 L 182.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 212.5000 361.6421 L 212.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 242.5000 361.6421 L 242.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 272.5000 361.6421 L 272.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 302.5000 361.6421 L 302.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 332.5000 361.6421 L 332.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 362.5000 361.6421 L 362.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 392.5000 361.6421 L 392.5000 31.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="33.2843" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="369.6991" y="39.1421" width="91.0000" height="325.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<path d="M 6.4270 197.7162 L 10.3540 193.7962 L 14.2810 189.8884 L 18.2080 185.9987 L 22.1350 182.1331 L 26.0619 178.2976 L 29.9889 174.4981 L 33.9159 170.7404 L 37.8429 167.0304 L 41.7699 163.3738 L 45.6969 159.7762 L 49.6239 156.2431 L 53.5509 152.7800 L 57.4779 149.3923 L 61.4049 146.0851 L 65.3319 142.8636 L 69.2588 139.7327 L 73.1858 136.6973 L 77.1128 133.7621 L 81.0398 130.9315 L 84.9668 128.2099 L 88.8938 125.6015 L 92.8208 123.1104 L 96.7478 120.7404 L 100.6748 118.4952 L 104.6018 116.3781 L 108.5288 114.3925 L 112.4557 112.5415 L 116.3827 110.8278 L 120.3097 109.2542 L 124.2367 107.8230 L 128.1637 106.5365 L 132.0907 105.3966 L 136.0177 104.4051 L 139.9447 103.5636 L 143.8717 102.8733 L 147.7987 102.3353 L 151.7257 101.9504 L 155.6526 101.7192 L 159.5796 101.6421 L 163.5066 101.7192 L 167.4336 101.9504 L 171.3606 102.3353 L 175.2876 102.8733 L 179.2146 103.5636 L 183.1416 104.4051 L 187.0686 105.3966 L 190.9956 106.5365 L 194.9226 107.8230 L 198.8495 109.2542 L 202.7765 110.8278 L 206.7035 112.5415 L 210.6305 114.3925 L 214.5575 116.3781 L 218.4845 118.4952 L 222.4115 120.7404 L 226.3385 123.1104 L 230.2655 125.6015 L 234.1925 128.2099 L 238.1194 130.9315 L 242.0464 133.7621 L 245.9734 136.6973 L 249.9004 139.7327 L 253.8274 142.8636 L 257.7544 146.0851 L 261.6814 149.3923 L 265.6084 152.7800 L 269.5354 156.2431 L 273.4624 159.7762 L 277.3894 163.3738 L 281.3163 167.0304 L 285.2433 170.7404 L 289.1703 174.4981 L 293.0973 178.2976 L 297.0243 182.1331 L 300.9513 185.9987 L 304.8783 189.8884 L 308.8053 193.7962 L 312.7323 197.7162 L 316.6593 201.6421 L 320.5863 205.5681 L 324.5132 209.4880 L 328.4402 213.3959 L 332.3672 217.2856 L 336.2942 221.1512 L 340.2212 224.9867 L 344.1482 228.7862 L 348.0752 232.5438 L 352.0022 236.2538 L 355.9292 239.9105 L 359.8562 243.5081 L 363.7832 247.0412 L 367.7101 250.5043 L 371.6371 253.8920 L 375.5641 257.1992 L 379.4911 260.4207 L 383.4181 263.5515 L 387.3451 266.5869 L 391.2721 269.5222 L 395.1991 272.3528" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="395.6991" y="180.5635" width="65.0000" height="183.5786">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>sin</mi><mi>x</mi></mrow></math></div></foreignObject>
+<path d="M 6.4270 197.7151 L 10.3540 193.7882 L 14.2810 189.8612 L 18.2080 185.9342 L 22.1350 182.0072 L 26.0619 178.0802 L 29.9889 174.1532 L 33.9159 170.2262 L 37.8429 166.2992 L 41.7699 162.3722 L 45.6969 158.4452 L 49.6239 154.5182 L 53.5509 150.5913 L 57.4779 146.6643 L 61.4049 142.7373 L 65.3319 138.8103 L 69.2588 134.8833 L 73.1858 130.9563 L 77.1128 127.0293 L 81.0398 123.1023 L 84.9668 119.1753 L 88.8938 115.2483 L 92.8208 111.3213 L 96.7478 107.3944 L 100.6748 103.4674 L 104.6018 99.5404 L 108.5288 95.6134 L 112.4557 91.6864 L 116.3827 87.7594 L 120.3097 83.8324 L 124.2367 79.9054 L 128.1637 75.9784 L 132.0907 72.0514 L 136.0177 68.1244 L 139.9447 64.1975 L 143.8717 60.2705 L 147.7987 56.3435 L 151.7257 52.4165 L 155.6526 48.4895 L 159.5796 44.5625 L 163.5066 40.6355 L 167.4336 36.7085 L 171.3606 32.7815 L 175.2876 28.8545 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421 L 177.5000 26.6421" stroke="rgb(255, 0, 0)" fill="none" />
+<foreignObject x="0.0000" y="0.0000" width="395.0000" height="53.2843">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>T</mi><mn>1</mn></msub></mrow></math></div></foreignObject>
+<path d="M 6.4270 197.7162 L 10.3540 193.7962 L 14.2810 189.8884 L 18.2080 185.9988 L 22.1350 182.1333 L 26.0619 178.2982 L 29.9889 174.4994 L 33.9159 170.7430 L 37.8429 167.0350 L 41.7699 163.3815 L 45.6969 159.7886 L 49.6239 156.2623 L 53.5509 152.8087 L 57.4779 149.4338 L 61.4049 146.1437 L 65.3319 142.9445 L 69.2588 139.8421 L 73.1858 136.8426 L 77.1128 133.9522 L 81.0398 131.1769 L 84.9668 128.5226 L 88.8938 125.9956 L 92.8208 123.6017 L 96.7478 121.3472 L 100.6748 119.2380 L 104.6018 117.2802 L 108.5288 115.4798 L 112.4557 113.8430 L 116.3827 112.3757 L 120.3097 111.0840 L 124.2367 109.9740 L 128.1637 109.0518 L 132.0907 108.3233 L 136.0177 107.7947 L 139.9447 107.4720 L 143.8717 107.3612 L 147.7987 107.4685 L 151.7257 107.7998 L 155.6526 108.3613 L 159.5796 109.1589 L 163.5066 110.1988 L 167.4336 111.4869 L 171.3606 113.0294 L 175.2876 114.8324 L 179.2146 116.9017 L 183.1416 119.2436 L 187.0686 121.8641 L 190.9956 124.7692 L 194.9226 127.9649 L 198.8495 131.4575 L 202.7765 135.2528 L 206.7035 139.3569 L 210.6305 143.7760 L 214.5575 148.5160 L 218.4845 153.5831 L 222.4115 158.9832 L 226.3385 164.7225 L 230.2655 170.8069 L 234.1925 177.2426 L 238.1194 184.0356 L 242.0464 191.1919 L 245.9734 198.7177 L 249.9004 206.6189 L 253.8274 214.9016 L 257.7544 223.5719 L 261.6814 232.6359 L 265.6084 242.0995 L 269.5354 251.9689 L 273.4624 262.2501 L 277.3894 272.9492 L 281.3163 284.0721 L 285.2433 295.6251 L 289.1703 307.6140 L 293.0973 320.0451 L 297.0243 332.9242 L 300.9513 346.2576 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421 L 302.5000 351.6421" stroke="rgb(0, 0, 255)" fill="none" />
+<foreignObject x="184.3009" y="339.1421" width="276.3982" height="25.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>T</mi><mn>3</mn></msub></mrow></math></div></foreignObject>
+<path d="M 6.4270 197.7162 L 10.3540 193.7962 L 14.2810 189.8884 L 18.2080 185.9987 L 22.1350 182.1331 L 26.0619 178.2976 L 29.9889 174.4981 L 33.9159 170.7404 L 37.8429 167.0304 L 41.7699 163.3738 L 45.6969 159.7761 L 49.6239 156.2430 L 53.5509 152.7798 L 57.4779 149.3920 L 61.4049 146.0846 L 65.3319 142.8628 L 69.2588 139.7316 L 73.1858 136.6956 L 77.1128 133.7595 L 81.0398 130.9278 L 84.9668 128.2048 L 88.8938 125.5945 L 92.8208 123.1008 L 96.7478 120.7275 L 100.6748 118.4780 L 104.6018 116.3555 L 108.5288 114.3631 L 112.4557 112.5036 L 116.3827 110.7794 L 120.3097 109.1929 L 124.2367 107.7460 L 128.1637 106.4404 L 132.0907 105.2776 L 136.0177 104.2587 L 139.9447 103.3845 L 143.8717 102.6555 L 147.7987 102.0718 L 151.7257 101.6334 L 155.6526 101.3396 L 159.5796 101.1897 L 163.5066 101.1823 L 167.4336 101.3159 L 171.3606 101.5885 L 175.2876 101.9978 L 179.2146 102.5409 L 183.1416 103.2146 L 187.0686 104.0153 L 190.9956 104.9391 L 194.9226 105.9814 L 198.8495 107.1372 L 202.7765 108.4012 L 206.7035 109.7676 L 210.6305 111.2300 L 214.5575 112.7816 L 218.4845 114.4151 L 222.4115 116.1226 L 226.3385 117.8959 L 230.2655 119.7260 L 234.1925 121.6037 L 238.1194 123.5190 L 242.0464 125.4613 L 245.9734 127.4198 L 249.9004 129.3827 L 253.8274 131.3378 L 257.7544 133.2725 L 261.6814 135.1733 L 265.6084 137.0263 L 269.5354 138.8168 L 273.4624 140.5296 L 277.3894 142.1490 L 281.3163 143.6583 L 285.2433 145.0404 L 289.1703 146.2776 L 293.0973 147.3512 L 297.0243 148.2423 L 300.9513 148.9308 L 304.8783 149.3962 L 308.8053 149.6173 L 312.7323 149.5721 L 316.6593 149.2377 L 320.5863 148.5909 L 324.5132 147.6074 L 328.4402 146.2622 L 332.3672 144.5295 L 336.2942 142.3830 L 340.2212 139.7952 L 344.1482 136.7382 L 348.0752 133.1830 L 352.0022 129.1000 L 355.9292 124.4586 L 359.8562 119.2275 L 363.7832 113.3744 L 367.7101 106.8664 L 371.6371 99.6696 L 375.5641 91.7491 L 379.4911 83.0694 L 383.4181 73.5938 L 387.3451 63.2851 L 391.2721 52.1048 L 395.1991 40.0137" stroke="rgb(255, 215, 0)" fill="none" />
+<foreignObject x="369.6991" y="0.0000" width="91.0000" height="80.0273">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>T</mi><mn>5</mn></msub></mrow></math></div></foreignObject>
+<path d="M 6.4270 197.7162 L 10.3540 193.7962 L 14.2810 189.8884 L 18.2080 185.9987 L 22.1350 182.1331 L 26.0619 178.2976 L 29.9889 174.4981 L 33.9159 170.7404 L 37.8429 167.0304 L 41.7699 163.3738 L 45.6969 159.7762 L 49.6239 156.2431 L 53.5509 152.7800 L 57.4779 149.3923 L 61.4049 146.0851 L 65.3319 142.8636 L 69.2588 139.7327 L 73.1858 136.6973 L 77.1128 133.7621 L 81.0398 130.9315 L 84.9668 128.2099 L 88.8938 125.6016 L 92.8208 123.1106 L 96.7478 120.7406 L 100.6748 118.4954 L 104.6018 116.3784 L 108.5288 114.3930 L 112.4557 112.5421 L 116.3827 110.8287 L 120.3097 109.2554 L 124.2367 107.8246 L 128.1637 106.5386 L 132.0907 105.3994 L 136.0177 104.4088 L 139.9447 103.5683 L 143.8717 102.8794 L 147.7987 102.3431 L 151.7257 101.9603 L 155.6526 101.7317 L 159.5796 101.6578 L 163.5066 101.7388 L 167.4336 101.9747 L 171.3606 102.3653 L 175.2876 102.9101 L 179.2146 103.6086 L 183.1416 104.4599 L 187.0686 105.4630 L 190.9956 106.6167 L 194.9226 107.9194 L 198.8495 109.3696 L 202.7765 110.9656 L 206.7035 112.7053 L 210.6305 114.5868 L 214.5575 116.6076 L 218.4845 118.7654 L 222.4115 121.0578 L 226.3385 123.4820 L 230.2655 126.0354 L 234.1925 128.7151 L 238.1194 131.5182 L 242.0464 134.4418 L 245.9734 137.4828 L 249.9004 140.6384 L 253.8274 143.9053 L 257.7544 147.2807 L 261.6814 150.7615 L 265.6084 154.3449 L 269.5354 158.0278 L 273.4624 161.8077 L 277.3894 165.6818 L 281.3163 169.6477 L 285.2433 173.7031 L 289.1703 177.8457 L 293.0973 182.0737 L 297.0243 186.3855 L 300.9513 190.7797 L 304.8783 195.2551 L 308.8053 199.8112 L 312.7323 204.4475 L 316.6593 209.1642 L 320.5863 213.9617 L 324.5132 218.8411 L 328.4402 223.8039 L 332.3672 228.8521 L 336.2942 233.9884 L 340.2212 239.2162 L 344.1482 244.5394 L 348.0752 249.9627 L 352.0022 255.4918 L 355.9292 261.1327 L 359.8562 266.8928 L 363.7832 272.7800 L 367.7101 278.8034 L 371.6371 284.9731 L 375.5641 291.3001 L 379.4911 297.7967 L 383.4181 304.4762 L 387.3451 311.3533 L 391.2721 318.4439 L 395.1991 325.7652" stroke="rgb(128, 0, 128)" fill="none" />
+<foreignObject x="369.6991" y="287.3884" width="91.0000" height="76.7538">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><msub><mi>T</mi><mn>7</mn></msub></mrow></math></div></foreignObject>
+</svg></div>
+<figcaption>$f(x) = \sin x$ together with its first, third, fifth, and seventh
+Taylor polynomials (the function is odd, so $T_2(x) = T_1(x)$ and so forth).</figcaption>
+</figure>
+
+<p>How about an interpolating polynomial? This looks much more promising, and it
+was Newton who developed a method to interpolate $n$ points rapidly (in
+$\mathscr O(n^2)$ time complexity, using the notation from the first part) and
+with very high numerical stability; the way it works is as follows:</p>
+<h3 id="newton-interpolation">Newton interpolation<a class="headerlink" href="#newton-interpolation" title="Permanent link">&para;</a></h3>
+<p>Let $x_1, x_2, \cdots, x_n$ be the (distinct) abscissae of the points to
+interpolate, and $\mathfrak f$ our complicated function. Instead of using the
+canonical basis for degree-$n$ polynomials ($\{1, x, x^2, \ldots, x^n\}$), we
+will choose the more clever basis $\{1,\ (x-x_1),\ (x-x_1)(x-x_2),\ldots,\
+(x-x_1)\cdots (x-x_{n-1})\}$; call them $\phi_1,\ldots,\phi_n$ respectively.
+For $p = \lambda_1 \phi_1 + \cdots + \lambda_n \phi_n$ to interpolate the
+$\mathfrak f(x)$'s, it must satisfy
+$$
+    \begin{cases}
+        p(x_1) &amp;= \mathfrak f(x_1),\\
+        p(x_2) &amp;= \mathfrak f(x_2),\\
+        &amp;\vdots\\
+        p(x_n) &amp;= \mathfrak f(x_n),
+    \end{cases}
+    \implies
+    \begin{cases}
+        {\color{red} \lambda_1} &amp;= \mathfrak f(x_1),\\
+        {\color{red} \lambda_1} + {\color{blue} \lambda_2} (x_2 - x_1)
+        &amp;= \mathfrak f(x_2),\\
+        &amp;\vdots\\
+        {\color{red} \lambda_1} + {\color{blue} \lambda_2} (x_n - x_1)
+        + \cdots + {\color{orange} \lambda_n} \prod_{i=1}^{n-1} (x_n - x_i)
+        &amp;= \mathfrak f(x_n),
+    \end{cases}
+$$
+which is a lower-triangular system of equations for the $\lambda$'s, and it can
+be solved in the claimed quadratic time complexity via forward
+substitution<sup>6</sup>. There is another route (which was the main discovery
+of Newton) and, although asymptotically equal, in practice it is faster because
+it does not require computing each $(x_i-x_1)\cdots(x_i-x_{i-1})$; it is also
+more stable (less prone to floating-point errors) and it does not require
+allocating $n\times n$ floats to store the matrix.</p>
+<p>The method is called <em>divided differences</em>, and I like to think about it as a
+discrete version of the Taylor polynomial where, instead of having derivatives,
+we have approximations that make it equal to the function at the given points.
+The procedure involves constructing a table<sup>7</sup> with entries below the
+diagonal, whose first two columns are the abscissae and the values of the
+function at those points, and the entry at row $i$ column $j$, called
+$\nabla^{j-1}_{i-j+1}\mathfrak f$ is computed recursively as
+$$
+    \nabla^j_i\mathfrak f =
+    \frac{\nabla^{j-1}_{i+1}\mathfrak f - \nabla^{j-1}_i\mathfrak f}
+    {x_{i+j-1} - x_i},
+$$
+which is sort of a $(j-1)$<sup>th</sup> derivative of $\mathfrak f$ at
+$x_{i+j-1}$. My notation is arguably kind of cumbersome, but the algorithm is
+as simple as subtracting the element at its left, and the one at its up and
+left, and dividing the result by the difference of $x_i$'s that are found when
+moving always left from the current cell, minus that one found when moving left
+and up until finding an $\mathfrak f(x_i)$, then the cell to its left.
+Finally, the elements in the diagonal are the seeked $\lambda$'s for the
+interpolating polynomial.</p>
+<div class="terminal-box" welcome="But we can use computers for this task. Type '$\texttt{var $f$ = $x$ => (Math.cbrt($x$) + 0.1*Math.sin($x$))}$' to store the function $\mathfrak f(x) = \sqrt[3]x + 0.1\sin x$ in the variable $f$; then '$\texttt{divided\_difference([0.4, 1.1, 1.5, 1.9, 2.1], $f$)}$' to show the divided difference table for the previous function, and '$\texttt{var $p$ = new NewtonPolynomial([\ldots], $f$)}$' to instantiate its interpolating polynomial at those nodes. What information does typing '$p.\texttt{toString}()$' give you? Using $p.\texttt{eval}$, can you verify that $\mathfrak f(x_i) = p(x_i)$ for the previous values?" style="height: 300px;">
+    <div class="output"></div>
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input type="text" class="command-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+<p>Probably the most clever fact about Newton interpolation is that it allows for
+a very good estimation of the error. Notice that for a point $x_{n+1}$ that is
+not one of the given nodes, we can write $\mathfrak f(x_{n+1})$ as
+$p(x_{n+1}) + \varepsilon$, but also as the Newton interpolant with $x_{n+1}$
+as node, which by the previously described recurrence formula can be written in
+terms of $p$ with a correction factor, yielding
+$$
+    \mathfrak f(x_{n+1}) = p(x_{n+1}) +
+    \underbrace{\nabla_1^n\mathfrak f \prod_{i=1}^n (x_{n+1} - x_i)}_\varepsilon.
+$$
+The reason why this equation is any useful is that the intuition about the
+divided differences being related to the derivatives of the function is not
+only a perception but an actual result. Having $a := \min x_i, b := \max x_i$,
+it was proven that
+$$
+    \text{exists $\xi \in [a, b]$ such that}\qquad
+    \nabla_1^n\mathfrak f = \frac{\mathfrak f^{(n)}(\xi)}{n!},\tag{1}
+$$
+just like in the continuous case with the Taylor polynomial. Hence, at least we
+can bound the magnitude of the error, as<sup>8</sup>
+$$
+    |\varepsilon_n(x)| \leq
+    \left(\sup_{\zeta\in[a,b]} \frac{|\mathfrak f^{(n)}(\zeta)|}{n!}\right)
+    \left(\sup_{\xi\in[a,b]} \prod_{i=1}^n |\xi - x_i|\right)
+    \leq \lVert f^{(n)}\rVert_\infty (b - a)^n.
+$$</p>
+<p><br></p>
+<figure style="text-align: center;">
+<div align="center"><svg width="467.5000" height="216.1603" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 207.4103 L 433.7500 207.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 194.9103 L 433.7500 194.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 182.4103 L 433.7500 182.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 169.9103 L 433.7500 169.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 157.4103 L 433.7500 157.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 144.9103 L 433.7500 144.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 132.4103 L 433.7500 132.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 119.9103 L 433.7500 119.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 107.4103 L 433.7500 107.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 94.9103 L 433.7500 94.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 82.4103 L 433.7500 82.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 69.9103 L 433.7500 69.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 57.4103 L 433.7500 57.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 44.9103 L 433.7500 44.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 32.4103 L 433.7500 32.4103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 19.9103 L 433.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 207.4103 L 2.5000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 21.2500 207.4103 L 21.2500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 40.0000 207.4103 L 40.0000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 58.7500 207.4103 L 58.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 77.5000 207.4103 L 77.5000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 96.2500 207.4103 L 96.2500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 115.0000 207.4103 L 115.0000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 133.7500 207.4103 L 133.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 152.5000 207.4103 L 152.5000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 171.2500 207.4103 L 171.2500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 190.0000 207.4103 L 190.0000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 208.7500 207.4103 L 208.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 227.5000 207.4103 L 227.5000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 246.2500 207.4103 L 246.2500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 265.0000 207.4103 L 265.0000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 283.7500 207.4103 L 283.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 302.5000 207.4103 L 302.5000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 321.2500 207.4103 L 321.2500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 340.0000 207.4103 L 340.0000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 358.7500 207.4103 L 358.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 377.5000 207.4103 L 377.5000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 396.2500 207.4103 L 396.2500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 415.0000 207.4103 L 415.0000 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 433.7500 207.4103 L 433.7500 19.9103" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 207.4103 L 2.5000 22.0083" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 207.4103 L 440.0000 207.4103" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="31.5165" height="17.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="450.0000" y="198.6603" width="17.5000" height="17.5000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<foreignObject x="450.0000" y="0.0000" width="17.5000" height="44.0165">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+<foreignObject x="439.0165" y="0.0000" width="28.4835" height="105.6760">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>p</mi></mrow></math></div></foreignObject>
+<path d="M 6.8750 166.0845 L 11.2500 155.0199 L 15.6250 147.1290 L 20.0000 140.7598 L 24.3750 135.3159 L 28.7500 130.5055 L 33.1250 126.1618 L 37.5000 122.1792 L 41.8750 118.4864 L 46.2500 115.0328 L 50.6250 111.7810 L 55.0000 108.7024 L 59.3750 105.7748 L 63.7500 102.9808 L 68.1250 100.3058 L 72.5000 97.7383 L 76.8750 95.2685 L 81.2500 92.8882 L 85.6250 90.5905 L 90.0000 88.3696 L 94.3750 86.2201 L 98.7500 84.1379 L 103.1250 82.1189 L 107.5000 80.1599 L 111.8750 78.2578 L 116.2500 76.4100 L 120.6250 74.6141 L 125.0000 72.8680 L 129.3750 71.1699 L 133.7500 69.5179 L 138.1250 67.9107 L 142.5000 66.3467 L 146.8750 64.8246 L 151.2500 63.3433 L 155.6250 61.9018 L 160.0000 60.4989 L 164.3750 59.1337 L 168.7500 57.8054 L 173.1250 56.5131 L 177.5000 55.2560 L 181.8750 54.0335 L 186.2500 52.8448 L 190.6250 51.6892 L 195.0000 50.5662 L 199.3750 49.4750 L 203.7500 48.4150 L 208.1250 47.3858 L 212.5000 46.3867 L 216.8750 45.4171 L 221.2500 44.4766 L 225.6250 43.5645 L 230.0000 42.6803 L 234.3750 41.8235 L 238.7500 40.9935 L 243.1250 40.1899 L 247.5000 39.4120 L 251.8750 38.6594 L 256.2500 37.9315 L 260.6250 37.2278 L 265.0000 36.5478 L 269.3750 35.8908 L 273.7500 35.2564 L 278.1250 34.6440 L 282.5000 34.0530 L 286.8750 33.4829 L 291.2500 32.9332 L 295.6250 32.4031 L 300.0000 31.8923 L 304.3750 31.4000 L 308.7500 30.9257 L 313.1250 30.4689 L 317.5000 30.0288 L 321.8750 29.6050 L 326.2500 29.1968 L 330.6250 28.8035 L 335.0000 28.4246 L 339.3750 28.0595 L 343.7500 27.7075 L 348.1250 27.3681 L 352.5000 27.0405 L 356.8750 26.7241 L 361.2500 26.4184 L 365.6250 26.1226 L 370.0000 25.8362 L 374.3750 25.5585 L 378.7500 25.2888 L 383.1250 25.0266 L 387.5000 24.7712 L 391.8750 24.5219 L 396.2500 24.2782 L 400.6250 24.0394 L 405.0000 23.8048 L 409.3750 23.5739 L 413.7500 23.3460 L 418.1250 23.1206 L 422.5000 22.8969 L 426.8750 22.6744 L 431.2500 22.4526 L 435.6250 22.2307 L 440.0000 22.0083" stroke="rgb(0, 0, 255)" fill="none" />
+<path d="M 6.8750 145.9109 L 11.2500 141.9982 L 15.6250 138.2030 L 20.0000 134.5219 L 24.3750 130.9516 L 28.7500 127.4892 L 33.1250 124.1314 L 37.5000 120.8752 L 41.8750 117.7176 L 46.2500 114.6556 L 50.6250 111.6865 L 55.0000 108.8074 L 59.3750 106.0156 L 63.7500 103.3083 L 68.1250 100.6830 L 72.5000 98.1371 L 76.8750 95.6680 L 81.2500 93.2735 L 85.6250 90.9509 L 90.0000 88.6981 L 94.3750 86.5128 L 98.7500 84.3927 L 103.1250 82.3358 L 107.5000 80.3399 L 111.8750 78.4031 L 116.2500 76.5233 L 120.6250 74.6986 L 125.0000 72.9273 L 129.3750 71.2076 L 133.7500 69.5376 L 138.1250 67.9159 L 142.5000 66.3407 L 146.8750 64.8105 L 151.2500 63.3238 L 155.6250 61.8793 L 160.0000 60.4756 L 164.3750 59.1114 L 168.7500 57.7854 L 173.1250 56.4964 L 177.5000 55.2434 L 181.8750 54.0253 L 186.2500 52.8411 L 190.6250 51.6898 L 195.0000 50.5707 L 199.3750 49.4828 L 203.7500 48.4254 L 208.1250 47.3978 L 212.5000 46.3995 L 216.8750 45.4297 L 221.2500 44.4881 L 225.6250 43.5741 L 230.0000 42.6874 L 234.3750 41.8275 L 238.7500 40.9944 L 243.1250 40.1877 L 247.5000 39.4073 L 251.8750 38.6531 L 256.2500 37.9251 L 260.6250 37.2233 L 265.0000 36.5478 L 269.3750 35.8987 L 273.7500 35.2763 L 278.1250 34.6808 L 282.5000 34.1126 L 286.8750 33.5720 L 291.2500 33.0596 L 295.6250 32.5757 L 300.0000 32.1211 L 304.3750 31.6963 L 308.7500 31.3020 L 313.1250 30.9390 L 317.5000 30.6081 L 321.8750 30.3102 L 326.2500 30.0461 L 330.6250 29.8170 L 335.0000 29.6238 L 339.3750 29.4677 L 343.7500 29.3499 L 348.1250 29.2715 L 352.5000 29.2339 L 356.8750 29.2385 L 361.2500 29.2866 L 365.6250 29.3797 L 370.0000 29.5195 L 374.3750 29.7074 L 378.7500 29.9451 L 383.1250 30.2344 L 387.5000 30.5771 L 391.8750 30.9749 L 396.2500 31.4298 L 400.6250 31.9438 L 405.0000 32.5188 L 409.3750 33.1570 L 413.7500 33.8604 L 418.1250 34.6314 L 422.5000 35.4720 L 426.8750 36.3848 L 431.2500 37.3721 L 435.6250 38.4362 L 440.0000 39.5797" stroke="rgb(255, 0, 0)" fill="none" />
+<circle cx="52.5000" cy="110.4418" r="4.1250" fill="rgb(255, 128, 128)" stroke="rgb(0, 0, 0)" />
+<circle cx="140.0000" cy="67.2352" r="4.1250" fill="rgb(255, 128, 128)" stroke="rgb(0, 0, 0)" />
+<circle cx="190.0000" cy="51.8523" r="4.1250" fill="rgb(255, 128, 128)" stroke="rgb(0, 0, 0)" />
+<circle cx="240.0000" cy="40.7612" r="4.1250" fill="rgb(255, 128, 128)" stroke="rgb(0, 0, 0)" />
+<circle cx="265.0000" cy="36.5478" r="4.1250" fill="rgb(255, 128, 128)" stroke="rgb(0, 0, 0)" />
+</svg></div>
+<figcaption>Comparison between $f(x) = \sqrt[3]x + 0.1\sin x$ and its Newton interpolant at the abscissae $\{0.4, 1.1, 1.5, 1.9, 2.1\}$.</figcaption>
+</figure>
+
+<h2 id="trapezoid-and-simpsons-rule">Trapezoid and Simpson's rule<a class="headerlink" href="#trapezoid-and-simpsons-rule" title="Permanent link">&para;</a></h2>
+<p>We have wandered along a very long tangent, but the tools we have acquired
+along the way will pay off here. As it was stated a few paragraphs above, it is
+a good idea to replace $\mathfrak f$ by its interopolating polynomial and take
+the integral of the latter instead; the Newton-Cotes formulas are the resulting
+approximations of the integral when this is done with equally-spaced nodes
+(including the endpoints). The <em>trapezoid rule</em> is the simplest of them, where
+we use only a first degree polynomial, so we should perhaps start by studying
+this scenario.</p>
+<p>Using Newton's procedure yields $p(x) = \mathfrak f(a) +
+\dfrac{\mathfrak f(b)-\mathfrak f(a)}{b - a}x$, and taking the integral gives
+$$
+    \int_a^b \mathfrak f(x)\diff x
+    \approx \int_a^b \left[\mathfrak f(a) + \frac{\mathfrak f(b)-\mathfrak f(a)}{b-a}x\right]
+    = \frac{b-a}2(\mathfrak f(a) + \mathfrak f(b));
+$$
+or geometrically, the area bounded by the line interpolant and the boundary
+points is a trapezoid, whose area is well known to be $h(a+b)/2$, and produces
+the same result:</p>
+<figure style="text-align: center;">
+<div align="center"><svg width="530.0000" height="209.8761" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 182.3761 L 2.5000 21.6421" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 182.3761 L 502.5000 182.3761" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="33.2843" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="515.0000" y="154.8761" width="15.0000" height="55.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<path d="M 102.5000 182.3761 L 402.5000 182.3761 L 402.5000 118.3195 L 102.5000 21.6676 L 102.5000 182.3761" fill="rgb(255, 128, 128)" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="139.0000" height="204.0437">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo></mrow></math></div></foreignObject>
+<foreignObject x="341.0000" y="90.8195" width="189.0000" height="119.0566">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi><mo stretchy="false">&#x00028;</mo><mn>4</mn><mo stretchy="false">&#x00029;</mo></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="194.8761" width="505.0000" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mn>4</mn><mo>&#x02212;</mo><mn>1</mn><mo>&#x0003D;</mo><mn>3</mn></mrow></math></div></foreignObject>
+<foreignObject x="0.0000" y="69.7191" width="505.0000" height="140.1570">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>A</mi><mo>&#x0003D;</mo><mn>3</mn><mo stretchy="false">&#x00028;</mo><mi>f</mi><mo stretchy="false">&#x00028;</mo><mn>4</mn><mo stretchy="false">&#x00029;</mo><mo>&#x0002B;</mo><mi>f</mi><mo stretchy="false">&#x00028;</mo><mn>1</mn><mo stretchy="false">&#x00029;</mo><mo stretchy="false">&#x00029;</mo><mo>&#x0002F;</mo><mn>2</mn></mrow></math></div></foreignObject>
+<path d="M 7.5000 31.3922 L 12.5000 30.4420 L 17.5000 29.5279 L 22.5000 28.6525 L 27.5000 27.8182 L 32.5000 27.0272 L 37.5000 26.2819 L 42.5000 25.5844 L 47.5000 24.9371 L 52.5000 24.3420 L 57.5000 23.8011 L 62.5000 23.3165 L 67.5000 22.8899 L 72.5000 22.5231 L 77.5000 22.2180 L 82.5000 21.9760 L 87.5000 21.7986 L 92.5000 21.6872 L 97.5000 21.6432 L 102.5000 21.6676 L 107.5000 21.7615 L 112.5000 21.9258 L 117.5000 22.1612 L 122.5000 22.4686 L 127.5000 22.8483 L 132.5000 23.3008 L 137.5000 23.8263 L 142.5000 24.4250 L 147.5000 25.0969 L 152.5000 25.8418 L 157.5000 26.6594 L 162.5000 27.5493 L 167.5000 28.5110 L 172.5000 29.5437 L 177.5000 30.6466 L 182.5000 31.8187 L 187.5000 33.0589 L 192.5000 34.3660 L 197.5000 35.7385 L 202.5000 37.1751 L 207.5000 38.6739 L 212.5000 40.2334 L 217.5000 41.8515 L 222.5000 43.5264 L 227.5000 45.2558 L 232.5000 47.0377 L 237.5000 48.8695 L 242.5000 50.7490 L 247.5000 52.6735 L 252.5000 54.6406 L 257.5000 56.6474 L 262.5000 58.6912 L 267.5000 60.7691 L 272.5000 62.8782 L 277.5000 65.0155 L 282.5000 67.1780 L 287.5000 69.3626 L 292.5000 71.5660 L 297.5000 73.7852 L 302.5000 76.0169 L 307.5000 78.2578 L 312.5000 80.5048 L 317.5000 82.7545 L 322.5000 85.0036 L 327.5000 87.2489 L 332.5000 89.4871 L 337.5000 91.7149 L 342.5000 93.9292 L 347.5000 96.1266 L 352.5000 98.3041 L 357.5000 100.4585 L 362.5000 102.5866 L 367.5000 104.6856 L 372.5000 106.7524 L 377.5000 108.7840 L 382.5000 110.7778 L 387.5000 112.7308 L 392.5000 114.6405 L 397.5000 116.5042 L 402.5000 118.3195 L 407.5000 120.0840 L 412.5000 121.7953 L 417.5000 123.4513 L 422.5000 125.0500 L 427.5000 126.5892 L 432.5000 128.0673 L 437.5000 129.4825 L 442.5000 130.8332 L 447.5000 132.1180 L 452.5000 133.3354 L 457.5000 134.4844 L 462.5000 135.5638 L 467.5000 136.5726 L 472.5000 137.5103 L 477.5000 138.3759 L 482.5000 139.1691 L 487.5000 139.8895 L 492.5000 140.5368 L 497.5000 141.1108 L 502.5000 141.6118 L 507.5000 142.0398" stroke="rgb(255, 0, 0)" fill="none" />
+<foreignObject x="515.0000" y="73.3475" width="15.0000" height="136.5287">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+</svg></div>
+<figcaption>Illustration of the trapezoid rule for $\mathfrak f(x) = 1 + (\sin x)/5 + (\cos(x/2))/2$ from $1$ to $4$.</figcaption>
+</figure>
+
+<p>This appears to be a very poor approximation, but this view is due to the fact
+that the interval along which we are integrating is very large, so
+$\mathfrak f$ may change heavily between the endpoints; as it will be shown
+later, the smaller the length of the interval, the better the trapezoid rule
+represents the original integral. In real life, however, this is almost never
+the case, but it suffices to divide the original integration region into small
+pieces to which the trapezoid rule can be applied accurately. This divide and
+conquer approach is called the <em>composite trapezoid rule</em>.</p>
+<figure style="text-align: center;">
+<div align="center"><svg width="530.0000" height="189.8761" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 182.3761 L 2.5000 21.6421" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 182.3761 L 502.5000 182.3761" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="33.2843" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="515.0000" y="174.8761" width="15.0000" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<path d="M 102.5000 182.3761 L 135.8333 182.3761 L 135.8333 23.6430 L 102.5000 21.6676 L 102.5000 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 135.8333 182.3761 L 169.1667 182.3761 L 169.1667 28.8474 L 135.8333 23.6430 L 135.8333 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 169.1667 182.3761 L 202.5000 182.3761 L 202.5000 37.1751 L 169.1667 28.8474 L 169.1667 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 202.5000 182.3761 L 235.8333 182.3761 L 235.8333 48.2535 L 202.5000 37.1751 L 202.5000 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 235.8333 182.3761 L 269.1667 182.3761 L 269.1667 61.4688 L 235.8333 48.2535 L 235.8333 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 269.1667 182.3761 L 302.5000 182.3761 L 302.5000 76.0169 L 269.1667 61.4688 L 269.1667 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 302.5000 182.3761 L 335.8333 182.3761 L 335.8333 90.9737 L 302.5000 76.0169 L 302.5000 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 335.8333 182.3761 L 369.1667 182.3761 L 369.1667 105.3782 L 335.8333 90.9737 L 335.8333 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 369.1667 182.3761 L 402.5000 182.3761 L 402.5000 118.3195 L 369.1667 105.3782 L 369.1667 182.3761" fill="rgb(173, 216, 230)" stroke="rgb(0, 0, 0)" />
+<path d="M 7.5000 31.3922 L 12.5000 30.4420 L 17.5000 29.5279 L 22.5000 28.6525 L 27.5000 27.8182 L 32.5000 27.0272 L 37.5000 26.2819 L 42.5000 25.5844 L 47.5000 24.9371 L 52.5000 24.3420 L 57.5000 23.8011 L 62.5000 23.3165 L 67.5000 22.8899 L 72.5000 22.5231 L 77.5000 22.2180 L 82.5000 21.9760 L 87.5000 21.7986 L 92.5000 21.6872 L 97.5000 21.6432 L 102.5000 21.6676 L 107.5000 21.7615 L 112.5000 21.9258 L 117.5000 22.1612 L 122.5000 22.4686 L 127.5000 22.8483 L 132.5000 23.3008 L 137.5000 23.8263 L 142.5000 24.4250 L 147.5000 25.0969 L 152.5000 25.8418 L 157.5000 26.6594 L 162.5000 27.5493 L 167.5000 28.5110 L 172.5000 29.5437 L 177.5000 30.6466 L 182.5000 31.8187 L 187.5000 33.0589 L 192.5000 34.3660 L 197.5000 35.7385 L 202.5000 37.1751 L 207.5000 38.6739 L 212.5000 40.2334 L 217.5000 41.8515 L 222.5000 43.5264 L 227.5000 45.2558 L 232.5000 47.0377 L 237.5000 48.8695 L 242.5000 50.7490 L 247.5000 52.6735 L 252.5000 54.6406 L 257.5000 56.6474 L 262.5000 58.6912 L 267.5000 60.7691 L 272.5000 62.8782 L 277.5000 65.0155 L 282.5000 67.1780 L 287.5000 69.3626 L 292.5000 71.5660 L 297.5000 73.7852 L 302.5000 76.0169 L 307.5000 78.2578 L 312.5000 80.5048 L 317.5000 82.7545 L 322.5000 85.0036 L 327.5000 87.2489 L 332.5000 89.4871 L 337.5000 91.7149 L 342.5000 93.9292 L 347.5000 96.1266 L 352.5000 98.3041 L 357.5000 100.4585 L 362.5000 102.5866 L 367.5000 104.6856 L 372.5000 106.7524 L 377.5000 108.7840 L 382.5000 110.7778 L 387.5000 112.7308 L 392.5000 114.6405 L 397.5000 116.5042 L 402.5000 118.3195 L 407.5000 120.0840 L 412.5000 121.7953 L 417.5000 123.4513 L 422.5000 125.0500 L 427.5000 126.5892 L 432.5000 128.0673 L 437.5000 129.4825 L 442.5000 130.8332 L 447.5000 132.1180 L 452.5000 133.3354 L 457.5000 134.4844 L 462.5000 135.5638 L 467.5000 136.5726 L 472.5000 137.5103 L 477.5000 138.3759 L 482.5000 139.1691 L 487.5000 139.8895 L 492.5000 140.5368 L 497.5000 141.1108 L 502.5000 141.6118 L 507.5000 142.0398" stroke="rgb(0, 0, 255)" fill="none" />
+<foreignObject x="515.0000" y="93.3475" width="15.0000" height="96.5287">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+</svg></div>
+<figcaption>Composite trapezoid rule for the same function on the same interval, with $\Delta x = 1/3$.</figcaption>
+</figure>
+
+<p>Next comes Simpson's rule<sup>10</sup>, named after English mathematician
+Thomas Simpson, which involves a quadratic interpolating polynomial this time
+using also the midpoint of $a$ and $b$ as a node. Proceeding as before, we
+obtain $p(x)=\mathfrak f(a)+2\dfrac{\mathfrak f(m)-\mathfrak f(a)}{b-a}(x-a)
++2\dfrac{\mathfrak f(b)-2\mathfrak f(m)+\mathfrak f(a)}{(b-a)^2} (x-a)(x-m)$,
+with $m = (a+b)/2$; therefore
+$$
+    \int_a^b \mathfrak f(x)\diff x
+    \approx \int_a^b \left[\mathfrak f(a)
+    + 2\frac{\mathfrak f(m)-\mathfrak f(a)}{b-a}(x-a)
+    + 2\frac{\mathfrak f(b)-2\mathfrak f(m)+\mathfrak f(a)}{(b-a)^2} (x-a)(x-m)\right]\diff x
+    = \frac{b-a}{6}\left[\mathfrak f(a) + 4\mathfrak f\left(\frac{a+b}2\right) + \mathfrak f(b)\right].
+$$
+The plot in this case is very similar to the previous one:</p>
+<figure style="text-align: center;">
+<div align="center"><svg width="530.0000" height="189.8761" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 182.3761 L 2.5000 21.6421" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 182.3761 L 502.5000 182.3761" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="0.0000" y="0.0000" width="33.2843" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="515.0000" y="174.8761" width="15.0000" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<path d="M 7.5000 58.6463 L 12.5000 54.9709 L 17.5000 51.3708 L 22.5000 47.8667 L 27.5000 44.4789 L 32.5000 41.2274 L 37.5000 38.1312 L 42.5000 35.2091 L 47.5000 32.4787 L 52.5000 29.9570 L 57.5000 27.6598 L 62.5000 25.6018 L 67.5000 23.7967 L 72.5000 22.2568 L 77.5000 20.9933 L 82.5000 20.0156 L 87.5000 19.3322 L 92.5000 18.9496 L 97.5000 18.8732 L 102.5000 19.1066 L 107.5000 19.6519 L 112.5000 20.5096 L 117.5000 21.6787 L 122.5000 23.1564 L 127.5000 24.9387 L 132.5000 27.0196 L 137.5000 29.3919 L 142.5000 32.0469 L 147.5000 34.9743 L 152.5000 38.1626 L 157.5000 41.5988 L 162.5000 45.2689 L 167.5000 49.1576 L 172.5000 53.2485 L 177.5000 57.5244 L 182.5000 61.9669 L 187.5000 66.5570 L 192.5000 71.2751 L 197.5000 76.1009 L 202.5000 81.0137 L 207.5000 85.9923 L 212.5000 91.0154 L 217.5000 96.0617 L 222.5000 101.1097 L 227.5000 106.1382 L 232.5000 111.1260 L 237.5000 116.0524 L 242.5000 120.8974 L 247.5000 125.6411 L 252.5000 130.2647 L 257.5000 134.7501 L 262.5000 139.0800 L 267.5000 143.2380 L 272.5000 147.2092 L 277.5000 150.9794 L 282.5000 154.5359 L 287.5000 157.8672 L 292.5000 160.9632 L 297.5000 163.8154 L 302.5000 166.4164 L 307.5000 168.7606 L 312.5000 170.8439 L 317.5000 172.6636 L 322.5000 174.2189 L 327.5000 175.5102 L 332.5000 176.5398 L 337.5000 177.3112 L 342.5000 177.8297 L 347.5000 178.1022 L 352.5000 178.1366 L 357.5000 177.9427 L 362.5000 177.5314 L 367.5000 176.9150 L 372.5000 176.1068 L 377.5000 175.1216 L 382.5000 173.9749 L 387.5000 172.6833 L 392.5000 171.2645 L 397.5000 169.7365 L 402.5000 168.1184 L 407.5000 166.4296 L 412.5000 164.6899 L 417.5000 162.9197 L 422.5000 161.1394 L 427.5000 159.3694 L 432.5000 157.6304 L 437.5000 155.9426 L 442.5000 154.3261 L 447.5000 152.8006 L 452.5000 151.3855 L 457.5000 150.0992 L 462.5000 148.9596 L 467.5000 147.9840 L 472.5000 147.1883 L 477.5000 146.5879 L 482.5000 146.1967 L 487.5000 146.0276 L 492.5000 146.0924 L 497.5000 146.4012 L 502.5000 146.9630 L 507.5000 147.7853" stroke="rgb(255, 165, 0)" stroke-width="1.2000pt" fill="none" />
+<path d="M 102.5000 182.3761 L 112.5000 182.3761 L 112.5000 28.7977 L 102.5000 19.1066 L 102.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 112.5000 182.3761 L 122.5000 182.3761 L 122.5000 38.1630 L 112.5000 28.7977 L 112.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 122.5000 182.3761 L 132.5000 182.3761 L 132.5000 47.2025 L 122.5000 38.1630 L 122.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 132.5000 182.3761 L 142.5000 182.3761 L 142.5000 55.9163 L 132.5000 47.2025 L 132.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 142.5000 182.3761 L 152.5000 182.3761 L 152.5000 64.3042 L 142.5000 55.9163 L 142.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 152.5000 182.3761 L 162.5000 182.3761 L 162.5000 72.3664 L 152.5000 64.3042 L 152.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 162.5000 182.3761 L 172.5000 182.3761 L 172.5000 80.1027 L 162.5000 72.3664 L 162.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 172.5000 182.3761 L 182.5000 182.3761 L 182.5000 87.5133 L 172.5000 80.1027 L 172.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 182.5000 182.3761 L 192.5000 182.3761 L 192.5000 94.5980 L 182.5000 87.5133 L 182.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 192.5000 182.3761 L 202.5000 182.3761 L 202.5000 101.3570 L 192.5000 94.5980 L 192.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 202.5000 182.3761 L 212.5000 182.3761 L 212.5000 107.7901 L 202.5000 101.3570 L 202.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 212.5000 182.3761 L 222.5000 182.3761 L 222.5000 113.8975 L 212.5000 107.7901 L 212.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 222.5000 182.3761 L 232.5000 182.3761 L 232.5000 119.6790 L 222.5000 113.8975 L 222.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 232.5000 182.3761 L 242.5000 182.3761 L 242.5000 125.1348 L 232.5000 119.6790 L 232.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 242.5000 182.3761 L 252.5000 182.3761 L 252.5000 130.2647 L 242.5000 125.1348 L 242.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 252.5000 182.3761 L 262.5000 182.3761 L 262.5000 135.0689 L 252.5000 130.2647 L 252.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 262.5000 182.3761 L 272.5000 182.3761 L 272.5000 139.5473 L 262.5000 135.0689 L 262.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 272.5000 182.3761 L 282.5000 182.3761 L 282.5000 143.6998 L 272.5000 139.5473 L 272.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 282.5000 182.3761 L 292.5000 182.3761 L 292.5000 147.5266 L 282.5000 143.6998 L 282.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 292.5000 182.3761 L 302.5000 182.3761 L 302.5000 151.0276 L 292.5000 147.5266 L 292.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 302.5000 182.3761 L 312.5000 182.3761 L 312.5000 154.2027 L 302.5000 151.0276 L 302.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 312.5000 182.3761 L 322.5000 182.3761 L 322.5000 157.0521 L 312.5000 154.2027 L 312.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 322.5000 182.3761 L 332.5000 182.3761 L 332.5000 159.5757 L 322.5000 157.0521 L 322.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 332.5000 182.3761 L 342.5000 182.3761 L 342.5000 161.7735 L 332.5000 159.5757 L 332.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 342.5000 182.3761 L 352.5000 182.3761 L 352.5000 163.6455 L 342.5000 161.7735 L 342.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 352.5000 182.3761 L 362.5000 182.3761 L 362.5000 165.1916 L 352.5000 163.6455 L 352.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 362.5000 182.3761 L 372.5000 182.3761 L 372.5000 166.4120 L 362.5000 165.1916 L 362.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 372.5000 182.3761 L 382.5000 182.3761 L 382.5000 167.3066 L 372.5000 166.4120 L 372.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 382.5000 182.3761 L 392.5000 182.3761 L 392.5000 167.8754 L 382.5000 167.3066 L 382.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 392.5000 182.3761 L 402.5000 182.3761 L 402.5000 168.1184 L 392.5000 167.8754 L 392.5000 182.3761" fill="rgb(255, 255, 0)" fill-opacity="0.3300" stroke="none" />
+<path d="M 103.0250 19.6234 L 106.0500 22.5842 L 109.0750 25.5152 L 112.1000 28.4163 L 115.1250 31.2876 L 118.1500 34.1291 L 121.1750 36.9408 L 124.2000 39.7227 L 127.2250 42.4748 L 130.2500 45.1971 L 133.2750 47.8895 L 136.3000 50.5521 L 139.3250 53.1850 L 142.3500 55.7880 L 145.3750 58.3612 L 148.4000 60.9046 L 151.4250 63.4182 L 154.4500 65.9019 L 157.4750 68.3559 L 160.5000 70.7800 L 163.5250 73.1743 L 166.5500 75.5388 L 169.5750 77.8735 L 172.6000 80.1784 L 175.6250 82.4535 L 178.6500 84.6988 L 181.6750 86.9142 L 184.7000 89.0999 L 187.7250 91.2557 L 190.7500 93.3817 L 193.7750 95.4779 L 196.8000 97.5443 L 199.8250 99.5809 L 202.8500 101.5876 L 205.8750 103.5646 L 208.9000 105.5117 L 211.9250 107.4290 L 214.9500 109.3165 L 217.9750 111.1742 L 221.0000 113.0021 L 224.0250 114.8002 L 227.0500 116.5685 L 230.0750 118.3069 L 233.1000 120.0155 L 236.1250 121.6944 L 239.1500 123.3434 L 242.1750 124.9626 L 245.2000 126.5520 L 248.2250 128.1115 L 251.2500 129.6413 L 254.2750 131.1413 L 257.3000 132.6114 L 260.3250 134.0517 L 263.3500 135.4622 L 266.3750 136.8429 L 269.4000 138.1938 L 272.4250 139.5149 L 275.4500 140.8061 L 278.4750 142.0676 L 281.5000 143.2992 L 284.5250 144.5011 L 287.5500 145.6731 L 290.5750 146.8153 L 293.6000 147.9277 L 296.6250 149.0102 L 299.6500 150.0630 L 302.6750 151.0859 L 305.7000 152.0791 L 308.7250 153.0424 L 311.7500 153.9759 L 314.7750 154.8796 L 317.8000 155.7535 L 320.8250 156.5976 L 323.8500 157.4118 L 326.8750 158.1963 L 329.9000 158.9509 L 332.9250 159.6757 L 335.9500 160.3707 L 338.9750 161.0359 L 342.0000 161.6713 L 345.0250 162.2769 L 348.0500 162.8527 L 351.0750 163.3986 L 354.1000 163.9147 L 357.1250 164.4011 L 360.1500 164.8576 L 363.1750 165.2843 L 366.2000 165.6812 L 369.2250 166.0482 L 372.2500 166.3855 L 375.2750 166.6929 L 378.3000 166.9706 L 381.3250 167.2184 L 384.3500 167.4364 L 387.3750 167.6246 L 390.4000 167.7830 L 393.4250 167.9116 L 396.4500 168.0103 L 399.4750 168.0793 L 402.5000 168.1184" stroke="rgb(0, 0, 0)" fill="none" />
+<path d="M 102.5000 182.3761 L 102.5000 19.1066" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 402.5000 182.3761 L 402.5000 168.1184" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="515.0000" y="104.0498" width="15.0000" height="85.8263">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+</svg></div>
+<figcaption>Visualization of Simpson's rule, having $\mathfrak f(x) = \sin(3x/2)/2 + 6\cos(x/3)/5$ from $1$ to $4$.</figcaption>
+</figure>
+
+<p>And mixing the previous two gives raise to the <em>composite Simpson's rule</em>.</p>
+<p><br></p>
+<div class="terminal-box" welcome="The functions $\texttt{trapezoid($f,\ a,\ b$)}$, $\texttt{simpson($f,\ a,\ b$)}$, $\texttt{composite\_trapezoid($f,\ a,\ b,\ [\Delta x]$)}$ and $\texttt{composite\_simpson($f,\ a,\ b,\ [\Delta x]$)}$ are now available, and they do precisely what one thinks they would do (if there are no bugs), passing a function, the limits of the interval, and in the last two possibly the length of each sub-interval (if not it is set to $(b-a)/10$). Find $\int_2^4 \frac{\diff x}{\sqrt{x^2-1}}$ analytically so that you do not get rusty (or write $\texttt{console.log(solution1)}$ to display the result⁹ if you give up), and see how good the methods compare." style="height: 300px;">
+    <div class="output"></div>
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input type="text" class="command-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+<p><br></p>
+<p>As a prudent scientist should always do, we need to understand the error of our
+simplified model, but we are in the right position to ask such a question since
+in the previous section we studied the error committed by the interpolating
+polynomial. Thus, integrating the expression from equation $(1)$ and invoking
+the integral mean value theorem gives back some useful information:
+$$
+    {\rm E} = \int_a^b \varepsilon_n(x) \diff x
+    = \int_a^b \left(\frac{\mathfrak f^{(n)}(\phi(x))}{n!} \prod_{k=0}^{n-1} (x-(a+hk))\right) \diff x
+    = \frac{\mathfrak f^{(n)}(\xi)}{n!}
+    \int_a^b \left(\prod_{k=0}^{n-1} (x-(a+hk))\right) \diff x.
+$$
+For instance, when $n=2$ (trapezoidal rule) this reduces down to
+$-h^3\mathfrak f''(\xi)/12$, and when $n=3$ it can be checked to be
+$-h^5\mathfrak f^{(\text{iv})}(\xi)/90$; notice that the index of the
+derivative of $f$ always seems to be an even integer, but we will discuss this
+interesting property in a moment.</p>
+<p>The error of the composite formulas follows immediately from their definition
+and the previous result; for example, in the case of Simpson's rule:
+$$
+    \bar{\rm E} = \sum_{i = 0}^{n - 1} \int\limits_{a + ih}^{a + (i+1)h} \varepsilon_3(x)\diff x
+    = \sum_{i = 0}^{n - 1} \left(-\frac{\mathfrak f^{(\text{iv})}(\xi)}{90}h^5\right)
+    = -\frac{\mathfrak f^{(\text{iv})}(\xi')}{90} h^5 n
+    = -\frac{\mathfrak f^{(\text{iv})}(\xi')}{90} h^4 (b - a) = \mathscr O(h^4),
+$$
+and naturally we had to pay a fee for splitting the integral, that being that
+the order of convergence (the exponent of the $h$) dropped from 5 to 4;
+contrary to regular algorithm complexity, the higher the exponent the better,
+since $h$ is getting smaller and smaller, approaching 0.</p>
+<h3 id="the-unreasonable-effectiveness-of-simpsons-rule">The unreasonable effectiveness of Simpson's rule<a class="headerlink" href="#the-unreasonable-effectiveness-of-simpsons-rule" title="Permanent link">&para;</a></h3>
+<p>We have seen that the error for the $n$<sup>th</sup> Newton-Cotes rule depends
+at least on the $n$<sup>th</sup> derivative of the function, so polynomials of
+degree up to $n$ are not only approximated, but integrated precisely; the
+largest degree of a polynomial that is exactly integrated by the method is
+called its <em>degree of precision</em>. It makes sense that the trapezoid rule
+is correct for lines, because it uses an interpolant that is equal to the
+function, and likewise for Simpson with parabolas; however, notice that the
+error term of the latter depended on $\mathfrak f^{(\text{iv})}$, which
+vanishes even for cubics, so in theory the degree of precision of Simpson's
+rule is 4, not 3. Why is that so?</p>
+<p>When I first learned this result I believed it was quite nice, and that is
+the reason I have included it in this <em>addendum</em>:</p>
+<div class="theorem">
+    The integral of a cubic polynomial $p$ on an interval $[a, b]$ is the same
+    as that of its quadratic interpolant $\hat p$ with $a,(a+b)/2,b$ as nodes.
+</div>
+
+<div class="proof">
+Notice that by the definition of the interpolating polynomial $p(a)=\hat p(a),\
+p((a+b)/2) = \hat p((a+b)/2),\ p(b) = \hat p(b)$, so $\eta := p - \hat p$ has
+the interpolating nodes as roots; thus, by the fundamental theorem of algebra
+we obtain that $\eta(x) = \lambda(x-a)(x-(a+b)/2)(x-b)$, and integrating on
+$[a,b]$:
+$$
+\int_a^b\eta(x)\diff x
+= \lambda\int_a^b (x-a)\left(x-\frac{a+b}2\right)(x-b)\diff x
+= \lambda\int\limits_{-(b-a)/2}^{(b-a)/2} \left(u - \frac{b-a}2\right)u\left(u + \frac{b-a}2\right) \diff u.
+$$
+The last integrand is an odd function, and the interval is of the form $[-k,k]$
+so the whole integrand vanishes; all together the claim is proven.
+$$
+    \int_a^b \eta(x)\diff x = 0 \implies \int_a^b (p(x) - \hat p(x)) \diff x = 0
+    \implies \int_a^b p(x)\diff x - \int_a^b \hat p(x)\diff x = 0
+    \implies {\color{green} \boxed{\int_a^b p(x)\diff x = \int_a^b \hat p(x)\diff x.}}
+$$
+</div>
+
+<p>The crux of the proof was that quadratic interpolants share three points with
+the original function, and that the points were evenly spaced; in simple terms,
+because of the last fact the error is distributed as an odd function around the
+midpoint of the interval, which is annihilated when taking the integral.</p>
+<p>Notice, though, that the previous properties are not exclusive of second-degree
+interpolants, but can be generalized to any even ones, so even-numbered
+Newton-Cotes rules have an extra degree of precision. Is it not beautiful? Try
+some examples in the console above to help convince yourself!</p>
+<h1 id="richardson-extrapolation-and-rombergs-method">Richardson extrapolation and Romberg's method<a class="headerlink" href="#richardson-extrapolation-and-rombergs-method" title="Permanent link">&para;</a></h1>
+<p>There is one last concept to cover before diving into the integration method of
+the old HP calculators, namely Richardson extrapolation as an acceleration
+method, and Romberg's method as its application to integrals. So far we have
+studied the order of convergence of our methods (that being how fast the error
+decreases when $h$ shrinks to 0), and although it is not bad for Simpson's rule
+and the like, it would be good to improve it in some way.</p>
+<p>Richardson extrapolation achieves precisely that but in a more general fashion,
+for any numerical method rather than focusing on integrals. Assume we have a
+quantity $Q$, which can be computed by a method $\hat Q(h)$ that has order of
+convergence $n$ (that is, $\hat Q(h) = Q + \mathscr O(h^n)$); we can improve
+the $n$ to an $n+1$ by doing
+$$
+\tilde Q(h) = \frac{\lambda^n\hat Q(h/\lambda) - \hat Q(h)}{\lambda^n - 1}
+\qquad\text{for any $\lambda \in \RR$}, \tag2
+$$
+which works because the $h^n$ cancel out, as it can be seen below:
+$$
+\tilde Q(h) = \frac
+{\lambda^n(Q + \cancel{th^n \lambda^{-n}} + \mathscr O(h^{n+1})) - (Q + \cancel{th^n} + \mathscr O(h^{n+1}))}
+{\lambda^n - 1}
+= \frac{(\lambda^n-1)Q + \mathscr O(h^{n+1})}{\lambda^n - 1}
+= Q + \mathscr O(h^{n+1}).
+$$</p>
+<p>But we are pretty much only interested in computing integrals, so let us apply
+it for this purpose. The idea is to build a lower-triangular table, where the
+first column will represent the estimates using a composite rule with $h_n =
+(b-a)/2^n$ and the rest will be computed from Richardson extrapolation by
+following $(2)$ with $\lambda=4$. Calling the integral at the $i$<sup>th</sup>
+row and $j$<sup>th</sup> column $R_{ij}$, we see from the description that
+$$
+\begin{align*}
+    R_{i1} &amp;= \texttt{composite\_integral}\left(f, a, b, \frac{b-a}{2^i}\right),\\
+    R_{ij} &amp;= \frac{4^{j-1} R_{i,j-1} - R_{i-1,j-1}}{4^{j-1} - 1}.
+\end{align*}
+$$</p>
+<p>As always, regarding the error, it can be checked that $R_{ij}$ has a fabulous
+$\mathscr O(h_n^{2m})$, so this is a very noticeable speedup; evidently, the
+final approximation is stored at the last diagonal entry.</p>
+<div class="terminal-box" welcome="Compare the previous approximations of $\int_2^4 \frac{\diff x}{\sqrt{x^2-1}}$ with those generated by the new subroutine '$\texttt{romberg}(f,\ a,\ b,\ n,\ \texttt{method})$', where $n$ is the number of elements in the first column and '$\texttt{method}$' is either $\texttt{trapezoid},\ \texttt{simpson}$ or any other you code manually; then replace '$\texttt{romberg}$' with '$\texttt{romberg\_table}$' to display the whole table of estimates." style="height: 275px;">
+    <div class="output"></div>
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input type="text" class="command-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+<h1 id="kahans-brilliant-idea">Kahan's brilliant idea<a class="headerlink" href="#kahans-brilliant-idea" title="Permanent link">&para;</a></h1>
+<p>We have learned a lot today, especially on how to find integrals efficientely,
+so why did HP calculators use a different method if Romberg-Simpson works
+perfectly fine? So far, we have only considered functions that are well-behaved
+in the interval of integration, but having a singularity at one of the
+endpoints does not mean that the integral does not converge. For instance,
+$$
+\int_0^1 \frac{\diff x}{\sqrt x}
+= \lim_{x \to 0^+}\int_x^1 \frac{\diff x}{\sqrt x}
+= \lim_{x \to 0^+} (2\sqrt x)\bigg|_x^1 = 2,
+$$
+yet typing <code>composite_trapezoid(x =&gt; 1/Math.sqrt(x), 0, 1)</code> in the console
+returns <code>null</code>, meaning that a division by zero has occurred.</p>
+<p>This is not the behavior you would expect from a calculator, and the brilliant
+idea William Velvel Kahan came up with in order to circumvent this issue was
+to apply the following cubic substitution:
+$$
+\int_a^b \mathfrak f(x) \diff x = \left\{\begin{aligned}
+    x &amp;= \frac{a+b}2 + \frac{b-a}4 y (3 - y^2),\\
+    \diff x &amp;= \frac34(b-a)(1-y^2) \diff y
+\end{aligned}\right\}
+= \int_{-1}^1 \mathfrak f\underbrace{\left(\frac{a+b}2 + \frac{b-a}4 y (3 - y^2)\right)}_{x(y)}
+\cdot \underbrace{\frac34(b-a)(1-y^2)}_{\diff x/\diff y} \diff y,
+$$
+which has two marvelous properties:</p>
+<ol>
+<li>The integration region is always $[-1, 1]$.</li>
+<li>More importantly, $\diff x/\diff y$ vanishes at the endpoints, so those need
+    not be computed, avoiding any possible singularity.</li>
+</ol>
+<p>Afterwards, our beloved trapezoid rule with Romberg's method does the trick,
+always being careful to return 0 as soon as we verify that the Jacobian
+cancels out.</p>
+<div class="terminal-box" welcome="You have reached the end of this article; that hopefully means you liked it. For this last exercise, find $\int_{-2}^1 \log (x+2)\diff x$ analytically and then use the '$\texttt{kahan}(f,\ a,\ b,\ [n])$' function (the last parameter is optional, and is the $n$ in Romberg's method) to verify your answer (or do $\texttt{console.log(solution2)}$ to reveal the solution¹¹). Can you implement Kahan's integral using composite Simpson's rule?" style="height: 275px;">
+    <div class="output"></div>
+    <div class="input-line">
+        <span class="prompt">&gt;</span>
+        <input type="text" class="command-input" autocomplete="off" spellcheck="false">
+    </div>
+</div>
+
+<p><br></p>
+<figure style="text-align: center;">
+<div align="center"><svg width="320.0000" height="399.1421" xmlns="http://www.w3.org/2000/svg">
+<path d="M 2.5000 396.6421 L 5.4000 376.3639 L 8.3000 359.5125 L 11.2000 345.0955 L 14.1000 332.4976 L 17.0000 321.3106 L 19.9000 311.2501 L 22.8000 302.1099 L 25.7000 293.7356 L 28.6000 286.0087 L 31.5000 278.8363 L 34.4000 272.1441 L 37.3000 265.8717 L 40.2000 259.9697 L 43.1000 254.3967 L 46.0000 249.1180 L 48.9000 244.1039 L 51.8000 239.3294 L 54.7000 234.7724 L 57.6000 230.4141 L 60.5000 226.2378 L 63.4000 222.2290 L 66.3000 218.3747 L 69.2000 214.6635 L 72.1000 211.0850 L 75.0000 207.6303 L 77.9000 204.2909 L 80.8000 201.0594 L 83.7000 197.9291 L 86.6000 194.8938 L 89.5000 191.9479 L 92.4000 189.0863 L 95.3000 186.3044 L 98.2000 183.5977 L 101.1000 180.9624 L 104.0000 178.3948 L 106.9000 175.8914 L 109.8000 173.4492 L 112.7000 171.0652 L 115.6000 168.7367 L 118.5000 166.4612 L 121.4000 164.2363 L 124.3000 162.0599 L 127.2000 159.9298 L 130.1000 157.8441 L 133.0000 155.8011 L 135.9000 153.7989 L 138.8000 151.8361 L 141.7000 149.9110 L 144.6000 148.0224 L 147.5000 146.1687 L 150.4000 144.3487 L 153.3000 142.5613 L 156.2000 140.8053 L 159.1000 139.0796 L 162.0000 137.3831 L 164.9000 135.7150 L 167.8000 134.0742 L 170.7000 132.4599 L 173.6000 130.8713 L 176.5000 129.3075 L 179.4000 127.7678 L 182.3000 126.2514 L 185.2000 124.7577 L 188.1000 123.2860 L 191.0000 121.8356 L 193.9000 120.4059 L 196.8000 118.9964 L 199.7000 117.6065 L 202.6000 116.2357 L 205.5000 114.8833 L 208.4000 113.5491 L 211.3000 112.2324 L 214.2000 110.9328 L 217.1000 109.6498 L 220.0000 108.3832 L 222.9000 107.1323 L 225.8000 105.8970 L 228.7000 104.6767 L 231.6000 103.4711 L 234.5000 102.2799 L 237.4000 101.1027 L 240.3000 99.9392 L 243.2000 98.7890 L 246.1000 97.6520 L 249.0000 96.5277 L 251.9000 95.4160 L 254.8000 94.3164 L 257.7000 93.2289 L 260.6000 92.1530 L 263.5000 91.0886 L 266.4000 90.0353 L 269.3000 88.9931 L 272.2000 87.9616 L 275.1000 86.9407 L 278.0000 85.9300 L 280.9000 84.9295 L 283.8000 83.9389 L 286.7000 82.9580 L 289.6000 81.9866 L 292.5000 81.0246" stroke="rgb(255, 0, 0)" fill="none" />
+<path d="M 89.6200 193.3078 L 91.6400 255.2737 L 93.6600 292.2739 L 95.6800 319.4455 L 97.7000 340.2434 L 99.7200 356.3465 L 101.7400 368.7633 L 103.7600 378.1725 L 105.7800 385.0651 L 107.8000 389.8140 L 109.8200 392.7136 L 111.8400 394.0026 L 113.8600 393.8789 L 115.8800 392.5096 L 117.9000 390.0380 L 119.9200 386.5885 L 121.9400 382.2700 L 123.9600 377.1792 L 125.9800 371.4021 L 128.0000 365.0161 L 130.0200 358.0911 L 132.0400 350.6908 L 134.0600 342.8731 L 136.0800 334.6912 L 138.1000 326.1941 L 140.1200 317.4270 L 142.1400 308.4319 L 144.1600 299.2477 L 146.1800 289.9108 L 148.2000 280.4549 L 150.2200 270.9117 L 152.2400 261.3111 L 154.2600 251.6808 L 156.2800 242.0472 L 158.3000 232.4349 L 160.3200 222.8673 L 162.3400 213.3663 L 164.3600 203.9528 L 166.3800 194.6463 L 168.4000 185.4656 L 170.4200 176.4281 L 172.4400 167.5507 L 174.4600 158.8490 L 176.4800 150.3382 L 178.5000 142.0325 L 180.5200 133.9452 L 182.5400 126.0893 L 184.5600 118.4768 L 186.5800 111.1192 L 188.6000 104.0274 L 190.6200 97.2117 L 192.6400 90.6819 L 194.6600 84.4470 L 196.6800 78.5158 L 198.7000 72.8966 L 200.7200 67.5969 L 202.7400 62.6239 L 204.7600 57.9846 L 206.7800 53.6851 L 208.8000 49.7314 L 210.8200 46.1289 L 212.8400 42.8826 L 214.8600 39.9971 L 216.8800 37.4768 L 218.9000 35.3253 L 220.9200 33.5461 L 222.9400 32.1423 L 224.9600 31.1164 L 226.9800 30.4707 L 229.0000 30.2071 L 231.0200 30.3269 L 233.0400 30.8314 L 235.0600 31.7211 L 237.0800 32.9963 L 239.1000 34.6570 L 241.1200 36.7025 L 243.1400 39.1321 L 245.1600 41.9443 L 247.1800 45.1373 L 249.2000 48.7091 L 251.2200 52.6568 L 253.2400 56.9775 L 255.2600 61.6675 L 257.2800 66.7229 L 259.3000 72.1390 L 261.3200 77.9110 L 263.3400 84.0331 L 265.3600 90.4993 L 267.3800 97.3029 L 269.4000 104.4366 L 271.4200 111.8926 L 273.4400 119.6623 L 275.4600 127.7364 L 277.4800 136.1051 L 279.5000 144.7577 L 281.5200 153.6827 L 283.5400 162.8679 L 285.5600 172.3001 L 287.5800 181.9651 L 289.6000 191.8478 L 291.6200 201.9323" stroke="rgb(0, 0, 255)" fill="none" />
+<path d="M 2.5000 396.6421 L 292.5000 396.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 381.6421 L 292.5000 381.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 366.6421 L 292.5000 366.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 351.6421 L 292.5000 351.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 336.6421 L 292.5000 336.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 321.6421 L 292.5000 321.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 306.6421 L 292.5000 306.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 291.6421 L 292.5000 291.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 276.6421 L 292.5000 276.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 261.6421 L 292.5000 261.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 246.6421 L 292.5000 246.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 231.6421 L 292.5000 231.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 216.6421 L 292.5000 216.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 201.6421 L 292.5000 201.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 186.6421 L 292.5000 186.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 171.6421 L 292.5000 171.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 156.6421 L 292.5000 156.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 141.6421 L 292.5000 141.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 126.6421 L 292.5000 126.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 111.6421 L 292.5000 111.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 96.6421 L 292.5000 96.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 81.6421 L 292.5000 81.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 66.6421 L 292.5000 66.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 51.6421 L 292.5000 51.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 36.6421 L 292.5000 36.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 21.6421 L 292.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 396.6421 L 2.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 12.5000 396.6421 L 12.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 22.5000 396.6421 L 22.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 32.5000 396.6421 L 32.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 42.5000 396.6421 L 42.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 52.5000 396.6421 L 52.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 62.5000 396.6421 L 62.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 72.5000 396.6421 L 72.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 82.5000 396.6421 L 82.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 92.5000 396.6421 L 92.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 102.5000 396.6421 L 102.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 112.5000 396.6421 L 112.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 122.5000 396.6421 L 122.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 132.5000 396.6421 L 132.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 142.5000 396.6421 L 142.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 152.5000 396.6421 L 152.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 162.5000 396.6421 L 162.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 172.5000 396.6421 L 172.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 182.5000 396.6421 L 182.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 192.5000 396.6421 L 192.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 202.5000 396.6421 L 202.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 212.5000 396.6421 L 212.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 222.5000 396.6421 L 222.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 232.5000 396.6421 L 232.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 242.5000 396.6421 L 242.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 252.5000 396.6421 L 252.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 262.5000 396.6421 L 262.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 272.5000 396.6421 L 272.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 282.5000 396.6421 L 282.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 292.5000 396.6421 L 292.5000 21.6421" stroke-dasharray="2pt 2pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 189.6000 396.6421 L 189.6000 21.6421" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<path d="M 2.5000 191.8478 L 292.5000 191.8478" stroke-width="2.0000pt" fill="none" stroke="rgb(0, 0, 0)" />
+<foreignObject x="87.4843" y="0.0000" width="232.5157" height="15.0000">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>y</mi></mrow></math></div></foreignObject>
+<foreignObject x="305.0000" y="0.0000" width="15.0000" height="383.6957">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>x</mi></mrow></math></div></foreignObject>
+<foreignObject x="299.2000" y="0.0000" width="20.8000" height="163.9732">
+<div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>f</mi></mrow></math></div></foreignObject>
+</svg></div>
+<figcaption>$\mathfrak f(x) = \log(x+2)$ on $[-2, 1]$, together with the integrand after the cubic substitution.</figcaption>
+</figure>
+
+<h1 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h1>
+<p class="hangingindent"> &mdash;. Michel Jean, "Romberg–Kahan Integrator,"
+    AxiomeLab, Tech. Rep., 2026. <sc>url:</sc>
+    <a href="https://axiomelab.gitlab.io/hp34c/">
+    https://axiomelab.gitlab.io/hp34c/</a>.</p>
+
+<p class="hangingindent"> &mdash;. Michel Jean, "The Secret Behind the &int;
+    Key on Your HP Calculator," AxiomeLab, Tech. Rep., 2026. <sc>url:</sc>
+    <a href="https://axiomelab.gitlab.io/hp-integral/article_hp_en.html">
+    https://axiomelab.gitlab.io/hp-integral/article_hp_en.html</a>.</p>
+
+<p class="hangingindent"> William Kahan. "Handheld calculator evaluates integrals,"
+    in <em>Hewlett-Packard Journal</em>, vol. 31, 1980.</p>
+
+<p class="hangingindent"> A. Quarteroni, R. Sacco, F. Saleri, <em>Numerical
+    Mathematics</em>. Springer Berlin Heidelberg, 2007. <sc>doi:</sc>
+    <a href="https://doi.org/10.1007/b98885">10.1007/b98885</a>.</p>
+
+<hr />
+<p><sup>1</sup> As long as the function is integrable it is never truly
+<em>impossible</em>, since for a function $\mathfrak f$ of this kind, one could
+simply define $\mathfrak F$ to be its antiderivative; however, this is useless
+unless it leads to an easy way of computing $\mathfrak F(x)$.</p>
+<p><sup>2</sup> In computer science, a <em>word</em> is the smallest unit of data
+handled in the instruction set of a processor.</p>
+<p><sup>3</sup> In contrast to floating-point numbers, where the separator between
+the integer and fractional part can be "moved" (choosing a different exponent),
+fixed-point numbers have a fixed number of bits allocated for each (integer and
+fractional) part.</p>
+<p><sup>4</sup> Formally, we say $f = \Omega(g)$ if $g = \mathscr O(f)$, and $f =
+\Theta(g)$ if $f = \mathscr O(g)$ and $g = \mathscr O(f)$.</p>
+<p><sup>5</sup> The Riemann integral is essentially the limit of the Riemann sums
+as we let $n$ go to infinity. In a real analysis textbook, however, the
+<em>upper</em> and <em>lower</em> are first defined taking $f(x_i^*) = \sup
+f([x_{i-1}, x_i])$ and $f(x_i^*) = \inf f([x_{i-1}, x_i])$ respectively
+(that is, they are the upper and lower bounds of any Riemann sum), and if the
+limit as $n$ approaches infinity of the two is the same quantity $L$, we say
+that $f$ is <em>Riemann-integrable</em> on $[a, b]$, and write
+$\int_a^b f(x) \diff x = L$.</p>
+<p><sup>6</sup> From the first equation one obtains the value of $\lambda_1$, then
+it is substituted into the second one to find $\lambda_2$, and so forth until
+$\lambda_n$. This procedure (generalized) is named <em>forward substitution</em>, and
+the reader might benefit from thinking about why it requires $n(n-1)$
+floating-point operations. There is also a <em>backward substitution</em>, which is
+identical but for upper-triangular systems rather than lower-triangular ones.</p>
+<p><sup>7</sup> In practice there is no need to build the full table, since the
+only important values are the diagonal ones; it suffices to allocate $2n$
+floats to store the first and second columns, and then update the latter at
+every iteration. Since the third column only has $n-1$ elements, the remaining
+space can be used for the first diagonal entry, and so forth for the rest of
+the table.</p>
+<p><sup>8</sup> For those not familiar with the concept of $p$-norms, the
+particular case of the norm infinity ($\lVert\cdot\rVert_\infty$) can be
+thought of as the largest value of a sequence (formally, of a vector from the
+space the norm acts upon) in absolute values.</p>
+<p><sup>9</sup> <code>console.log(solution1)</code> will only reveal the numerical value of
+the integral rather than a closed-form expression that can be understood. From
+my perspective, the easiest way to solve the integral is by substituting $x$
+into a hyperbolic cosine to simplify the square root in the denominator; hence
+$$
+    \int_2^4 \frac{\diff x}{\sqrt{x^2 - 1}}
+    = \left\{\begin{aligned}
+        x &amp;= \cosh t\\
+        \diff x &amp;= \sinh t \diff t
+    \end{aligned}\right\}
+    = \int\limits_{\arccosh 2}^{\arccosh 4} \frac{\sinh t}{\sqrt{\cosh^2 t - 1}} \diff t
+    = \int\limits_{\arccosh 2}^{\arccosh 4} \cancel{\frac{\sinh t}{\sinh t}} \diff t
+    = {\color{green} \boxed{\arccosh 4 - \arccosh 2.}}
+$$</p>
+<p><sup>10</sup> In reality, there are <em>two</em> rules by Simpson; they are the
+Newton-Cotes formulas for second and third degree interpolants, and they
+receive the names $1/3$- and $3/8$-Simpson's rule when it is necessary to
+distinguish between them (which is almost never the case, and this article will
+not be an exception).</p>
+<p><sup>11</sup> Once again, <code>solution2</code> only contains the numerical answer, but a
+symbolic one can be achieved through integration by parts. Indeed, notice that
+$$
+    \int \log x \diff x = \left\{\begin{aligned}
+        u &amp;= \log x\\
+        \diff v &amp;= \diff x
+    \end{aligned}\right\}
+    = x\log x - \int \cancel{\frac xx} \diff x
+    = x(\log x - 1),
+$$
+and through a simple change of variables
+$$
+    \int_{-2}^1 \log(x + 2) \diff x
+    = \lim_{t \to 0^+} \int_t^3 \log x \diff x
+    = \lim_{t \to 0^+} \left[x(\log x - 1)\right]_t^3
+    = 3(\log 3 - 1) - \underbrace{\lim_{t \to 0^+} t(\log t - 1)}_{\rm L},
+$$
+but we can solve $\rm L$ by rewriting it conveniently and using L'Hôpital's
+rule:
+$$
+    {\rm L} = \lim_{t \to 0^+} t(\log t - 1)
+    = \lim_{t \to 0^+} \frac{\log t - 1}{1/t}
+    \stackrel{\text{L'H}}= \lim_{t \to 0^+} \frac{1/t}{-1/t^2} = 0;
+$$
+putting everything together, the result turns out to be
+$$
+    \int_{-2}^1 \log(x + 2) \diff x
+    = 3(\log 3 - 1) - {\rm L}
+    = {\color{green}\boxed{3(\log 3 - 1).}}
+$$
+Also, I write $\log x = \ln x \neq \log_{10} x$; I have not yet found a
+convincing argument to have $\log x = \log_{10} x$.</p>
+<script>
+function IEEE754(num)
+{
+  const buffer = new ArrayBuffer(4);
+  const doubleView = new Float32Array(buffer);
+  const bigIntView = new Uint32Array(buffer);
+  doubleView[0] = num;
+  const binary = bigIntView[0].toString(2).padStart(32, '0');
+  return `${binary.slice(0, 1)} ${binary.slice(1, 9)} ${binary.slice(9, 32)}`;
+}
+
+function IEEE754f64(num)
+{
+  const buffer = new ArrayBuffer(8);
+  const doubleView = new Float64Array(buffer);
+  const bigIntView = new BigUint64Array(buffer);
+  doubleView[0] = num;
+  const binary = bigIntView[0].toString(2).padStart(64, '0');
+  return `${binary.slice(0, 1)} ${binary.slice(1, 12)} ${binary.slice(12, 64)}`;
+}
+
+function __mat_divided_difference(xs, f)
+{
+    let n = xs.length;
+    let nabla = [xs.map(f)];
+
+    for (let i = 1; i < n; i++)
+    {
+        nabla.push([]);
+        for (let j = 0; j < n - i; j++)
+            nabla[i].push((nabla[i-1][j+1]-nabla[i-1][j]) / (xs[i+j]-xs[j]));
+    }
+
+    return nabla;
+}
+
+function __display_table(table)
+{
+    let ls = table.map(col => Math.max(...col.map(s => s.length)));
+    let row = "";
+    for (let l of ls)
+        row += '+' + '-'.repeat(l+2);
+    row += '+\n';
+    let s = "";
+
+    for (let i = 0; i < table[0].length; i++)
+    {
+        s += row;
+        for (let j = 0; j < table.length; j++)
+            s += '| ' + table[j][i] + ' '.repeat(ls[j] - table[j][i].length + 1);
+        s += '|\n';
+    }
+
+    console.log(s + row);
+}
+
+function divided_difference(xs, f)
+{
+    let mat = __mat_divided_difference(xs, f);
+    let arr = [["x", ...xs.map(x => x.toString())]];
+
+    for (let i = 0; i < mat.length; i++)
+    {
+        let col = [`${i == 0 ? "" : "∇"}${i <= 1 ? "" : i.toString()}f`];
+        for (let j = 0; j < i; j++)
+            col.push("");
+        col = col.concat(mat[i].map(x => x.toString()));
+        arr.push(col);
+    }
+
+    __display_table(arr);
+}
+
+class NewtonPolynomial
+{
+    constructor(xs, f)
+    {
+        this.xs = xs;
+        this.cs = [];
+        for (let r of __mat_divided_difference(xs, f))
+            this.cs.push(r[0]);
+    }
+
+    eval(x)
+    {
+        let n = this.xs.length;
+        let r = 0;
+
+        for (let i = n-1; i >= 0; i--)
+            r = r * (x - this.xs[i]) + this.cs[i];
+
+        return r;
+    }
+
+    toString()
+    {
+        let s = `${this.cs[0]}`;
+
+        for (let i = 1; i < this.xs.length; i++)
+        {
+            let t = "";
+            for (let j = 0; j < i; j++)
+                t += `(x - ${this.xs[j]})`
+            s += ((this.cs[i] >= 0 ? " + " : " - ")
+                + Math.abs(this.cs[i]).toString() + t)
+        }
+
+        return s;
+    }
+}
+
+let solution1 = Math.acosh(4) - Math.acosh(2);
+
+function trapezoid(f, a, b)
+{
+    return (f(a) + f(b)) * (b - a)/2;
+}
+
+function simpson(f, a, b)
+{
+    return (b - a)/6 * (f(a) + 4*f((a+b)/2) + f(b));
+}
+
+function composite_method(m, f, a, b, dx = null)
+{
+    if (dx === null)
+        dx = (b - a) / 10;
+
+    I = 0;
+    while (a < b)
+    {
+        if (Math.abs(b - a) < 1e-8)
+            break;
+        I += m(f, a, a+dx);
+        a += dx;
+    }
+
+    return I;
+}
+
+function composite_trapezoid(f, a, b, dx = null) { return composite_method(trapezoid, f, a, b, dx); }
+function composite_simpson(f, a, b, dx = null) { return composite_method(simpson, f, a, b, dx); }
+
+function romberg(f, a, b, n, method)
+{
+    let is = [];
+    let hn = (b - a)/2;
+
+    for (let i = 0; i < n; i++)
+    {
+        is.push(composite_method(method, f, a, b, hn));
+        hn /= 2;
+    }
+
+    for (let i = 1; i < n; i++)
+    {
+        for (let j = 0; j < n - i; j++)
+        {
+            let w = Math.pow(4, i);
+            is[j] = (w*is[j+1] - is[j]) / (w - 1);
+        }
+    }
+
+    return is[0];
+}
+
+function romberg_table(f, a, b, n, method)
+{
+    let table = [];
+
+    for (let i = 1; i <= n; i++)
+        table.push([`R(·, ${i.toString()})`]);
+
+    let is = [];
+    let hn = (b - a)/2;
+
+    for (let i = 0; i < n; i++)
+    {
+        let int = composite_method(method, f, a, b, hn);
+        is.push(int);
+        table[0].push(int.toString());
+        hn /= 2;
+    }
+
+    for (let i = 1; i < n; i++)
+    {
+        for (let j = 0; j < i; j++)
+            table[i].push("");
+
+        for (let j = 0; j < n - i; j++)
+        {
+            let w = Math.pow(4, i);
+            let int = (w*is[j+1] - is[j]) / (w - 1);
+            is[j] = int;
+            table[i].push(int.toString());
+        }
+    }
+
+    __display_table(table);
+}
+
+let solution2 = 3*(Math.log(3) - 1);
+
+function kahan(f, a, b, n = 10)
+{
+    let d = (b - a)/2, m = (a + b)/2;
+    return romberg(y => {
+        let dxdy = 3*d/2 * (1 - y*y);
+        if (dxdy == 0) return 0;
+        return f(m + d/2 * y * (3 - y*y)) * dxdy;
+    }, -1, 1, n, trapezoid);
+}
+
+class Terminal
+{
+    constructor(containerElement, welcomeName)
+    {
+        this.container = containerElement;
+        this.outputDiv = containerElement.querySelector('.output');
+        this.inputField = containerElement.querySelector('.command-input');
+
+        this.commandHistory = [];
+        this.historyIndex = -1;
+
+        this.initEvents();
+        this.printToConsole(containerElement.getAttribute('welcome'), 'welcome');
+    }
+
+    initEvents()
+    {
+        this.container.addEventListener('click', () => {
+            this.inputField.focus();
+        });
+
+        this.inputField.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter')
+            {
+                const code = this.inputField.value.trim();
+                if (code)
+                {
+                    this.printToConsole(`> ${code}`, 'command');
+
+                    this.commandHistory.push(code);
+                    this.historyIndex = this.commandHistory.length;
+
+                    const __clog = console.log;
+
+                    console.log = (...args) => {
+                        const message = args.map(arg => typeof arg === 'object' ?
+                            JSON.stringify(arg) : String(arg)).join(' ');
+                        this.printToConsole(message, 'log');                        
+                        __clog.apply(console, args); 
+                    };
+
+                    this.inputField.value = '';
+                    try
+                    {
+                        const result = window.eval(code);
+                        if (result !== undefined)
+                            this.printToConsole(JSON.stringify(result) || String(result), 'result');
+                    }
+                    catch (error)
+                    {
+                        this.printToConsole(error.toString(), 'error');
+                    }
+                    finally
+                    {
+                        console.log = __clog;
+                    }
+
+                    this.inputField.value = '';
+                }
+            } 
+
+            else if (event.key === 'ArrowUp')
+            {
+                if (this.historyIndex > 0)
+                {
+                    this.historyIndex--;
+                    this.inputField.value = this.commandHistory[this.historyIndex];
+                }
+                event.preventDefault();
+            } else if (event.key === 'ArrowDown')
+            {
+                if (this.historyIndex < this.commandHistory.length - 1)
+                {
+                    this.historyIndex++;
+                    this.inputField.value = this.commandHistory[this.historyIndex];
+                } else
+                {
+                    this.historyIndex = this.commandHistory.length;
+                    this.inputField.value = '';
+                }
+            }
+        });
+    }
+
+    printToConsole(text, className)
+    {
+        const line = document.createElement('div');
+        line.textContent = text;
+        if (className) {
+            line.classList.add(className);
+        }
+        this.outputDiv.appendChild(line);
+        this.outputDiv.scrollTop = this.outputDiv.scrollHeight;
+    }
+}
+
+document.querySelectorAll('.terminal-box').forEach((element, index) => {
+    new Terminal(element, index + 1);
+});
+</script>
+    </main>
+    
+
+    <footer>
+        <span>Licensed under CC BY-ND 4.0,</span>
+        <button onclick="window.print()" class="print-button"><sc>Print this document</sc></button>
+        <span>© 2026 All Rights Reserved.</span>
+    </footer>
+</body>
+
+</html>
