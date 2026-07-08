@@ -1,13 +1,25 @@
 ---
 title: Posts
 ---
-# List of posts
 
-Sorted from newest to oldest, below is a list of my posts. They cover a bit of everything I like.
+# Articles
+
+Sorted from newest to oldest, below is a list of my detailed write-ups.
 
 * [How Calculators Crunch the Integrals You Cannot Solve.](./posts/2026/06/20.md)
 * [The Antibloatware Brigade at Ada Byron 2026 Regionals.](./posts/2026/04/12.md)
 * [Highlights of `using std::cpp` 2026.](./posts/2026/03/19.md)
+
+# Miscellanea
+
+Short notes, snippets, and explanations. No need for a whole thousand-word article to get them across.
+
+* [A bunch of _doable_ integrals from the MIT Integration Bee.](./posts/2026/05/11.md)
+* [Two from Romania to master the Jordan canonical form.](./posts/2026/05/09.md)
+* [Kirchhoff's theorem for spanning trees.](./posts/2026/04/24.md)
+* [Sylvester's determinant theorem.](./posts/2026/04/11.md)
+* [The cyclic property defines the trace.](./posts/2026/04/10.md)
+* [Proof of a special case of Fuglede's theorem.](./posts/2026/04/09.md)
 
 # Archive
 
