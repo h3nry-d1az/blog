@@ -212,7 +212,7 @@ sc {
     color: darkcyan;
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 930px) {
     body { padding: 3% 5% 5% 5%; }
 
     nav {
