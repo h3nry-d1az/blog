@@ -142,6 +142,10 @@ sc {
  * ```py
  * from datetime import datetime
  * datetime.today().strftime("%d %b %Y")
+ * ```
+ * or equivalently from the shell
+ * ```bash
+ * python3 -c "from datetime import datetime; print(datetime.today().strftime('%d %b %Y'))"
  * ```*/
 .date,
 .updated {
