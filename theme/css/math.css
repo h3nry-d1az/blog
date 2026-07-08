@@ -8,6 +8,11 @@
     border: 2px solid teal;
 }
 
+.remark {
+    font-size: larger;
+    padding: 10px;
+}
+
 .theorem::before {
     content: "Theorem: ";
     font-weight: bold;
@@ -31,6 +36,12 @@
 .problem::before {
     content: "Problem: ";
     font-weight: bold;
+}
+
+.remark::before {
+    content: "Remark: ";
+    font-weight: bold;
+    color: teal;
 }
 
 .proof,
