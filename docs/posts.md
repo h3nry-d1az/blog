@@ -10,6 +10,12 @@ Sorted from newest to oldest, below is a list of my detailed write-ups.
 * [The Antibloatware Brigade at Ada Byron 2026 Regionals.](./posts/2026/04/12.md)
 * [Highlights of `using std::cpp` 2026.](./posts/2026/03/19.md)
 
+# Reviews
+
+Especially book reviews, yet not necessarily textbooks.
+
+* [_Formas que se deforman: la topología_, de Vicente Muñoz Velázquez.](./posts/2026/07/12.md) <img src="../assets/espanol.svg" class="espanol" title="Artículo en español / Post in Spanish">
+
 # Miscellanea
 
 Short notes, snippets, and explanations. No need for a whole thousand-word article to get them across.

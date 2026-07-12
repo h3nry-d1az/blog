@@ -189,6 +189,12 @@ sc {
     font-size: 1.2rem !important;
 }
 
+.espanol {
+    height: 0.75em;
+    vertical-align: -0.125em;
+    cursor: help;
+}
+
 .twocols {
     column-count: 2;
     column-gap: 20px;
@@ -210,6 +216,18 @@ sc {
 
 .print-button:hover {
     color: darkcyan;
+}
+
+.wrap-left {
+    float: left;
+    margin: 0.5rem 2rem 1rem 0;
+    text-align: center;
+}
+
+.wrap-right {
+    float: right;
+    margin: 0.5rem 0 1rem 2rem;
+    text-align: center;
 }
 
 @media screen and (max-width: 930px) {
