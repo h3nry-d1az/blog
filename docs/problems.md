@@ -5,6 +5,7 @@ title: Problems
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [The group automorphisms of $\QQ$ are fixed by their action on $1$.](./problems/23.md)
 * [Any number equals the sum of the totient function on its divisors.](./problems/22.md)
 * [Continuous morphisms between $(\RR,+)$ and $(\RR,\cdot)$.](./problems/21.md)
 * [_Crux Mathematicorum_, Vol. 14, No. 9: Problem 6.](./problems/20.md)
