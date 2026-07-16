@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Daily integral of 7/5/2026: Medium difficulty - Henry Díaz Bordón</title>
+    <title>Any number equals the sum of the totient function on its divisors - Henry Díaz Bordón</title>
     
 
     <link rel="stylesheet" href="../../css/style.css">
@@ -94,7 +94,7 @@
         
 
         
-        <p class="date">6 May 2026</p>
+        <p class="date">16 Jul 2026</p>
         
 
         
@@ -105,29 +105,52 @@
     
     <main>
         <div class="problem">
-Compute the following integral:
-$$
-{\rm I} = \lint_0^{\pi/2} \frac{\sqrt{1-\cos(4x)}}{\sin^4 x - 2\sin^2 x + 2} \diff x.
-$$
+Prove that $\sum_{k \mid n} \varphi(k) = n$, where $\varphi(n)$ is Euler's totient function.
 </div>
 
-<p><em>Proposed by the user "EkineticEnergy" on the website <code>dailyintegral.com</code>.</em></p>
+<p><em>Proposed as exercise 3.49 in </em><a href="https://doi.org/10.1007/978-3-319-77649-1">Abstract Algebra: An Introductory Course</a><em>,
+by Gregory T. Lee.</em></p>
 <div class="solution">
-This problem is mostly about remembering the trigonometric identities, in particular, the double-angle formulae. Recall that
+By means of the fundamental theorem of arithmetic let first $n=p_1^{\alpha_1}
+p_2^{\alpha_2}\cdots p_m^{\alpha_m}$; the proof will proceed by induction on
+$m$.
+<br>
+
+For the base case, when $n=p^\alpha$ it follows that
 $$
-    \cos(2\theta) = \cos^2 \theta - \sin^2 \theta,\qquad
-    \sin(2\theta) = 2\sin\theta \cos\theta;
+\begin{alignat*}5
+    p^\alpha &= (p^\alpha - p^{\alpha-1}) &&+ (p^{\alpha-1} - p^{\alpha-2})
+    &&+ \cdots &&+ (p - 1) &&+ 1\\
+    &= \varphi(p^\alpha) &&+ \varphi(p^{\alpha-1}) &&+ \cdots &&+ \varphi(p)
+    &&+ \varphi(1) = \sum_{k \mid p^\alpha} \varphi(k).
+\end{alignat*}
 $$
-with this, the radicand in the numerator becomes
+<br>
+
+Thus, having $n=p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_m^{\alpha_m}
+p_{m+1}^{\alpha_{m+1}}$ observe that
 $$
-    \sqrt{1 - \cos(4x)} = \sqrt{1 - \cos^2 (2x) + \sin^2 (2x)} = \sqrt{2\sin^2(2x)} = 2\sqrt2 \sin x \cos x,
+\begin{align*}
+    \sum_{k \mid n} \varphi(k) &=
+    \sum_{i = 0}^{\alpha_{m+1}}
+    \sum_{\substack{k\mid n\\p_{m+1}\nmid k}} \varphi(k\cdot p_{m+1}^i)
+    = \sum_{i = 0}^{\alpha_{m+1}} \varphi(p_{m+1}^i)
+    \sum_{\substack{k\mid n\\p_{m+1}\nmid k}} \varphi(k)\\
+    &\stackrel{\text{IH}}{=} p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_m^{\alpha_m}
+    \sum_{i = 0}^{\alpha_{m+1}} \varphi(p_{m+1}^i)
+    \stackrel{\text{IH}}{=} p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_m^{\alpha_m}
+    p_{m+1}^{\alpha_{m+1}} = n,
+\end{align*}
 $$
-and therefore, also completing the square in the denominator
-$$
-    {\rm I} = \lint_0^{\pi/2} \frac{2\sqrt2 \sin x\cos x}{1 + (\sin^2 x - 1)^2} \diff x
-    = \left\{\begin{aligned} t &= \sin^2 x - 1\\ \diff t &= 2\sin x \cos x\diff x \end{aligned}\right\}
-    = \lint_{-1}^0 \frac{\sqrt2 \diff t}{1 + t^2} = \sqrt2 \arctan 1 = \color{green}\boxed{\frac{\sqrt2 \pi}{4}.}
-$$
+as it was to be shown.
+</div>
+
+<div class="remark">
+Here, the following two well-known facts were used without proof:
+<ol>
+<li>$\varphi(p^k) = p^k - p^{k-1}$.</li>
+<li>$\varphi(mn) = \varphi(m)\varphi(n)$ when $m$ and $n$ are coprime.</li>
+</ol>
 </div>
     </main>
     
