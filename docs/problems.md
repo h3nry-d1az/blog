@@ -5,6 +5,7 @@ title: Problems
 
 Math problems I'm too lazy to write down in $\LaTeX$, along with their solutions.
 
+* [Any number equals the sum of the totient function on its divisors.](./problems/22.md)
 * [Continuous morphisms between $(\RR,+)$ and $(\RR,\cdot)$.](./problems/21.md)
 * [_Crux Mathematicorum_, Vol. 14, No. 9: Problem 6.](./problems/20.md)
 * [Daily integrals of 13/5/2026: Medium and Hard difficulties.](./problems/19.md)
