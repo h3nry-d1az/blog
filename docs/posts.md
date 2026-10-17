@@ -20,6 +20,7 @@ Especially book reviews, yet not necessarily textbooks.
 
 Short notes, snippets, and explanations. No need for a whole thousand-word article to get them across.
 
+* [That special case of RSA never addressed.](./posts/2026/10/18.md)
 * [A bunch of _doable_ integrals from the MIT Integration Bee.](./posts/2026/05/11.md)
 * [Two from Romania to master the Jordan canonical form.](./posts/2026/05/09.md)
 * [Kirchhoff's theorem for spanning trees.](./posts/2026/04/24.md)
